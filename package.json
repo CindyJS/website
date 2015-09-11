@@ -1,0 +1,28 @@
+{
+  "name": "cindyjs-website",
+  "version": "0.0.1",
+  "description": "The CindyJS web site",
+  "devDependencies": {
+    "bower": "^1.5.2",
+    "chalk": "^1.1.1",
+    "download": "^4.2.0",
+    "grunt-cli": "^0.1.13",
+    "mkdirp": "^0.5.1",
+    "q": "^1.4.1",
+    "q-io": "^1.13.1"
+  },
+  "scripts": {
+    "prepublish": "node build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CindyJS/website.git"
+  },
+  "author": "Martin von Gagern <gagern@ma.tum.de>",
+  "license": "CC-BY-SA-4.0",
+  "bugs": {
+    "url": "https://github.com/CindyJS/website/issues"
+  },
+  "homepage": "https://github.com/CindyJS/website#readme",
+  "private": true
+}
