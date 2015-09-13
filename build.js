@@ -10,6 +10,7 @@ var Q = require("q");
 var qfs = require("q-io/fs");
 
 var WholeLineStream = require("./lib/WholeLineStream");
+var metalscript = require("./metalscript.js");
 
 var jrubyVersion = "9.0.1.0";
 
@@ -87,6 +88,8 @@ function main() {
     .then(getJRuby)
     .then(gems)
     .then(bundleInstall)
+    .then(buildStyle)
+    .then(metalscript)
     .done();
 }
 
@@ -103,4 +106,9 @@ function gems() {
 
 function bundleInstall() {
   return rubyExec("[bundle] ", ["bundle", "install"], {cwd: "foundation"});
+}
+
+function buildStyle() {
+  return rubyExec("[compas] ", ["bundle", "exec", "compass", "compile"],
+                  {cwd: "foundation"});
 }
