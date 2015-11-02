@@ -43,7 +43,7 @@ function rubyExec(prefix, cmd, opts) {
       delete env[key];
     });
   env.PATH = path.resolve("download/jruby-" + jrubyVersion + "/bin") +
-    ":" + env.PATH;
+    ":" + path.resolve("node_modules") + ":" + env.PATH;
   var deferred = Q.defer();
   var combined = {
     env: env,
@@ -84,11 +84,13 @@ function installGem(name, version) {
 process.nextTick(main);
 
 function main() {
-  qfs.makeTree("download")
-    .then(getJRuby)
-    .then(gems)
-    .then(bundleInstall)
-    .then(buildStyle)
+  Q.all([
+    qfs.makeTree("download")
+      .then(getJRuby)
+      .then(gems)
+      .then(bundleInstall),
+    bowerInstall()
+  ]).then(buildStyle)
     .then(metalscript)
     .done();
 }
@@ -106,6 +108,10 @@ function gems() {
 
 function bundleInstall() {
   return rubyExec("[bundle] ", ["bundle", "install"], {cwd: "foundation"});
+}
+
+function bowerInstall() {
+  return rubyExec("[bower ] ", ["bower", "install"], {cwd: "foundation"});
 }
 
 function buildStyle() {
