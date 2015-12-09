@@ -18,6 +18,7 @@ var examples = require("./lib/examples");
 var foundation = require("./lib/foundation");
 var index = require("./lib/index");
 var menuCombiner = require("./lib/menu-combiner");
+var ref = require("./lib/ref");
 var topbar = require("./lib/topbar");
 
 function pipeline(first) {
@@ -78,6 +79,18 @@ gulp.task("html", function() {
                 }); }),
                 index("examples", "layouts/dirlist.html", {
                     title: "Examples shipped with the source tree",
+                })
+            ),
+            pipeline(
+                gulp.src(["CindyJS/ref/**.md"], {base: "./CindyJS"}),
+                data(function(file) { return xtend(file.data, {
+                    github: "CindyJS/CindyJS",
+                    branch: "master",
+                    path: file.relative,
+                }); }),
+                ref(),
+                index("ref", "layouts/dirlist.html", {
+                    title: "Reference Manual",
                 })
             )
         ),

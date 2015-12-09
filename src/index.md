@@ -54,16 +54,14 @@ There are three relevant parts to most CindyJS widgets:
    ```
    This adds a function called `createCindy` to the global scope.
 2. Invoke that function, providing an object with further content description.
-   See [the `createCindy` documentation](https://github.com/CindyJS/CindyJS/blob/master/ref/createCindy.md) for details.
+   See [the `createCindy` documentation](/ref/createCindy.html) for details.
    Usually you don't have to ensure that the document is fully loaded
    by the time you make that invocation;
    CindyJS will postpone initialization appropriately.
 3. For custom actions beyond simple dynamic geometry,
    you can write CindyScript code encosed in HTML `<script>` tags.
-   Some CindyScript documentation is available
-   [inside the repository](https://github.com/CindyJS/CindyJS/tree/master/ref),
-   but it often refers to functionality of Cinderella, not CindyJS,
-   and it hasn't been integrated into this web site yet.
+   Some CindyScript documentation is [available](/ref/),
+   but it often refers to functionality of Cinderella, not CindyJS.
 
 ## Bugs and feature requests
 
