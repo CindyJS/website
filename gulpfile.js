@@ -8,10 +8,13 @@ var gulpif = require("gulp-if");
 var handlebars = require("handlebars");
 var hbs = require("gulp-hbs");
 var markdown = require("gulp-markdown");
+var merge = require("merge-stream");
 var open = require("open");
 var rimraf = require("rimraf");
 var xtend = require("xtend");
 
+var examples = require("./lib/examples");
+var index = require("./lib/index");
 var menuCombiner = require("./lib/menu-combiner");
 var topbar = require("./lib/topbar");
 
@@ -45,13 +48,29 @@ gulp.task("clean", function(done) {
 
 gulp.task("html", function() {
     return pipeline(
-        gulp.src(["src/**.md", "src/**.html"]),
-        fm({property: "data"}),
-        data(function(file) { return xtend(file.data, {
-            github: "CindyJS/webpage",
-            branch: "master",
-            relative: file.relative,
-        }); }),
+        merge(
+            pipeline(
+                gulp.src(["src/**.md", "src/**.html"]),
+                fm({property: "data"}),
+                data(function(file) { return xtend(file.data, {
+                    github: "CindyJS/website",
+                    branch: "master",
+                    path: file.relative,
+                }); })
+            ),
+            pipeline(
+                gulp.src(["CindyJS/examples/**.html"], {base: "./CindyJS"}),
+                examples(),
+                data(function(file) { return xtend(file.data, {
+                    github: "CindyJS/CindyJS",
+                    branch: "master",
+                    path: file.relative,
+                }); }),
+                index("examples", "layouts/dirlist.html", {
+                    title: "Examples shipped with the source tree",
+                })
+            )
+        ),
         gulpif(function(file) { return file.path.endsWith('.md') },
                markdown()),
         menuCombiner(pipeline(
@@ -61,6 +80,7 @@ gulp.task("html", function() {
         topbar(),
         hbs(gulp.src("layouts/**.html"), {
             dataSource: "data",
+            defaultTemplate: "main.html",
             compile: handlebars.compile,
         }),
         gulp.dest("build"));
@@ -68,7 +88,7 @@ gulp.task("html", function() {
 
 gulp.task("foundationResources", function() {
     return pipeline(
-        gulp.src("foundation/{js,stylesheets}/*"),
+        gulp.src(["foundation/{js,stylesheets}/*"]),
         gulp.dest("build"));
 });
 

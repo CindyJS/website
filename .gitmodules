@@ -1,0 +1,3 @@
+[submodule "CindyJS"]
+	path = CindyJS
+	url = https://github.com/CindyJS/CindyJS.git
