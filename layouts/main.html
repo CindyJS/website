@@ -42,10 +42,12 @@
     <div id="footer">
       <div class="row">
         <div class="large-12 columns">
+          {{#if github}}
           <ul>
             <li><a href="https://github.com/{{github}}/blob/{{branch}}/{{path}}">source</a></li>
             <li><a href="https://github.com/{{github}}/edit/{{branch}}/{{path}}">edit</a></li>
           </ul>
+          {{/if}}
         </div>
       </div>
     </div>
