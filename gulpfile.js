@@ -14,6 +14,7 @@ var rimraf = require("rimraf");
 var xtend = require("xtend");
 
 var examples = require("./lib/examples");
+var foundation = require("./lib/foundation");
 var index = require("./lib/index");
 var menuCombiner = require("./lib/menu-combiner");
 var topbar = require("./lib/topbar");
@@ -44,6 +45,14 @@ gulp.task("default", [
 
 gulp.task("clean", function(done) {
     rimraf("build", done);
+});
+
+gulp.task("getFoundation", function() {
+    return foundation.getFoundation();
+});
+
+gulp.task("buildStyle", ["getFoundation"], function() {
+    return foundation.buildStyle();
 });
 
 gulp.task("html", function() {
@@ -86,7 +95,7 @@ gulp.task("html", function() {
         gulp.dest("build"));
 });
 
-gulp.task("foundationResources", function() {
+gulp.task("foundationResources", ["buildStyle"], function() {
     return pipeline(
         gulp.src(["foundation/{js,stylesheets}/*"]),
         gulp.dest("build"));
@@ -116,7 +125,8 @@ gulp.task("open", ["default"], function(done) {
 
 gulp.task("watch", ["open"], function(done) {
     return gulp.watch([
-        "src/**.md",
-        "layouts/**.html",
+        "src/**",
+        "layouts/**",
+        "foundation/**/app.*",
     ], ["default"]);
 });
