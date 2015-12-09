@@ -10,7 +10,6 @@ var Q = require("q");
 var qfs = require("q-io/fs");
 
 var WholeLineStream = require("./lib/WholeLineStream");
-var metalscript = require("./metalscript.js");
 
 var jrubyVersion = "9.0.1.0";
 
@@ -91,7 +90,6 @@ function main() {
       .then(bundleInstall),
     bowerInstall()
   ]).then(buildStyle)
-    .then(metalscript)
     .done();
 }
 

@@ -33,7 +33,17 @@
     <div class="row">
       <div class="large-12 columns">
         <h1>{{title}}</h1>
-        {{{contents}}}
+        {{{body}}}
+      </div>
+    </div>
+    <div id="footer">
+      <div class="row">
+        <div class="large-12 columns">
+          <ul>
+            <li><a href="https://github.com/{{github}}/blob/{{branch}}/{{relative}}">source</a></li>
+            <li><a href="https://github.com/{{github}}/edit/{{branch}}/{{relative}}">edit</a></li>
+          </ul>
+        </div>
       </div>
     </div>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -41,3 +51,6 @@
     <script src="js/app.js"></script>
   </body>
 </html>
+<!--
+  Full Data: {{json .}}
+  -->
