@@ -9,6 +9,7 @@ var handlebars = require("handlebars");
 var hbs = require("gulp-hbs");
 var markdown = require("gulp-markdown");
 var merge = require("merge-stream");
+var newer = require("gulp-newer");
 var open = require("open");
 var rimraf = require("rimraf");
 var xtend = require("xtend");
@@ -97,7 +98,12 @@ gulp.task("html", function() {
 
 gulp.task("foundationResources", ["buildStyle"], function() {
     return pipeline(
-        gulp.src(["foundation/{js,stylesheets}/*"]),
+        gulp.src([
+            "foundation/{js,stylesheets,bower_components}/**",
+            "!**/{test,src}/**",
+            "!**/",
+        ]),
+        newer("build"),
         gulp.dest("build"));
 });
 

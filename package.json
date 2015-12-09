@@ -16,6 +16,7 @@
     "gulp-hbs": "git://github.com/gagern/gulp-hbs.git#718d38ac24e2144a22bd96830e9815720f9d5e1d",
     "gulp-if": "^2.0.0",
     "gulp-markdown": "^1.2.0",
+    "gulp-newer": "^1.1.0",
     "handlebars": "^4.0.5",
     "merge-stream": "^1.0.0",
     "open": "0.0.5",
