@@ -10,47 +10,68 @@
 {{{.}}}
 {{/each}}
   </head>
-  <body>
+  <body class="with-footer">
+    <div class="before-footer">
 
-    <!-- Navigation -->
-    <div class="contain-to-grid sticky">
-      <nav class="top-bar" data-topbar data-options="is_hover: false">
-        <ul class="title-area">
-          <li class="name">
-            <h1><a href="/">CindyJS</a></h1>
-          </li>
-          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-        </ul>
-
-        <section class="top-bar-section">
-
-          <ul class="right">
-{{topBarMenu}}
+      <!-- Navigation -->
+      <div class="contain-to-grid">
+        <nav class="top-bar" data-topbar data-options="is_hover: false">
+          <ul class="title-area">
+            <li class="name">
+              <h1><a href="/">CindyJS</a></h1>
+            </li>
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
           </ul>
 
-        </section>
-      </nav>
-    </div>
-    <!-- /Navigation -->
+          <section class="top-bar-section">
 
-    <div class="row">
-      <div class="large-12 columns">
-        <h1>{{title}}</h1>
-        {{{body}}}
+            <ul class="right">
+{{topBarMenu}}
+            </ul>
+
+          </section>
+        </nav>
       </div>
-    </div>
-    <div id="footer">
+      <!-- /Navigation -->
+
       <div class="row">
         <div class="large-12 columns">
-          {{#if github}}
-          <ul>
-            <li><a href="https://github.com/{{github}}/blob/{{branch}}/{{path}}">source</a></li>
-            <li><a href="https://github.com/{{github}}/edit/{{branch}}/{{path}}">edit</a></li>
-          </ul>
-          {{/if}}
+          <h1>{{title}}</h1>
+          {{{body}}}
         </div>
       </div>
+
     </div>
+    <footer class="contain-to-grid">
+      <div class="row">
+        <div class="small-12 large-8 columns">
+          <p class="footer-label">Made possible by:</p>
+          <ul class="footer-links">
+            <li><a href="http://ma.tum.de/">Technische Universität München, Zentrum Mathematik, Germany</a></li>
+            <li><a href="http://discretization.de/">DFG SFB Transregio 109 DGD, Germany</a></li>
+            <li><a href="http://mc2-project.eu/">M C Squared, 7th Framework Programme, EU</a></li>
+          </ul>
+        </div>
+        <div class="small-12 hide-for-large-only"><hr></div>
+        <div class="small-12 large-4 columns">
+          <p class="footer-label">This page:</p>
+          <ul class="footer-links">
+{{#if github}}
+            <li><a href="https://github.com/{{github}}/blob/{{branch}}/{{path}}">View source</a></li>
+            <li><a href="https://github.com/{{github}}/edit/{{branch}}/{{path}}">Edit page</a></li>
+{{/if}}
+{{#if license}}
+            <li><a href="{{license.url}}" rel="license">{{license.name}}
+{{#if license.icon}}
+                <img src="{{license.icon}}" alt="{{license.name}}">
+{{/if}}
+            </a></li>
+{{/if}}
+          </ul>
+        </div>
+      </div>
+    </footer>
+
     <script src="/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="/bower_components/foundation/js/foundation.min.js"></script>
     <script src="/js/app.js"></script>

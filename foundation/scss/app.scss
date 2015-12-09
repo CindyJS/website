@@ -38,3 +38,50 @@
 //   "foundation/components/type",
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
+
+body.with-footer div.before-footer {
+  height: 100%;
+  margin-bottom: 2rem;
+}
+
+@supports (display: flex) and (min-height: 100vh) {
+
+  body.with-footer {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  body.with-footer div.before-footer {
+    height: auto;
+    flex: 1;
+  }
+
+}
+
+footer {
+  background: $topbar-bg;
+  color: $topbar-link-color;
+  padding: rem-calc(5) 0px;
+}
+
+footer .footer-label {
+  margin: 0px;
+  font-weight: $font-weight-bold;
+  font-size: rem-calc(10);
+}
+
+footer .footer-links {
+  margin: 0px;
+  font-weight: $font-weight-normal;
+  font-size: rem-calc(13);
+}
+
+footer .footer-links img {
+  vertical-align: text-top;
+}
+
+footer a {
+  color: $topbar-link-color;
+  text-decoration: none;
+}

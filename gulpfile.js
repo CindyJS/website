@@ -83,6 +83,13 @@ gulp.task("html", function() {
         ),
         gulpif(function(file) { return file.path.endsWith('.md') },
                markdown()),
+        data(function(file) { return xtend({
+            license: {
+                url: "http://creativecommons.org/licenses/by-sa/4.0/",
+                icon: "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
+                name: "CC-BY-SA 4.0 License",
+            },
+        }, file.data); }),
         menuCombiner(pipeline(
             gulp.src("src/**.menu"),
             fm({property: "data"})
@@ -100,8 +107,7 @@ gulp.task("foundationResources", ["buildStyle"], function() {
     return pipeline(
         gulp.src([
             "foundation/{js,stylesheets,bower_components}/**",
-            "!**/{test,src}/**",
-            "!**/",
+            "!**/{test,src}/",
         ]),
         newer("build"),
         gulp.dest("build"));
