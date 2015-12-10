@@ -20,6 +20,7 @@ var index = require("./lib/index");
 var menuCombiner = require("./lib/menu-combiner");
 var ref = require("./lib/ref");
 var topbar = require("./lib/topbar");
+var validator = require("./lib/validator-nu");
 
 function pipeline(first) {
     var stream = first;
@@ -113,6 +114,7 @@ gulp.task("html", function() {
             defaultTemplate: "main.html",
             compile: handlebars.compile,
         }),
+        // validator(), // Examples don't validate yet, CindyJS#143
         gulp.dest("build"));
 });
 
@@ -154,4 +156,16 @@ gulp.task("watch", ["open"], function(done) {
         "layouts/**",
         "foundation/**/app.*",
     ], ["default"]);
+});
+
+gulp.task("validate", ["html"], function() {
+    return pipeline(
+        gulp.src("build/**.html"),
+        validator());
+});
+
+gulp.task("validate-examples", function() {
+    return pipeline(
+        gulp.src("CindyJS/examples/**.html"),
+        validator());
 });

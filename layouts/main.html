@@ -3,7 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{{#if title}}
     <title>{{title}}</title>
+{{else}}
+    <title>CindyJS</title>
+{{/if}}
     <link rel="stylesheet" href="/stylesheets/app.css" />
     <script src="/bower_components/modernizr/modernizr.js"></script>
 {{#each scripts}}
@@ -36,7 +40,9 @@
 
       <div class="row">
         <div class="large-12 columns">
+{{#if title}}
           <h1>{{title}}</h1>
+{{/if}}
           {{{body}}}
         </div>
       </div>
