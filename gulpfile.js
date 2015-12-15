@@ -19,6 +19,7 @@ var foundation = require("./lib/foundation");
 var index = require("./lib/index");
 var menuCombiner = require("./lib/menu-combiner");
 var ref = require("./lib/ref");
+var relativize = require("./lib/relativize");
 var topbar = require("./lib/topbar");
 var validator = require("./lib/validator-nu");
 
@@ -168,4 +169,12 @@ gulp.task("validate-examples", function() {
     return pipeline(
         gulp.src("CindyJS/examples/**.html"),
         validator());
+});
+
+gulp.task("relative", ["default"], function() {
+    return pipeline(
+        gulp.src("build/**"),
+        gulpif(function(file) { return file.path.endsWith(".html") },
+               relativize()),
+        gulp.dest("relative"));
 });
