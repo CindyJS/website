@@ -50,7 +50,7 @@ There are three relevant parts to most CindyJS widgets:
 1. Reference the `Cindy.js` script in your HTML file,
    by adding the following line to the header of your file:
    ```html
-   <script type="text/javascript" src="http://cinderella.de/CindyJS/latest/Cindy.js"></script>
+   <script type="text/javascript" src="http://cindyjs.org/dist/latest/Cindy.js"></script>
    ```
    This adds a function called `createCindy` to the global scope.
 2. Invoke that function, providing an object with further content description.
