@@ -252,7 +252,7 @@ gulp.task('build', ['pages', 'sass', 'javascript', 'images', 'copy']);
 
 // Clean the "dist" folder before recreating its contents
 gulp.task('rebuild', ['clean'], function(done) {
-  gulp.run('build', done);
+  gulp.start('build', done);
 });
 
 // Start a server with LiveReload to preview the site in
