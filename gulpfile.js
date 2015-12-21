@@ -1,23 +1,18 @@
 "use strict";
 
-var $        = require('gulp-load-plugins')();
-var argv     = require('yargs').argv;
-var browser  = require('browser-sync');
+var $ = require("gulp-load-plugins")();
+var argv = require("yargs").argv;
+var browser = require("browser-sync");
 var cp = require("child_process");
-var data = require("gulp-data");
-var fm = require("gulp-front-matter");
 var gulp = require("gulp");
-var gulpif = require("gulp-if");
 var handlebars = require("handlebars");
 var hbs = require("gulp-hbs");
-var markdown = require("gulp-markdown");
 var merge = require("merge-stream");
-var newer = require("gulp-newer");
 var open = require("open");
-var panini   = require('panini');
+var panini = require("panini");
 var rimraf = require("rimraf");
-var sequence = require('run-sequence');
-var sherpa   = require('style-sherpa');
+var sequence = require("run-sequence");
+var sherpa = require("style-sherpa");
 var xtend = require("xtend");
 
 var examples = require("./lib/examples");
@@ -100,8 +95,8 @@ gulp.task("pages", function() {
         merge(
             pipeline(
                 gulp.src(["src/pages/**.md", "src/pages/**.html"]),
-                fm({property: "data"}),
-                data(function(file) { return xtend(file.data, {
+                $.frontMatter({property: "data"}),
+                $.data(function(file) { return xtend(file.data, {
                     github: "CindyJS/website",
                     branch: "master",
                     path: file.relative,
@@ -110,7 +105,7 @@ gulp.task("pages", function() {
             pipeline(
                 gulp.src(["CindyJS/examples/**.html"], {base: "./CindyJS"}),
                 examples(),
-                data(function(file) { return xtend(file.data, {
+                $.data(function(file) { return xtend(file.data, {
                     github: "CindyJS/CindyJS",
                     branch: "master",
                     path: file.relative,
@@ -121,7 +116,7 @@ gulp.task("pages", function() {
             ),
             pipeline(
                 gulp.src(["CindyJS/ref/**.md"], {base: "./CindyJS"}),
-                data(function(file) { return xtend(file.data, {
+                $.data(function(file) { return xtend(file.data, {
                     github: "CindyJS/CindyJS",
                     branch: "master",
                     path: file.relative,
@@ -132,9 +127,9 @@ gulp.task("pages", function() {
                 })
             )
         ),
-        gulpif(function(file) { return file.path.endsWith('.md') },
-               markdown()),
-        data(function(file) { return xtend({
+        $.if(function(file) { return file.path.endsWith('.md') },
+               $.markdown()),
+        $.data(function(file) { return xtend({
             license: {
                 url: "http://creativecommons.org/licenses/by-sa/4.0/",
                 icon: "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
@@ -143,7 +138,7 @@ gulp.task("pages", function() {
         }, file.data); }),
         menuCombiner(pipeline(
             gulp.src("src/menus/**.menu"),
-            fm({property: "data"})
+            $.frontMatter({property: "data"})
         )),
         topbar(),
         hbs(gulp.src("src/layouts/**.html"), {
@@ -170,7 +165,7 @@ gulp.task("validate-examples", function() {
 gulp.task("relative", ["default"], function() {
     return pipeline(
         gulp.src("dist/**"),
-        gulpif(function(file) { return file.path.endsWith(".html") },
+        $.if(function(file) { return file.path.endsWith(".html") },
                relativize()),
         gulp.dest("relative"));
 });
