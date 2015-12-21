@@ -40,6 +40,20 @@
 
       <div class="row">
         <div class="large-12 columns">
+        </div>
+{{#if toc}}
+        <div class="large-4 columns show-for-large" {{!-- data-sticky-container --}}>
+          <nav class="sticky" {{!-- data-sticky
+               data-top-anchor="main:top" data-btm-anchor="main:bottom"--}}>
+            <ul class="vertical menu" data-accordion-menu>
+{{{toc}}}
+            </ul>
+          </nav>
+        </div>
+        <div class="large-8 columns">
+{{else}}        
+        <div class="large-12 columns" id="main">
+{{/if}}
 {{#if title}}
           <h1>{{title}}</h1>
 {{/if}}

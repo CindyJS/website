@@ -18,6 +18,7 @@ var index = require("./lib/index");
 var menuCombiner = require("./lib/menu-combiner");
 var ref = require("./lib/ref");
 var relativize = require("./lib/relativize");
+var toc = require("./lib/toc");
 var topbar = require("./lib/topbar");
 var validator = require("./lib/validator-nu");
 
@@ -118,6 +119,7 @@ gulp.task("pages", function() {
                     github: "CindyJS/CindyJS",
                     branch: "master",
                     path: file.relative,
+                    toc: true,
                 }); }),
                 ref(),
                 index("ref", "src/layouts/dirlist.html", {
@@ -139,6 +141,7 @@ gulp.task("pages", function() {
             $.frontMatter({property: "data"})
         )),
         topbar(),
+        toc(),
         hbs(gulp.src("src/layouts/**.html"), {
             dataSource: "data",
             defaultTemplate: "main.html",
