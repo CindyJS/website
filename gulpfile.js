@@ -1,5 +1,8 @@
 "use strict";
 
+var $        = require('gulp-load-plugins')();
+var argv     = require('yargs').argv;
+var browser  = require('browser-sync');
 var cp = require("child_process");
 var data = require("gulp-data");
 var fm = require("gulp-front-matter");
@@ -11,17 +14,68 @@ var markdown = require("gulp-markdown");
 var merge = require("merge-stream");
 var newer = require("gulp-newer");
 var open = require("open");
+var panini   = require('panini');
 var rimraf = require("rimraf");
+var sequence = require('run-sequence');
+var sherpa   = require('style-sherpa');
 var xtend = require("xtend");
 
 var examples = require("./lib/examples");
-var foundation = require("./lib/foundation");
 var index = require("./lib/index");
 var menuCombiner = require("./lib/menu-combiner");
 var ref = require("./lib/ref");
 var relativize = require("./lib/relativize");
 var topbar = require("./lib/topbar");
 var validator = require("./lib/validator-nu");
+
+// Check for --production flag
+var isProduction = !!(argv.production);
+
+// Port to use for the development server.
+var PORT = 8000;
+
+// Browsers to target when prefixing CSS.
+var COMPATIBILITY = ['last 2 versions', 'ie >= 9'];
+
+// File paths to various assets are defined here.
+var PATHS = {
+  assets: [
+    'src/assets/**/*',
+    '!src/assets/{!img,js,scss}/**/*'
+  ],
+  sass: [
+    'bower_components/foundation-sites/scss',
+    'bower_components/motion-ui/src/'
+  ],
+  javascript: [
+    'bower_components/jquery/dist/jquery.js',
+    'bower_components/what-input/what-input.js',
+    'bower_components/foundation-sites/js/foundation.core.js',
+    'bower_components/foundation-sites/js/foundation.util.*.js',
+    // Paths to individual JS components defined below
+    'bower_components/foundation-sites/js/foundation.abide.js',
+    'bower_components/foundation-sites/js/foundation.accordion.js',
+    'bower_components/foundation-sites/js/foundation.accordionMenu.js',
+    'bower_components/foundation-sites/js/foundation.drilldown.js',
+    'bower_components/foundation-sites/js/foundation.dropdown.js',
+    'bower_components/foundation-sites/js/foundation.dropdownMenu.js',
+    'bower_components/foundation-sites/js/foundation.equalizer.js',
+    'bower_components/foundation-sites/js/foundation.interchange.js',
+    'bower_components/foundation-sites/js/foundation.magellan.js',
+    'bower_components/foundation-sites/js/foundation.offcanvas.js',
+    'bower_components/foundation-sites/js/foundation.orbit.js',
+    'bower_components/foundation-sites/js/foundation.responsiveMenu.js',
+    'bower_components/foundation-sites/js/foundation.responsiveToggle.js',
+    'bower_components/foundation-sites/js/foundation.reveal.js',
+    'bower_components/foundation-sites/js/foundation.slider.js',
+    'bower_components/foundation-sites/js/foundation.sticky.js',
+    'bower_components/foundation-sites/js/foundation.tabs.js',
+    'bower_components/foundation-sites/js/foundation.toggler.js',
+    'bower_components/foundation-sites/js/foundation.tooltip.js',
+    'src/assets/js/!(app.js)**/*.js',
+    'src/assets/js/app.js'
+  ]
+};
 
 function pipeline(first) {
     var stream = first;
@@ -41,29 +95,11 @@ handlebars.registerHelper("json", function(data) {
     );
 });
 
-gulp.task("default", [
-    "html",
-    "foundationResources",
-    "images",
-]);
-
-gulp.task("clean", function(done) {
-    rimraf("build", done);
-});
-
-gulp.task("getFoundation", function() {
-    return foundation.getFoundation();
-});
-
-gulp.task("buildStyle", ["getFoundation"], function() {
-    return foundation.buildStyle();
-});
-
-gulp.task("html", function() {
+gulp.task("pages", function() {
     return pipeline(
         merge(
             pipeline(
-                gulp.src(["src/**.md", "src/**.html"]),
+                gulp.src(["src/pages/**.md", "src/pages/**.html"]),
                 fm({property: "data"}),
                 data(function(file) { return xtend(file.data, {
                     github: "CindyJS/website",
@@ -106,7 +142,7 @@ gulp.task("html", function() {
             },
         }, file.data); }),
         menuCombiner(pipeline(
-            gulp.src("src/**.menu"),
+            gulp.src("src/menus/**.menu"),
             fm({property: "data"})
         )),
         topbar(),
@@ -116,52 +152,12 @@ gulp.task("html", function() {
             compile: handlebars.compile,
         }),
         // validator(), // Examples don't validate yet, CindyJS#143
-        gulp.dest("build"));
+        gulp.dest("dist"));
 });
 
-gulp.task("foundationResources", ["buildStyle"], function() {
+gulp.task("validate", ["pages"], function() {
     return pipeline(
-        gulp.src([
-            "foundation/{js,stylesheets,bower_components}/**",
-            "!**/{test,src}/",
-        ]),
-        newer("build"),
-        gulp.dest("build"));
-});
-
-gulp.task("images", function() {
-    return pipeline(
-        gulp.src("images/**"),
-        gulp.dest("build/images"));
-});
-
-gulp.task("open", ["default"], function(done) {
-    var child = cp.fork(
-        require.resolve("./serve.js"), ["--gulp"],
-        {stdio: "inherit"});
-    child.once("message", function(msg) {
-        open(msg.url);
-        done();
-    });
-    child.on("error", function(err) { done(err); });
-    child.on("exit", function(code, signal) {
-        if (signal !== null) done(Error("Child exited with signal " + signal));
-        else if (code !== 0) done(Error("Child exited with code " + code));
-        else done();
-    });
-});
-
-gulp.task("watch", ["open"], function(done) {
-    return gulp.watch([
-        "src/**",
-        "layouts/**",
-        "foundation/**/app.*",
-    ], ["default"]);
-});
-
-gulp.task("validate", ["html"], function() {
-    return pipeline(
-        gulp.src("build/**.html"),
+        gulp.src("dist/**.html"),
         validator());
 });
 
@@ -173,8 +169,128 @@ gulp.task("validate-examples", function() {
 
 gulp.task("relative", ["default"], function() {
     return pipeline(
-        gulp.src("build/**"),
+        gulp.src("dist/**"),
         gulpif(function(file) { return file.path.endsWith(".html") },
                relativize()),
         gulp.dest("relative"));
+});
+
+// Delete the "dist" folder
+// This happens every time a build starts
+gulp.task('clean', function(done) {
+  rimraf('dist', done);
+});
+
+// Copy files out of the assets folder
+// This task skips over the "img", "js", and "scss" folders, which are parsed separately
+gulp.task('copy', function() {
+  gulp.src(PATHS.assets)
+    .pipe(gulp.dest('dist/assets'));
+});
+
+// Copy page templates into finished HTML files
+gulp.task('pages-panini', function() {
+  gulp.src('src/pages/**/*.{html,hbs,handlebars}')
+    .pipe(panini({
+      root: 'src/pages/',
+      layouts: 'src/layouts/',
+      partials: 'src/partials/',
+      data: 'src/data/',
+      helpers: 'src/helpers/'
+    }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('pages:reset', function(cb) {
+  panini.refresh();
+  gulp.run('pages');
+  cb();
+});
+
+gulp.task('styleguide', function(cb) {
+  sherpa('src/styleguide/index.md', {
+    output: 'dist/styleguide.html',
+    template: 'src/styleguide/template.html'
+  }, cb);
+});
+
+// Compile Sass into CSS
+// In production, the CSS is compressed
+gulp.task('sass', function() {
+  var uncss = $.if(isProduction, $.uncss({
+    html: ['src/**/*.html'],
+    ignore: [
+      new RegExp('^meta\..*'),
+      new RegExp('^\.is-.*')
+    ]
+  }));
+
+  var minifycss = $.if(isProduction, $.minifyCss());
+
+  return gulp.src('src/assets/scss/app.scss')
+    .pipe($.sourcemaps.init())
+    .pipe($.sass({
+      includePaths: PATHS.sass
+    })
+      .on('error', $.sass.logError))
+    .pipe($.autoprefixer({
+      browsers: COMPATIBILITY
+    }))
+    .pipe(uncss)
+    .pipe(minifycss)
+    .pipe($.if(!isProduction, $.sourcemaps.write()))
+    .pipe(gulp.dest('dist/assets/css'));
+});
+
+// Combine JavaScript into one file
+// In production, the file is minified
+gulp.task('javascript', function() {
+  var uglify = $.if(isProduction, $.uglify()
+    .on('error', function (e) {
+      console.log(e);
+    }));
+
+  return gulp.src(PATHS.javascript)
+    .pipe($.sourcemaps.init())
+    .pipe($.concat('app.js'))
+    .pipe(uglify)
+    .pipe($.if(!isProduction, $.sourcemaps.write()))
+    .pipe(gulp.dest('dist/assets/js'));
+});
+
+// Copy images to the "dist" folder
+// In production, the images are compressed
+gulp.task('images', function() {
+  var imagemin = $.if(isProduction, $.imagemin({
+    progressive: true
+  }));
+
+  return gulp.src('src/assets/img/**/*')
+    .pipe(imagemin)
+    .pipe(gulp.dest('dist/assets/img'));
+});
+
+// Build the "dist" folder by running all of the above tasks
+gulp.task('build', function(done) {
+  sequence('clean', ['pages', 'sass', 'javascript', 'images', 'copy'], 'styleguide', done);
+});
+
+// Start a server with LiveReload to preview the site in
+gulp.task('server', ['build'], function() {
+  browser.init({
+    notify: false,
+    server: 'dist', port: PORT
+  });
+});
+
+// Build the site, run the server, and watch for file changes
+gulp.task('default', ['build', 'server'], function() {
+  gulp.watch(PATHS.assets, ['copy', browser.reload]);
+  gulp.watch(['src/pages/**/*.html'], ['pages', browser.reload]);
+  gulp.watch(['layouts/**/*.html'], ['pages', browser.reload]);
+  gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages:reset', browser.reload]);
+  gulp.watch(['src/assets/scss/**/*.scss'], ['sass', browser.reload]);
+  gulp.watch(['src/assets/js/**/*.js'], ['javascript', browser.reload]);
+  gulp.watch(['src/assets/img/**/*'], ['images', browser.reload]);
+  gulp.watch(['src/styleguide/**'], ['styleguide', browser.reload]);
 });

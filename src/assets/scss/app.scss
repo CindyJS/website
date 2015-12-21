@@ -1,0 +1,91 @@
+@charset 'utf-8';
+
+@import 'settings';
+@import 'foundation';
+@import 'motion-ui';
+
+@include foundation-global-styles;
+@include foundation-grid;
+@include foundation-typography;
+@include foundation-button;
+@include foundation-forms;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
+@include foundation-accordion;
+@include foundation-accordion-menu;
+@include foundation-badge;
+@include foundation-breadcrumbs;
+@include foundation-button-group;
+@include foundation-callout;
+@include foundation-close-button;
+@include foundation-drilldown-menu;
+@include foundation-dropdown;
+@include foundation-dropdown-menu;
+@include foundation-flex-video;
+@include foundation-label;
+@include foundation-media-object;
+@include foundation-menu;
+@include foundation-off-canvas;
+@include foundation-orbit;
+@include foundation-pagination;
+@include foundation-progress-bar;
+@include foundation-slider;
+@include foundation-sticky;
+@include foundation-reveal;
+@include foundation-switch;
+@include foundation-table;
+@include foundation-tabs;
+@include foundation-thumbnail;
+@include foundation-title-bar;
+@include foundation-tooltip;
+@include foundation-top-bar;
+
+@include motion-ui-transitions;
+@include motion-ui-animations;
+
+body.with-footer div.before-footer {
+  height: 100%;
+  margin-bottom: 2rem;
+}
+
+@supports (display: flex) and (min-height: 100vh) {
+
+  body.with-footer {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  body.with-footer div.before-footer {
+    height: auto;
+    flex: 1;
+  }
+
+}
+
+footer {
+  background: $topbar-background;
+  color: $topbar-link-color;
+  padding: rem-calc(5) 0px;
+}
+
+footer .footer-label {
+  margin: 0px;
+  font-weight: bold;
+  font-size: rem-calc(10);
+}
+
+footer .footer-links {
+  margin: 0px;
+  font-weight: normal;
+  font-size: rem-calc(13);
+}
+
+footer .footer-links img {
+  vertical-align: text-top;
+}
+
+footer a {
+  color: $topbar-link-color;
+  text-decoration: none;
+}

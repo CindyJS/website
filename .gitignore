@@ -1,4 +1,6 @@
-/download/
-/build/
 /relative/
-node_modules/
+.DS_Store
+node_modules
+npm-debug.log
+bower_components
+dist
