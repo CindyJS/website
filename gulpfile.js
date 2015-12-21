@@ -14,8 +14,10 @@ var rimraf = require("rimraf");
 var sequence = require("run-sequence");
 var xtend = require("xtend");
 
+var addData = require("./lib/add-data");
 var examples = require("./lib/examples");
 var index = require("./lib/index");
+var licenses = require("./lib/licenses");
 var menuCombiner = require("./lib/menu-combiner");
 var ref = require("./lib/ref");
 var relativize = require("./lib/relativize");
@@ -82,6 +84,14 @@ function pipeline(first) {
     return stream;
 }
 
+function github(repo, branch) {
+    return $.data(function(file) { return xtend({github: {
+        repo: repo,
+        branch: branch || "master",
+        path: path.relative(file.cwd, file.path),
+    }}, file.data); });
+}
+
 handlebars.registerHelper("json", function(data) {
     return new handlebars.SafeString(
         JSON.stringify(data, null, "  ")
@@ -96,53 +106,31 @@ gulp.task("pages", function() {
             pipeline(
                 gulp.src(["src/pages/**.md", "src/pages/**.html"]),
                 $.frontMatter({property: "data"}),
-                $.data(function(file) { return xtend(file.data, {
-                    github: {
-                        repo: "CindyJS/website",
-                        branch: "master",
-                        path: path.relative(file.cwd, file.path),
-                    },
-                }); })
+                github("CindyJS/website"),
+                licenses.ccbysa40()
             ),
             pipeline(
-                gulp.src(["CindyJS/examples/**.html"], {base: "./CindyJS"}),
+                gulp.src(["examples/**.html"], {cwd: "CindyJS", base: "CindyJS"}),
                 examples(),
-                $.data(function(file) { return xtend(file.data, {
-                    github: {
-                        repo: "CindyJS/CindyJS",
-                        branch: "master",
-                        path: file.relative,
-                    },
-                }); }),
+                github("CindyJS/CindyJS"),
                 index("examples", "src/layouts/dirlist.html", {
                     title: "Examples shipped with the source tree",
-                })
+                }),
+                licenses.apache2()
             ),
             pipeline(
-                gulp.src(["CindyJS/ref/**.md"], {base: "./CindyJS"}),
-                $.data(function(file) { return xtend(file.data, {
-                    github: {
-                        repo: "CindyJS/CindyJS",
-                        branch: "master",
-                        path: file.relative,
-                    },
-                    toc: true,
-                }); }),
+                gulp.src(["ref/**.md"], {cwd: "CindyJS", base: "CindyJS"}),
+                github("CindyJS/CindyJS"),
+                addData({toc: true}),
                 ref(),
                 index("ref", "src/layouts/dirlist.html", {
                     title: "Reference Manual",
-                })
+                }),
+                licenses.apache2()
             )
         ),
         $.if(function(file) { return file.path.endsWith('.md') },
                $.markdown()),
-        $.data(function(file) { return xtend({
-            license: {
-                url: "http://creativecommons.org/licenses/by-sa/4.0/",
-                icon: "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
-                name: "CC-BY-SA 4.0 License",
-            },
-        }, file.data); }),
         menuCombiner(pipeline(
             gulp.src("src/menus/**.menu"),
             $.frontMatter({property: "data"})
