@@ -18,24 +18,24 @@
     <div class="before-footer">
 
       <!-- Navigation -->
-      <div class="title-bar" data-responsive-toggle="top-bar" data-hide-for="medium">
-        <button class="menu-icon" type="button" data-toggle></button>
-        <div class="title-bar-title">
-          <h1><a href="/">CindyJS</a></h1>
-        </div>
-      </div>
-      <div class="contain-to-grid" id="top-bar">
-        <nav class="top-bar">
+      <nav class="row">
+        <div class="large-12 columns top-bar">
           <div class="top-bar-left">
-            <h1><a href="/">CindyJS</a></h1>
+            <h1>
+              <span data-responsive-toggle="top-menu" data-hide-for="medium">
+                <button class="menu-icon" type="button" data-toggle></button>
+              </span>
+              <a href="/">CindyJS</a>
+            </h1>
           </div>
           <div class="top-bar-right">
-            <ul class="dropdown menu" data-dropdown-menu data-options="disableHover:true;clickOpen:true">
+            <ul class="dropdown menu" id="top-menu" data-dropdown-menu
+                data-options="disableHover: true; clickOpen: true">
 {{topBarMenu}}
             </ul>
           </div>
-        </nav>
-      </div>
+        </div>
+      </nav>
       <!-- /Navigation -->
 
       <div class="row">
