@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "start": "gulp",
-    "build": "gulp build --production"
+    "build": "gulp rebuild --production"
   },
   "devDependencies": {
     "bower": "^1.7.1",
