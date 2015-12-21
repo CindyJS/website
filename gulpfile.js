@@ -238,13 +238,16 @@ gulp.task('javascript', function() {
 // Copy images to the "dist" folder
 // In production, the images are compressed
 gulp.task('images', function() {
-  var imagemin = $.if(isProduction, $.imagemin({
-    progressive: true
-  }));
+    var imagemin = $.if(isProduction, $.imagemin({
+        progressive: true
+    }));
 
-  return gulp.src('src/assets/img/**/*')
-    .pipe(imagemin)
-    .pipe(gulp.dest('dist/assets/img'));
+    return merge(
+        gulp.src('src/assets/img/**/*', {base: "src"}),
+        gulp.src(["ref/img/**"], {cwd: "CindyJS", base: "CindyJS"})
+    )
+        .pipe(imagemin)
+        .pipe(gulp.dest("dist"));
 });
 
 // Build the "dist" folder by running all of the named tasks
