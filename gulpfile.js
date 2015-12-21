@@ -115,7 +115,7 @@ gulp.task("pages", function() {
                     branch: "master",
                     path: file.relative,
                 }); }),
-                index("examples", "layouts/dirlist.html", {
+                index("examples", "src/layouts/dirlist.html", {
                     title: "Examples shipped with the source tree",
                 })
             ),
@@ -127,7 +127,7 @@ gulp.task("pages", function() {
                     path: file.relative,
                 }); }),
                 ref(),
-                index("ref", "layouts/dirlist.html", {
+                index("ref", "src/layouts/dirlist.html", {
                     title: "Reference Manual",
                 })
             )
@@ -146,7 +146,7 @@ gulp.task("pages", function() {
             fm({property: "data"})
         )),
         topbar(),
-        hbs(gulp.src("layouts/**.html"), {
+        hbs(gulp.src("src/layouts/**.html"), {
             dataSource: "data",
             defaultTemplate: "main.html",
             compile: handlebars.compile,
@@ -287,7 +287,6 @@ gulp.task('server', ['build'], function() {
 gulp.task('default', ['build', 'server'], function() {
   gulp.watch(PATHS.assets, ['copy', browser.reload]);
   gulp.watch(['src/pages/**/*.html'], ['pages', browser.reload]);
-  gulp.watch(['layouts/**/*.html'], ['pages', browser.reload]);
   gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages:reset', browser.reload]);
   gulp.watch(['src/assets/scss/**/*.scss'], ['sass', browser.reload]);
   gulp.watch(['src/assets/js/**/*.js'], ['javascript', browser.reload]);
