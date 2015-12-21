@@ -3,7 +3,6 @@
 var $ = require("gulp-load-plugins")();
 var argv = require("yargs").argv;
 var browser = require("browser-sync");
-var cp = require("child_process");
 var gulp = require("gulp");
 var handlebars = require("handlebars");
 var hbs = require("gulp-hbs");
@@ -15,6 +14,7 @@ var sequence = require("run-sequence");
 var xtend = require("xtend");
 
 var addData = require("./lib/add-data");
+var cmd = require("./lib/cmd");
 var examples = require("./lib/examples");
 var index = require("./lib/index");
 var licenses = require("./lib/licenses");
@@ -100,7 +100,19 @@ handlebars.registerHelper("json", function(data) {
     );
 });
 
-gulp.task("pages", function() {
+gulp.task("bower", function() {
+    return cmd.unlessExists("bower_components", ["bower", "install"]);
+}); 
+
+gulp.task("cjsmod", function() {
+    return cmd.unlessExists("CindyJS", ["git", "submodule", "update", "--init", "CindyJS"]);
+}); 
+
+gulp.task("cjsdeps", ["cjsmod"], function() {
+    return cmd.unlessExists("CindyJS/node_modules", ["npm", "install"], {cwd: "CindyJS"});
+}); 
+
+gulp.task("pages", ["cjsdeps"], function() {
     return pipeline(
         merge(
             pipeline(
@@ -152,13 +164,13 @@ gulp.task("validate", ["pages"], function() {
         validator());
 });
 
-gulp.task("validate-examples", function() {
+gulp.task("validate-examples", ["cjsmod"], function() {
     return pipeline(
         gulp.src("CindyJS/examples/**.html"),
         validator());
 });
 
-gulp.task("relative", ["default"], function() {
+gulp.task("relative", ["build"], function() {
     return pipeline(
         gulp.src("dist/**"),
         $.if(function(file) { return file.path.endsWith(".html") },
@@ -235,13 +247,16 @@ gulp.task('images', function() {
     .pipe(gulp.dest('dist/assets/img'));
 });
 
-// Build the "dist" folder by running all of the above tasks
-gulp.task('build', function(done) {
-  sequence('clean', ['pages', 'sass', 'javascript', 'images', 'copy'], done);
+// Build the "dist" folder by running all of the named tasks
+gulp.task('build', ['pages', 'sass', 'javascript', 'images', 'copy']);
+
+// Clean the "dist" folder before recreating its contents
+gulp.task('rebuild', ['clean'], function(done) {
+  gulp.run('build', done);
 });
 
 // Start a server with LiveReload to preview the site in
-gulp.task('server', ['build'], function() {
+gulp.task('server', ['rebuild'], function() {
   browser.init({
     notify: false,
     server: 'dist', port: PORT
@@ -249,7 +264,7 @@ gulp.task('server', ['build'], function() {
 });
 
 // Build the site, run the server, and watch for file changes
-gulp.task('default', ['build', 'server'], function() {
+gulp.task('default', ['rebuild', 'server'], function() {
   gulp.watch(PATHS.assets, ['copy', browser.reload]);
   gulp.watch(['src/pages/**/*.html'], ['pages', browser.reload]);
   gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages', browser.reload]);
