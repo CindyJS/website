@@ -9,7 +9,6 @@ var handlebars = require("handlebars");
 var hbs = require("gulp-hbs");
 var merge = require("merge-stream");
 var open = require("open");
-var panini = require("panini");
 var rimraf = require("rimraf");
 var sequence = require("run-sequence");
 var sherpa = require("style-sherpa");
@@ -183,25 +182,6 @@ gulp.task('copy', function() {
     .pipe(gulp.dest('dist/assets'));
 });
 
-// Copy page templates into finished HTML files
-gulp.task('pages-panini', function() {
-  gulp.src('src/pages/**/*.{html,hbs,handlebars}')
-    .pipe(panini({
-      root: 'src/pages/',
-      layouts: 'src/layouts/',
-      partials: 'src/partials/',
-      data: 'src/data/',
-      helpers: 'src/helpers/'
-    }))
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('pages:reset', function(cb) {
-  panini.refresh();
-  gulp.run('pages');
-  cb();
-});
-
 gulp.task('styleguide', function(cb) {
   sherpa('src/styleguide/index.md', {
     output: 'dist/styleguide.html',
@@ -282,7 +262,7 @@ gulp.task('server', ['build'], function() {
 gulp.task('default', ['build', 'server'], function() {
   gulp.watch(PATHS.assets, ['copy', browser.reload]);
   gulp.watch(['src/pages/**/*.html'], ['pages', browser.reload]);
-  gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages:reset', browser.reload]);
+  gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages', browser.reload]);
   gulp.watch(['src/assets/scss/**/*.scss'], ['sass', browser.reload]);
   gulp.watch(['src/assets/js/**/*.js'], ['javascript', browser.reload]);
   gulp.watch(['src/assets/img/**/*'], ['images', browser.reload]);
