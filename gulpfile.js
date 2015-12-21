@@ -9,6 +9,7 @@ var handlebars = require("handlebars");
 var hbs = require("gulp-hbs");
 var merge = require("merge-stream");
 var open = require("open");
+var path = require("path");
 var rimraf = require("rimraf");
 var sequence = require("run-sequence");
 var xtend = require("xtend");
@@ -96,18 +97,22 @@ gulp.task("pages", function() {
                 gulp.src(["src/pages/**.md", "src/pages/**.html"]),
                 $.frontMatter({property: "data"}),
                 $.data(function(file) { return xtend(file.data, {
-                    github: "CindyJS/website",
-                    branch: "master",
-                    path: file.relative,
+                    github: {
+                        repo: "CindyJS/website",
+                        branch: "master",
+                        path: path.relative(file.cwd, file.path),
+                    },
                 }); })
             ),
             pipeline(
                 gulp.src(["CindyJS/examples/**.html"], {base: "./CindyJS"}),
                 examples(),
                 $.data(function(file) { return xtend(file.data, {
-                    github: "CindyJS/CindyJS",
-                    branch: "master",
-                    path: file.relative,
+                    github: {
+                        repo: "CindyJS/CindyJS",
+                        branch: "master",
+                        path: file.relative,
+                    },
                 }); }),
                 index("examples", "src/layouts/dirlist.html", {
                     title: "Examples shipped with the source tree",
@@ -116,9 +121,11 @@ gulp.task("pages", function() {
             pipeline(
                 gulp.src(["CindyJS/ref/**.md"], {base: "./CindyJS"}),
                 $.data(function(file) { return xtend(file.data, {
-                    github: "CindyJS/CindyJS",
-                    branch: "master",
-                    path: file.relative,
+                    github: {
+                        repo: "CindyJS/CindyJS",
+                        branch: "master",
+                        path: file.relative,
+                    },
                     toc: true,
                 }); }),
                 ref(),

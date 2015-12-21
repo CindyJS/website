@@ -77,8 +77,8 @@
           <p class="footer-label">This page:</p>
           <ul class="footer-links">
 {{#if github}}
-            <li><a href="https://github.com/{{github}}/blob/{{branch}}/{{path}}">View source</a></li>
-            <li><a href="https://github.com/{{github}}/edit/{{branch}}/{{path}}">Edit page</a></li>
+            <li><a href="https://github.com/{{github.repo}}/blob/{{github.branch}}/{{github.path}}">View source</a></li>
+            <li><a href="https://github.com/{{github.repo}}/edit/{{github.branch}}/{{github.path}}">Edit page</a></li>
 {{/if}}
 {{#if license}}
             <li><a href="{{license.url}}" rel="license">{{license.name}}
