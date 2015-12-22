@@ -38,7 +38,7 @@ var COMPATIBILITY = ['last 2 versions', 'ie >= 9'];
 var PATHS = {
   assets: [
     'src/assets/**/*',
-    '!src/assets/{!img,js,scss}/**/*'
+    '!src/assets/{img,js,scss}/**/*'
   ],
   sass: [
     'bower_components/foundation-sites/scss',
