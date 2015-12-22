@@ -116,13 +116,13 @@ gulp.task("pages", ["cjsdeps"], function() {
     return pipeline(
         merge(
             pipeline(
-                gulp.src(["src/pages/**.md", "src/pages/**.html"]),
+                gulp.src(["src/pages/**/*.md", "src/pages/**/*.html"]),
                 $.frontMatter({property: "data"}),
                 github("CindyJS/website"),
                 licenses.ccbysa40()
             ),
             pipeline(
-                gulp.src(["examples/**.html"], {cwd: "CindyJS", base: "CindyJS"}),
+                gulp.src(["examples/**/*.html"], {cwd: "CindyJS", base: "CindyJS"}),
                 examples(),
                 github("CindyJS/CindyJS"),
                 index("examples", "src/layouts/dirlist.html", {
@@ -131,7 +131,7 @@ gulp.task("pages", ["cjsdeps"], function() {
                 licenses.apache2()
             ),
             pipeline(
-                gulp.src(["ref/**.md"], {cwd: "CindyJS", base: "CindyJS"}),
+                gulp.src(["ref/**/*.md"], {cwd: "CindyJS", base: "CindyJS"}),
                 github("CindyJS/CindyJS"),
                 addData({toc: true}),
                 ref(),
@@ -144,12 +144,12 @@ gulp.task("pages", ["cjsdeps"], function() {
         $.if(function(file) { return file.path.endsWith('.md') },
                $.markdown()),
         menuCombiner(pipeline(
-            gulp.src("src/menus/**.menu"),
+            gulp.src("src/menus/**/*.menu"),
             $.frontMatter({property: "data"})
         )),
         topbar(),
         toc(),
-        hbs(gulp.src("src/layouts/**.html"), {
+        hbs(gulp.src("src/layouts/**/*.html"), {
             dataSource: "data",
             defaultTemplate: "main.html",
             compile: handlebars.compile,
@@ -160,13 +160,13 @@ gulp.task("pages", ["cjsdeps"], function() {
 
 gulp.task("validate", ["pages"], function() {
     return pipeline(
-        gulp.src("dist/**.html"),
+        gulp.src("dist/**/*.html"),
         validator());
 });
 
 gulp.task("validate-examples", ["cjsmod"], function() {
     return pipeline(
-        gulp.src("CindyJS/examples/**.html"),
+        gulp.src("CindyJS/examples/**/*.html"),
         validator());
 });
 
