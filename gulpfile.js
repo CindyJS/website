@@ -187,8 +187,9 @@ gulp.task('clean', function(done) {
 // Copy files out of the assets folder
 // This task skips over the "img", "js", and "scss" folders, which are parsed separately
 gulp.task('copy', function() {
-  gulp.src(PATHS.assets)
-    .pipe(gulp.dest('dist/assets'));
+    return pipeline(
+        gulp.src(PATHS.assets),
+        gulp.dest('dist/assets'));
 });
 
 // Compile Sass into CSS
@@ -204,19 +205,19 @@ gulp.task('sass', function() {
 
   var minifycss = $.if(isProduction, $.minifyCss());
 
-  return gulp.src('src/assets/scss/app.scss')
-    .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      includePaths: PATHS.sass
-    })
-      .on('error', $.sass.logError))
-    .pipe($.autoprefixer({
-      browsers: COMPATIBILITY
-    }))
-    //.pipe(uncss)
-    .pipe(minifycss)
-    .pipe($.if(!isProduction, $.sourcemaps.write()))
-    .pipe(gulp.dest('dist/assets/css'));
+    return pipeline(
+        gulp.src('src/assets/scss/app.scss'),
+        $.sourcemaps.init(),
+        $.sass({
+            includePaths: PATHS.sass
+        }).on('error', $.sass.logError),
+        $.autoprefixer({
+            browsers: COMPATIBILITY
+        }),
+        //.pipe(uncss),
+        minifycss,
+        $.if(!isProduction, $.sourcemaps.write()),
+        gulp.dest('dist/assets/css'));
 });
 
 // Combine JavaScript into one file
@@ -227,12 +228,13 @@ gulp.task('javascript', function() {
       console.log(e);
     }));
 
-  return gulp.src(PATHS.javascript)
-    .pipe($.sourcemaps.init())
-    .pipe($.concat('app.js'))
-    .pipe(uglify)
-    .pipe($.if(!isProduction, $.sourcemaps.write()))
-    .pipe(gulp.dest('dist/assets/js'));
+    return pipeline(
+        gulp.src(PATHS.javascript),
+        $.sourcemaps.init(),
+        $.concat('app.js'),
+        uglify,
+        $.if(!isProduction, $.sourcemaps.write()),
+        gulp.dest('dist/assets/js'));
 });
 
 // Copy images to the "dist" folder
@@ -242,12 +244,13 @@ gulp.task('images', function() {
         progressive: true
     }));
 
-    return merge(
-        gulp.src('src/assets/img/**/*', {base: "src"}),
-        gulp.src(["ref/img/**"], {cwd: "CindyJS", base: "CindyJS"})
-    )
-        .pipe(imagemin)
-        .pipe(gulp.dest("dist"));
+    return pipeline(
+        merge(
+            gulp.src('src/assets/img/**/*', {base: "src"}),
+            gulp.src(["ref/img/**"], {cwd: "CindyJS", base: "CindyJS"})
+        ),
+        imagemin,
+        gulp.dest("dist"));
 });
 
 // Build the "dist" folder by running all of the named tasks
