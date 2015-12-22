@@ -29,7 +29,7 @@ var validator = require("./lib/validator-nu");
 var isProduction = !!(argv.production);
 
 // Port to use for the development server.
-var PORT = 8000;
+var PORT = 8163;
 
 // Browsers to target when prefixing CSS.
 var COMPATIBILITY = ['last 2 versions', 'ie >= 9'];
@@ -263,10 +263,20 @@ gulp.task('rebuild', function(done) {
 
 // Start a server with LiveReload to preview the site in
 gulp.task('server', ['rebuild'], function() {
-  browser.init({
-    notify: false,
-    server: 'dist', port: PORT
-  });
+    browser.init({
+        server: 'dist',
+        port: PORT,
+        notify: false,
+        ghostMode: false,
+        rewriteRules: [
+            {
+                match: /(['"])(\/dist\/)/g,
+                fn: function(match) {
+                    return match[0] + "http://cindyjs.org" + match.substr(1);
+                }
+            }
+        ],
+    });
 });
 
 // Build the site, run the server, and watch for file changes
