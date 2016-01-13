@@ -164,6 +164,13 @@ gulp.task("validate", ["pages"], function() {
         validator());
 });
 
+gulp.task("compress", ["build"], function() {
+    return pipeline(
+        gulp.src("dist/**/*.{html,js,css}"),
+        $.gzip(),
+        gulp.dest("dist"));
+});
+
 gulp.task("validate-examples", ["cjsmod"], function() {
     return pipeline(
         gulp.src("CindyJS/examples/**/*.html"),
@@ -259,6 +266,13 @@ gulp.task('build', ['pages', 'sass', 'javascript', 'images', 'copy']);
 // Clean the "dist" folder before recreating its contents
 gulp.task('rebuild', function(done) {
     sequence('clean', 'build', done);
+});
+
+// Make things ready for release
+gulp.task('distgoal', ['validate', 'compress']);
+
+gulp.task('dist', function(done) {
+    sequence('clean', 'distgoal', done);
 });
 
 // Start a server with LiveReload to preview the site in
