@@ -8,8 +8,7 @@
     "build": "gulp dist --production"
   },
   "devDependencies": {
-    "bower": "^1.7.1",
-    "browser-sync": "^2.10.0",
+    "browser-sync": "^2.13.0",
     "chalk": "^1.1.1",
     "download": "^4.4.3",
     "express": "^4.13.3",
@@ -23,7 +22,7 @@
     "gulp-extname": "^0.2.0",
     "gulp-front-matter": "^1.3.0",
     "gulp-gzip": "^1.2.0",
-    "gulp-hbs": "git://github.com/gagern/gulp-hbs.git#718d38ac24e2144a22bd96830e9815720f9d5e1d",
+    "gulp-hbs": "^0.2.0",
     "gulp-if": "^2.0.0",
     "gulp-imagemin": "^2.2.1",
     "gulp-load-plugins": "^1.1.0",
