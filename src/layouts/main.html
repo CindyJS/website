@@ -15,80 +15,64 @@
 {{/each}}
   </head>
   <body class="with-footer">
-    <div class="before-footer">
 
-      <!-- Navigation -->
-      <nav class="row">
-        <div class="large-12 columns top-bar">
-          <div class="top-bar-left">
-            <h1>
-              <span data-responsive-toggle="top-menu" data-hide-for="medium">
-                <button class="menu-icon" type="button" data-toggle></button>
-              </span>
-              <a href="/">CindyJS</a>
-            </h1>
-          </div>
-          <div class="top-bar-right">
-            <ul class="dropdown menu" id="top-menu" data-dropdown-menu
-                data-options="disableHover: true; clickOpen: true">
-{{topBarMenu}}
-            </ul>
-          </div>
-        </div>
+    <!-- Header -->
+    <header class="top-bar">
+      <h1><a href="/">CindyJS</a></h1>
+      <nav>
+        <ul id="topBarLinks">
+          <li><a href="/gallery/">Gallery</a></li>
+          <li><a href="/docs/">Docs</a></li>
+          <li><a href="/project/">Project</a></li>
+        </ul>
       </nav>
-      <!-- /Navigation -->
+    </header>
 
-      <div class="row">
-        <div class="large-12 columns">
-        </div>
+    <div id="between-bars">
 {{#if toc}}
-        <div class="large-4 columns show-for-large" {{!-- data-sticky-container --}}>
-          <nav class="sticky" {{!-- data-sticky
-               data-top-anchor="main:top" data-btm-anchor="main:bottom"--}}>
-            <ul class="vertical menu" data-accordion-menu>
+      <!-- Page-internal navigation -->
+      <nav>
+        <h2>Table of Content</h2>
+        <ul>
 {{{toc}}}
-            </ul>
-          </nav>
-        </div>
-        <div class="large-8 columns">
-{{else}}        
-        <div class="large-12 columns" id="main">
+        </ul>
+      </nav>
 {{/if}}
-{{#if title}}
-          <h1>{{title}}</h1>
-{{/if}}
-          {{{body}}}
-        </div>
-      </div>
 
+      <!-- Main part -->
+      <main>
+{{#if title}}
+        <h1>{{title}}</h1>
+{{/if}}
+{{{body}}}
+      </main>
     </div>
-    <footer class="contain-to-grid">
-      <div class="row">
-        <div class="small-12 large-8 columns">
-          <p class="footer-label">Made possible by:</p>
-          <ul class="footer-links">
-            <li><a href="http://ma.tum.de/">Technische Universität München, Zentrum Mathematik, Germany</a></li>
-            <li><a href="http://discretization.de/">DFG SFB Transregio 109 DGD, Germany</a></li>
-            <li><a href="http://mc2-project.eu/">M C Squared, 7th Framework Programme, EU</a></li>
-          </ul>
-        </div>
-        <div class="small-12 hide-for-large"><hr></div>
-        <div class="small-12 large-4 columns">
-          <p class="footer-label">This page:</p>
-          <ul class="footer-links">
+
+    <footer>
+      <div class="footer-item">
+        <p class="footer-label">Made possible by:</p>
+        <ul class="footer-links">
+          <li><a href="http://ma.tum.de/">Technische Universität München, Zentrum Mathematik, Germany</a></li>
+          <li><a href="http://discretization.de/">DFG SFB Transregio 109 DGD, Germany</a></li>
+          <li><a href="http://mc2-project.eu/">M C Squared, 7th Framework Programme, EU</a></li>
+        </ul>
+      </div>
+      <div class="footer-sep"><hr></div>
+      <div class="footer-item">
+        <p class="footer-label">This page:</p>
+        <ul class="footer-links">
 {{#if github}}
-            <li><a href="https://github.com/{{github.repo}}/blob/{{github.branch}}/{{github.path}}">View source</a></li>
-            <li><a href="https://github.com/{{github.repo}}/edit/{{github.branch}}/{{github.path}}">Edit page</a></li>
+          <li><a href="https://github.com/{{github.repo}}/blob/{{github.branch}}/{{github.path}}">View source</a></li>
+          <li><a href="https://github.com/{{github.repo}}/edit/{{github.branch}}/{{github.path}}">Edit page</a></li>
 {{/if}}
 {{#if license}}
-            <li><a href="{{license.url}}" rel="license">{{license.name}}
+          <li><a href="{{license.url}}" rel="license">{{license.name}}
 {{#if license.icon}}
-                <img src="{{license.icon}}" alt="{{license.name}}">
+            <img src="{{license.icon}}" alt="{{license.name}}">
 {{/if}}
-            </a></li>
+          </a></li>
 {{/if}}
-          </ul>
-        </div>
+        </ul>
       </div>
     </footer>
 

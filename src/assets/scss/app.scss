@@ -1,47 +1,254 @@
 @charset 'utf-8';
 
-@import 'settings';
-@import 'foundation';
-@import 'motion-ui';
+//////////////////////////////////////////////////////////////////////
+// Utility functions
 
-@include foundation-global-styles;
-@include foundation-grid;
-@include foundation-typography;
-@include foundation-button;
-@include foundation-forms;
-@include foundation-visibility-classes;
-@include foundation-float-classes;
-@include foundation-accordion;
-@include foundation-accordion-menu;
-@include foundation-badge;
-@include foundation-breadcrumbs;
-@include foundation-button-group;
-@include foundation-callout;
-@include foundation-close-button;
-@include foundation-drilldown-menu;
-@include foundation-dropdown;
-@include foundation-dropdown-menu;
-@include foundation-flex-video;
-@include foundation-label;
-@include foundation-media-object;
-@include foundation-menu;
-@include foundation-off-canvas;
-@include foundation-orbit;
-@include foundation-pagination;
-@include foundation-progress-bar;
-@include foundation-slider;
-@include foundation-sticky;
-@include foundation-reveal;
-@include foundation-switch;
-@include foundation-table;
-@include foundation-tabs;
-@include foundation-thumbnail;
-@include foundation-title-bar;
-@include foundation-tooltip;
-@include foundation-top-bar;
+@function em-calc($px) {
+  @return $px / 16 * 1em;
+}
 
-@include motion-ui-transitions;
-@include motion-ui-animations;
+//////////////////////////////////////////////////////////////////////
+// Configurable settings
 
-@import 'header';
-@import 'footer';
+$bar-color: #30c0a9;
+$bar-color-1: $bar-color;
+$bar-color-2: lighten($bar-color, 20%);
+$titlebar-background: linear-gradient(100deg, $bar-color-1, $bar-color-2);
+$titlebar-color: #000000;
+$footer-background: $bar-color;
+$footer-color: #000000;
+$link-color: #2043a3;
+$page-color: #cffcfc;
+$code-color: #fcfccf;
+
+$default-padding: em-calc(5) em-calc(15);
+
+$small-size: em-calc(480);
+
+//////////////////////////////////////////////////////////////////////
+// Media selection
+
+$small: "only screen and (max-width: #{$small-size})";
+
+//////////////////////////////////////////////////////////////////////
+// Fonts
+
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,300italic|Roboto:400,700,400italic,700italic|Raleway:500,700|Roboto+Condensed:400,700,400italic&subset=latin,greek);
+
+$sans: Roboto, sans-serif;
+$condensed: "Roboto Condensed", Roboto, sans-serif;
+$mono: "Roboto Mono", monospace;
+
+body {
+  font-family: $sans;
+  font-weight: 400;
+  font-style: normal;
+}
+
+code,pre {
+  font-family: $mono;
+  font-weight: 400;
+  font-style: normal;
+}
+
+strong {
+  font-weight: 700;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 1em 0em 0.25em 1rem; // top, right, bottom, left
+  padding: 0px;
+  font-family: Raleway, $sans;
+  font-style: normal;
+  font-weight: 500;
+}
+
+h2,h4,h6 { font-style: italic; }
+h1,h2,h3,h4 { font-weight: 700; }
+h1 { font-size: 2.80em; }
+h2 { font-size: 2.28em; }
+h3 { font-size: 1.85em; }
+h4 { font-size: 1.51em; }
+h5 { font-size: 1.51em; }
+h6 { font-size: 1.23em; }
+
+//////////////////////////////////////////////////////////////////////
+// Top levels
+
+html,body {
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+  background-color: $page-color;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+//////////////////////////////////////////////////////////////////////
+// Header
+
+header {
+  background: $titlebar-background;
+  color: $titlebar-color;
+  padding: $default-padding;
+  display: flex;
+  h1 {
+    margin: 0px;
+    flex: 1;
+    font-size: 1.5rem;
+  }
+  nav ul, nav ul li {
+    display: inline;
+    margin: 0px;
+    padding: 0px;
+  }
+  li a {
+    font-size: 1.2rem;
+    transition: font-size 1s;
+    margin: 0.1em 0.25em 0.1em;
+    padding: 0.15em 0.25em;
+    display: inline-block;
+    border-radius: 0.25em;
+    position: relative;
+    box-shadow: inset 0.1em 0.1em 0.2em #fff,
+                inset -0.1em -0.1em 0.2em #666;
+    &:hover {
+      box-shadow: inset 0.2em 0.2em 0.4em #fff,
+                  inset -0.2em -0.2em 0.4em #666;
+    }
+    &:active {
+      box-shadow: inset -0.2em -0.2em 0.4em #fff,
+                  inset 0.2em 0.2em 0.4em #666;
+    }
+  }
+}
+
+@media #{$small} {
+  header nav ul li {
+    font-size: 1rem;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Footer
+
+footer {
+  background: $footer-background;
+  color: $footer-color;
+  display: flex;
+  justify-content: space-between;
+  font-family: $condensed;
+
+  .footer-item {
+    padding: $default-padding;
+  }
+
+  .footer-sep {
+    display: none;
+  }
+
+  .footer-label {
+    margin: 0px;
+    font-weight: 700;
+    font-size: em-calc(10);
+  }
+
+  .footer-links {
+    margin: 0px;
+    padding: 0px;
+    padding-left: 1.5em;
+    font-weight: 400;
+    font-size: em-calc(13);
+
+    img {
+      display: inline;
+      vertical-align: text-top;
+    }
+  }
+}
+
+@media #{$small} {
+  footer {
+    display: block;
+    .footer-sep {
+      display: block;
+    }
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Main content area
+
+#between-bars {
+  flex: 1;
+}
+
+main {
+  padding: $default-padding;
+}
+
+#between-bars nav {
+  position: relative;
+  h2 {
+    font-family: Raleway, $sans;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.23em;
+    margin-top: 0em;
+  }
+  margin: 1em 2em 0em;
+  border: em-calc(1) solid $bar-color-1;
+  border-radius: 1em;
+  padding: $default-padding;
+}
+
+@media #{$small} {
+  #between-bars nav {
+    display: none;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Links
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+main a {
+  color: $link-color;
+  text-decoration: underline;
+  text-decoration-color: rgba($link-color, 0); // completely transparent
+  transition: text-decoration-color 0.25s;
+  &:hover {
+    text-decoration-color: rgba($link-color, 1); // completely opaque
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Code formatting
+
+code {
+  background-color: $code-color;
+  box-shadow: em-calc(1) em-calc(1) em-calc(3) rgba(0, 0, 0, 0.75);
+}
+
+pre {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: auto;
+  background-color: $code-color;
+  padding: em-calc(6);
+  border-radius: em-calc(6);
+  border: em-calc(1) solid darken($code-color, 50%);
+  box-shadow: em-calc(2) em-calc(2) em-calc(6) rgba(0, 0, 0, 0.75);
+
+  code {
+    background-color: inherit;
+    box-shadow: none;
+  }
+}
