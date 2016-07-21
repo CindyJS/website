@@ -1,0 +1,19 @@
+language: node_js
+node_js: node
+install:
+  - git submodule update --init .
+  - npm install
+script: npm run build
+sudo: false
+addons:
+  apt:
+    packages:
+     - default-jre-headless
+     - python-pygments
+deploy:
+  - provider: script
+    script: tools/travis-deploy.sh
+    on:
+      repo: CindyJS/website
+      branch: master
+    skip_cleanup: true
