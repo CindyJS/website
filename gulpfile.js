@@ -18,11 +18,9 @@ var cmd = require("./lib/cmd");
 var examples = require("./lib/examples");
 var index = require("./lib/index");
 var licenses = require("./lib/licenses");
-var menuCombiner = require("./lib/menu-combiner");
 var ref = require("./lib/ref");
 var relativize = require("./lib/relativize");
 var toc = require("./lib/toc");
-var topbar = require("./lib/topbar");
 var validator = require("./lib/validator-nu");
 
 // Check for --production flag
@@ -116,18 +114,12 @@ gulp.task("pages", ["cjsdeps"], function() {
         ),
         $.if(function(file) { return file.path.endsWith('.md') },
                $.markdown()),
-        menuCombiner(pipeline(
-            gulp.src("src/menus/**/*.menu"),
-            $.frontMatter({property: "data"})
-        )),
-        topbar(),
         toc(),
         hbs(gulp.src("src/layouts/**/*.html"), {
             dataSource: "data",
             defaultTemplate: "main.html",
             compile: handlebars.compile,
         }),
-        // validator(), // Examples don't validate yet, CindyJS#143
         gulp.dest("dist"));
 });
 
