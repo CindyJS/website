@@ -78,7 +78,11 @@ gulp.task("cjsmod", function() {
 }); 
 
 gulp.task("cjsdeps", ["cjsmod"], function() {
-    return cmd.unlessExists("CindyJS/node_modules", ["npm", "install"], {cwd: "CindyJS"});
+    return cmd.unlessExists(
+        "CindyJS/node_modules", ["npm", "install"], {
+            cwd: "CindyJS",
+            extraEnv: {CINDYJS_SKIP_PREPUBLISH: "true"}
+        });
 }); 
 
 gulp.task("pages", ["cjsdeps"], function() {
