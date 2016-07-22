@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CindyJS Plugins</title>
+    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../reveal.js/css/theme/serif.css">
+    <link rel="stylesheet" href="../reveal.js/css/print/paper.css">
+    <link rel="stylesheet" href="pygments-default.css">
+    <style type="text/css">
+      .twocol { display: flex; flex-wrap: wrap; }
+      .twocol > div { width: 50%; box-sizing: border-box; }
+      .multicol { display: flex; justify-content: space-around; }
+      .left { text-align: left; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+<section>
+  <h1>CindyJS Plugins</h1>
+
+  <h4>Martin von Gagern</h4>
+  <p class="fragment">joint work with J. Richter-Gebert, M. Strobel, …</p>
+</section>
+
+<section>
+  <section>
+    <h2>Ways to add functionality</h2>
+    <ul>
+      <li class="fragment"><p>Adding code to the core program <span class="fragment">– open source</span></p></li>
+      <li class="fragment"><p>Writing plugins…</p><ul>
+          <li class="fragment">… to define functions <span>(like in Cinderella)</span></li>
+          <li class="fragment">… define new control flow operations</li>
+          <li class="fragment">… interact with the drawing area</li>
+          <li class="fragment">… do other things as the need arises</li>
+      </ul></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Outline</h2>
+    <ol>
+      <li><p>Cindy3D plugin</p></li>
+      <li><p>KaTeX plugin</p></li>
+      <li><p>Plugin design</p></li>
+    </ol>
+  </section>
+</section>
+
+<section>
+  <section>
+    <h2>Cindy3D</h2>
+    <iframe data-src="Knot.html" width="800" height="540" align="center"></iframe>
+    <p>Viewer only</p>
+  </section>
+
+  <section>
+    <h3>Cindy3D for CindyJS</h3>
+    <ul>
+      <li class="fragment"><p>Cindy3D for Cinderella (Java) – student's project</p></li>
+      <li class="fragment"><p>Cindy3D for CindyJS – mostly rewritten</p></li>
+      <li class="fragment"><p>compatible CindyScript API</p></li>
+      <li class="fragment"><p>WebGL supported in most browsers<br>
+          (87% according to <code>caniuse.com</code>)</p></li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Primitives</h3>
+    <iframe data-src="3dprim.html" width="200" height="600" style="float: right"></iframe>
+    <ul>
+      <li style="margin-bottom: 2ex;">
+        <p>Spheres (3d points)</p>
+        <p><code>draw3d([0,0,0])</code></p>
+      </li>
+      <li style="margin-bottom: 2ex;">
+        <p>Rods (3d segments)</p>
+        <p><code>draw3d([-1,0,0], [1,0,0])</code></p>
+      </li>
+      <li style="margin-bottom: 2ex;">
+        <p>Polygons</p>
+        <p><code>fillpoly3d(pts)</code></p>
+      </li>
+      <li style="margin-bottom: 2ex;">
+        <p>Meshes (triangulates quad)</p>
+        <p><code>mesh3d(m, n, pts)</code></p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Advanced Meshes</h3>
+    <iframe data-src="09_EnneperWithDotsSS.html" width="800" height="540" align="center"></iframe>
+  </section>
+
+  <section>
+    <h3>Illusions</h3>
+    <iframe data-src="EscherCube1.html" width="700" height="500" align="center"></iframe>
+  </section>
+
+  <!--section>
+    <h3>Translucency</h3>
+    <iframe data-src="spheres.html" width="800" height="540" align="center"></iframe>
+  </section-->
+
+  <section>
+    <h3>Open Issues</h3>
+    <ul>
+      <li class="fragment"><p>sort triangles by depth</p></li>
+      <li class="fragment"><p>hints for camera control</p></li>
+      <li class="fragment"><p>touch interface</p></li>
+      <li class="fragment"><p>shadows</p></li>
+    </ul>
+  </section>
+</section>
+
+<section>
+  <section>
+    <h2>KaTeX</h2>
+    <ul>
+      <li><p>Cinderella supports typesetting</p></li>
+      <li class="fragment"><p>JavaScript alternatives:</p><ul>
+          <li class="fragment">Do-It-Yourself</li>
+          <li class="fragment">MathML <span class="fragment">(dead in Chrome)</span></li>
+          <li class="fragment">MathJax (widely used<span class="fragment">, asynchronous</span><span class="fragment">, DOM</span>)</li>
+          <li class="fragment">KaTeX <span class="fragment">(synchronous, DOM)</span></li>
+      </ul></li>
+      <li class="fragment"><p>KaTeX adapted successfully</p></li>
+      <li class="fragment"><p>Initially missing features: matrices, macros, …</p></li>
+      <li class="fragment"><p>Render internal box model to canvas</p></li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Fast</h3>
+    <iframe data-src="Euclid.html" width="800" height="540" align="center"></iframe>
+  </section>
+
+  <section>
+    <h3>MathJax for comparison</h3>
+    <iframe data-src="EuclidMJ.html" width="800" height="540" align="center"></iframe>
+  </section>
+
+  <section>
+    <h3>Matrices</h3>
+    <iframe data-src="projTrafo.html" width="800" height="540" align="center"></iframe>
+  </section>
+
+  <section>
+    <h3>Open Issues</h3>
+    <ul>
+      <li class="fragment"><p>missing TeX features, symbols</p></li>
+      <li class="fragment"><p>support for accented letters</p></li>
+      <li class="fragment"><p>auto-detect need on export from Cinderella</p></li>
+    </ul>
+  </section>
+</section>
+
+<section>
+
+  <section>
+    <h2>Plugin Design and API</h2>
+  </section>
+
+  <section>
+    <h3>What to extend</h3>
+    <div class="twocol">
+      <div class="fragment">
+        <p><strong>well-defined hooks</strong></p>
+      </div>
+      <div class="fragment">
+        <p><strong>patch anything</strong></p>
+      </div>
+      <div class="fragment">
+        <p>easy to maintain</p>
+      </div>
+      <div class="fragment">
+        <p>powerful and flexible</p>
+      </div>
+      <div class="fragment" style="order:1">
+        <p>wild west</p>
+      </div>
+      <div class="fragment">
+        <p>civilized</p>
+      </div>
+    </div>
+    <div class="fragment left" style="margin-left: auto; margin-right: auto; width: fit-content;">
+      <p>CindyJS uses …</p>
+      <ul>
+        <li>… well-defined hooks</li>
+        <li>and a versioning scheme</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h3>Hooks</h3>
+    <div class="multicol" style="font-family: monospace; font-size: 80%">
+      <div>
+        <ul>
+          <li>defineFunction</li>
+          <li>evaluate</li>
+          <li>evaluateAndVal</li>
+          <li>nada</li>
+          <li>instance</li>
+          <li>config</li>
+          <li>addShutdownHook</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li>extractPoint</li>
+          <li>addAutoCleaningEventListener</li>
+          <li>getVariable</li>
+          <li>getInitialMatrix</li>
+          <li>setTextRenderer</li>
+          <li>getImage</li>
+          <li>getMyfunction</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Defining a plugin</h3>
+    <div class="highlight"><pre>
+<span class="c1">// Register a plugin called &quot;hello&quot;, using plugin API version 1</span>
+<span class="nx">CindyJS</span><span class="p">.</span><span class="nx">registerPlugin</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">api</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// Define a CindyScript function called &quot;greet&quot;</span>
+    <span class="c1">// that takes a single argument</span>
+    <span class="nx">api</span><span class="p">.</span><span class="nx">defineFunction</span><span class="p">(</span><span class="s2">&quot;greet&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">,</span> <span class="nx">modifs</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// Evaluate the argument expression</span>
+        <span class="c1">// (as opposed to inspecting the unevaluated formula)</span>
+        <span class="kd">var</span> <span class="nx">arg0</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+        <span class="c1">// Return string as a CindyScript value object,</span>
+        <span class="c1">// we might want to offer some API for this one day</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="nx">ctype</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+            <span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="nx">api</span><span class="p">.</span><span class="nx">instance</span><span class="p">.</span><span class="nx">niceprint</span><span class="p">(</span><span class="nx">arg0</span><span class="p">)</span>
+        <span class="p">};</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+  </section>
+
+  <section>
+    <h3>Using a plugin</h3>
+    <div class="highlight"><pre>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;Cindy.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;MyPlugin.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
+
+<span class="kd">var</span> <span class="nx">cdy</span> <span class="o">=</span> <span class="nx">CindyJS</span><span class="p">({</span>
+  <span class="nx">ports</span><span class="o">:</span> <span class="p">[{</span><span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;widget&quot;</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="mi">300</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+           <span class="nx">transform</span><span class="o">:</span><span class="p">[{</span><span class="nx">visibleRect</span><span class="o">:</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]}]}],</span>
+  <span class="nx">scripts</span><span class="o">:</span> <span class="s2">&quot;cs*&quot;</span><span class="p">,</span>
+  <span class="nx">geometry</span><span class="o">:</span> <span class="p">[{</span><span class="nx">name</span><span class="o">:</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="nx">type</span><span class="o">:</span><span class="s2">&quot;FreePoint&quot;</span><span class="p">,</span> <span class="nx">pos</span><span class="o">:</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]}]</span>
+<span class="p">});</span>
+
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;csinit&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/x-cindyscript&quot;</span><span class="p">&gt;</span>
+  <span class="nx">use</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">);</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;csdraw&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/x-cindyscript&quot;</span><span class="p">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="nf">drawtext</span><span class="p">(</span><span class="nv">A</span><span class="p">,</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="s2">&quot;ICMS&quot;</span><span class="p">),</span><span class="w"> </span><span class="nv">offset</span><span class="o">-&gt;</span><span class="p">[</span><span class="m">5</span><span class="p">,</span><span class="m">5</span><span class="p">])</span><span class="o">;</span><span class="w"></span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;widget&quot;</span><span class="p">&gt;</span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+  </section>
+
+  <section>
+    <h3>Showing this plugin</h3>
+    <iframe data-src="ex1.html" width="500" height="300" align="center" style="border: 3px ridge #090"></iframe>
+  </section>
+</section>
+
+<section>
+  <section>
+    <h2>Other plugins</h2>
+    <ul>
+      <li><p>Quickhull3D (from Java via GWT)</p></li>
+      <li><p>Application-specific interfaces in MC<sup style="line-height:0">2</sup> project</p></li>
+      <li><p>Application-specific interfaces for iOrnament postprocessing</p></li>
+      <li><p>ComplexCurves (Ph.D. by Stefan Kranich)</p></li>
+      <li><p>CindyGL (next talk)</p></li>
+      <li><p><em>more to come</em></p></li>
+      <li class="fragment"><p><em>Flick keyboard?</em></p></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Thank you!</h2>
+    <p><code>github.com/CindyJS/CindyJS</code></p>
+  </section>
+</section>
+
+      </div>
+    </div>
+    <script src="../reveal.js/js/reveal.js"></script>
+    <script>
+      function fstFrag() {
+        while(Reveal.availableFragments().prev)
+          Reveal.prevFragment();
+      }
+      function lstFrag() {
+        while(Reveal.availableFragments().next)
+          Reveal.nextFragment();
+      }
+      Reveal.initialize({
+        history: true,
+        width: 1016,
+        height: 760,
+        margin: 0,
+        controls: false,
+        progress: false,
+        keyboard: {
+          // arrow keys navigate slides, not fragments:
+          37: function() { fstFrag(); Reveal.left(); },
+          38: function() { fstFrag(); Reveal.up(); },
+          39: function() { lstFrag(); Reveal.right(); },
+          40: function() { lstFrag(); Reveal.down(); },
+
+          73: lstFrag, // i: show last fragment
+          85: fstFrag, // u: show first fragment
+        },
+      });
+    </script>
+  </body>
+</html>

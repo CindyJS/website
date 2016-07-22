@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Cindy JS Example</title>
+<meta charset="UTF-8">
+<style>
+.btn {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 11;
+  -moz-border-radius: 11;
+  border-radius: 11px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  text-decoration: none;
+}
+</style>
+<script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script type="text/javascript" src="/dist/v0.7/pako.min.js"></script>
+<script type="text/javascript" src="imgmeta.js"></script>
+<script id="csinit" type="text/x-cindyscript">
+
+//Rotationsmatrix
+butoff=(0.2,.8);
+wx=0.002;
+wy=0.004;
+mmmrx=[
+  [1,0,0],
+  [0,cos(wx),sin(wx)],
+  [0,-sin(wx),cos(wx)]
+
+];
+
+mmmry=[
+  [cos(wy),0,-sin(wy)],
+  [0,1,0],
+  [sin(wy),0,cos(wy)]
+];
+
+////////////////////////////////////////
+//Begin: Daten für Platonische Körper
+////////////////////////////////////////
+
+//Icosaeder
+
+tau=(1+sqrt(5))/2;
+ptsi=[
+[1,tau,0],
+[-1,tau,0],
+[1,-tau,0],
+[-1,-tau,0],
+[0,1,tau],
+[0,-1,tau],
+[0,1,-tau],
+[0,-1,-tau],
+[tau,0,1],
+[tau,0,-1],
+[-tau,0,1],
+[-tau,0,-1]
+];
+
+hulli=convexhull3d(ptsi);
+ptsi=hulli_1;
+ptsi=apply(ptsi,#/|#|);
+facesi=hulli_2;
+
+//Dodekaeder
+
+ptsd=apply(facesi,f,sum(ptsi_f));
+hulld=convexhull3d(ptsd);
+ptsd=hulld_1;
+ptsd=apply(ptsd,#/|#|);
+facesd=hulld_2;
+
+//Tetrahedron
+ptst=[
+[1,1,1],
+[1,-1,-1],
+[-1,1,-1],
+[-1,-1,1]
+];
+hullt=convexhull3d(ptst);
+ptst=hullt_1;
+ptst=apply(ptst,#/|#|);
+facest=hullt_2;
+
+//Cube
+ptsc=[
+[1,1,1],
+[1,-1,-1],
+[-1,1,-1],
+[-1,-1,1],
+[-1,1,1],
+[-1,-1,-1],
+[1,1,-1],
+[1,-1,1]
+];
+hullc=convexhull3d(ptsc);
+ptsc=hullc_1;
+ptsc=apply(ptsc,#/|#|);
+facesc=hullc_2;
+
+//Octahedron
+ptso=[
+[1,0,0],
+[-1,0,0],
+[0,1,0],
+[0,-1,0],
+[0,0,1],
+[0,0,-1]
+];
+//hullo=convexhull3d(ptso);
+//ptso=hullo_1;
+ptso=apply(ptso,#/|#|);
+faceso1=[[1,3,5],[1,4,6],[2,3,6],[2,4,5]];
+faceso2=[[2,5,3],[2,6,4],[1,6,3],[1,5,4]];
+faceso=faceso1++faceso2;
+
+////////////////////////////////////////
+//End: Daten für Platonische Körper
+////////////////////////////////////////
+
+
+
+orna=(;); // Initialize to nada
+
+lasche(a,b):=(
+  nn=-perp(a-b);
+  nn=nn/|nn|*.6;
+  pp=perp(nn);
+  ll=((a,a+nn-pp,b+nn+pp,b));
+  connect(ll,color->(0,0,0));
+);
+
+laschek(a,b):=(
+  nn=-perp(a-b);
+  nn=nn/|nn|*.2;
+  pp=perp(nn);
+  ll=((a,a+nn-pp,b+nn+pp,b));
+  connect(ll,color->(0,0,0));
+);
+
+
+lasche2(a,b):=(
+  nn=-perp(a-b);
+  nn=nn/|nn|*.4;
+  pp=perp(nn);
+  ll=((a,a+nn-pp*1.5,b+nn+pp*1.5,b));
+  connect(ll,color->(0,0,0));
+);
+
+
+
+///////////////////////////////////////////
+//Begin: Elementares Zeichnen der Flächen
+///////////////////////////////////////////
+
+
+drawimageref(a,b,c,a1,b1,c1,pic):=(
+   tt=inverse(map(a,b,c,a1,b1,c1));
+   aaa=tt*(0,0,1);
+   bbb=tt*(1,0,1);
+   ccc=tt*(0,1,1);
+   drawimage(aaa.xy,bbb.xy,ccc.xy, pic);
+
+);
+
+ drawmeafftrib(ll,r,s,t):=(
+    drawmeafftri(ll,r,s,t);
+    drawpolygon(ll,size->1,color->(1,1,1)*.5);
+ );
+
+ drawmeafftri(ll,r,s,t):=(
+   a=ll_1;
+   b=ll_2;
+   c=ll_3;
+
+   if(drawit,
+      gsave();
+      clip(polygon([a,b,c]));
+      drawimageref(a,b,c,r,s,t, orna);
+      grestore();
+   );
+ );
+
+expand(pol,f):=(
+   mi=sum(pol)/length(pol);
+   apply(pol,(#-mi)*f+mi);
+);
+
+ drawmeaffbarb(ll,r,s,t):=(
+    drawmeaffbar(ll,r,s,t);
+    drawpolygon(ll,size->1,color->(1,1,1)*.5);
+ );
+
+
+
+ drawmeaffbar(ll,r,s,t):=(
+   n=length(ll);
+   mid=sum(ll)/length(ll);
+   ll=ll++ll;
+   if(drawit,
+   apply(1..n,
+      gsave();
+      a=ll_#;
+      b=ll_(#+1);
+      c=mid;
+
+      clip(polygon(expand([a,b,c],1.01)));
+      drawimageref(a,b,c,r,s,t, orna);
+      grestore();
+   );
+ );
+);
+
+ drawmeaffbareob(ll,r,s,t,r1,s1,t1):=(
+   drawmeaffbareo(ll,r,s,t,r1,s1,t1);
+    drawpolygon(ll,size->1,color->(1,1,1)*.5);
+);
+
+ drawmeaffbareo(ll,r,s,t,r1,s1,t1):=(
+   n=length(ll);
+   mid=sum(ll)/length(ll);
+   ll=ll++ll;
+   if(drawit,
+   apply(1..n,
+      gsave();
+      a=ll_#;
+      b=ll_(#+1);
+      c=mid;
+
+      clip(polygon(expand([a,b,c],1.01)));
+      if(mod(#,2)==0,
+        drawimageref(a,b,c,r,s,t, orna),
+        drawimageref(a,b,c,r1,s1,t1, orna)
+        );
+      grestore();
+   );
+ );
+);
+
+///////////////////////////////////////////
+//End: Elementares Zeichnen der Flächen
+///////////////////////////////////////////
+
+
+///////////////////////////////////////////
+//Begin: Zeichnen Platonischer Körper
+///////////////////////////////////////////
+
+mat=((1,0,0),(0,1,0),(0,0,1));
+proj(v):=(
+   mat*v*6; 
+);
+
+dep(v):=(
+   vv=mat*v; 
+   (vv_3)*4;
+);
+
+drawplatonic(pts,faces):=(
+  li=[];
+   apply(faces,f,
+      fac= apply(pts_f,proj(#));
+      nn=cross(fac_2-fac_1,fac_3-fac_1);
+      nn=nn/|nn|;
+      if(nn_3>0,
+        drawpolygon(apply(fac,#_[1,2]),color->(1,1,1),size->4);
+      )
+   );
+   apply(faces,f,
+      fac= apply(pts_f,proj(#));
+      nn=cross(fac_2-fac_1,fac_3-fac_1);
+      nn=nn/|nn|;
+      if(nn_3>0,
+        drawpolygon(apply(fac,#_[1,2]),color->(0,0,0),size->1);
+      )
+   );
+
+);
+
+
+generic1bareo(pts,faces,r,s,t,r1,s1,t1):=(
+   gsave();
+   scale(1.5);
+   translate((1,1.5));
+
+   apply(faces,f,
+      fac= apply(pts_f,proj(#));
+      nn=cross(fac_2-fac_1,fac_3-fac_1);
+      nn=nn/|nn|;
+      light=(0,0,1);
+      light=light/|light|;
+      dd=(light*nn)^.3;
+      if(nn_3>0,
+        drawmeaffbareo(apply(fac,#_[1,2]),r,s,t,r1,s1,t1);
+        fillpolygon(apply(fac,#_[1,2]),color->(0,0,0),alpha->1-dd-.1);
+
+      )
+   );
+   drawplatonic(pts,faces);
+   grestore();
+
+);
+
+
+generic1bar(pts,faces,r,s,t):=(
+   gsave();
+   scale(1.5);
+   translate((1,1.5));
+
+   apply(faces,f,
+      fac= apply(pts_f,proj(#));
+      nn=cross(fac_2-fac_1,fac_3-fac_1);
+      nn=nn/|nn|;
+      light=(0,0,1);
+      light=light/|light|;
+      dd=(light*nn)^.3;
+      if(nn_3>0,
+        drawmeaffbar(apply(fac,#_[1,2]),r,s,t);
+        fillpolygon(apply(fac,#_[1,2]),color->(0,0,0),alpha->1-dd-.1);
+
+      )
+   );
+   drawplatonic(pts,faces);
+   grestore();
+
+);
+
+generic1tri(pts,faces,r,s,t):=(
+   gsave();
+   scale(1.5);
+   translate((1,1.5));
+   apply(faces,f,
+      fac= apply(pts_f,proj(#));
+      nn=cross(fac_2-fac_1,fac_3-fac_1);
+      nn=nn/|nn|;
+      light=(0,0,1);
+      light=light/|light|;
+      dd=(light*nn)^.3;
+      if(nn_3>0,
+        drawmeafftri(apply(fac,#_[1,2]),r,s,t);
+        fillpolygon(apply(fac,#_[1,2]),color->(0,0,0),alpha->1-dd-.1);
+      )
+   );
+
+   drawplatonic(pts,faces);
+   grestore();
+);
+
+
+dodecahedron1():=generic1bar(ptsd,facesd,(0,1/3),(0.5,1/6),(0.5,0.5));
+cube1():=generic1bar(ptsc,facesc,(0,1/3),(0.5,1/6),(0.5,0.5));
+icosahedron1():=generic1tri(ptsi,facesi,(0,0),(1,0),(0.5,0.5));
+tetrahedron1():=generic1tri(ptst,facest,(0,0),(1,0),(0.5,0.5));
+octahedron1():=generic1tri(ptso,faceso,(0,0),(1,0),(0.5,0.5));
+
+dodecahedron3():=generic1bar(ptsd,facesd,(0,0),(1,0),(0.5,0.5));
+cube3a():=generic1bar(ptsc,facesc,(0,0),(1,0),(0.5,0.5));
+cube3():=generic1bareo(ptsc,facesc,(0,0),(.5,.5),(0,0.5),(0.5,0.5),(0,1),(0,0.5));
+icosahedron3():=generic1bar(ptsi,facesi,(0,0),(1,0),(0.5,0.5));
+tetrahedron3():=generic1bar(ptst,facest,(0,0),(1,0),(0.5,0.5));
+octahedron3():=generic1bar(ptso,faceso,(0,0),(1,0),(0.5,0.5));
+
+dodecahedron2():=generic1bar(ptsd,facesd,(0,0),(1,0),(0.5,0.5));
+cube2():=generic1bareo(ptsc,facesc,(0.5,1/6),(.5,.5),(0,1/3),(0.5,0.5),(0.5,1/6),(1,1/3));
+icosahedron2():=generic1bar(ptsi,facesi,(0,0),(1,0),(0.5,0.5));
+tetrahedron2():=generic1bar(ptst,facest,(0,0),(1,0),(0.5,0.5));
+octahedron2():=(
+generic1tri(ptso,faceso1,(0,0),(1,1/3),(0,2/3));
+generic1tri(ptso,faceso2,(0,0),(0,2/3),(1,1/3));
+);
+
+dodecahedron4():=generic1bar(ptsd,facesd,(0,1/3),(1,1/3),(0.5,0.5));
+cube4():=generic1bareo(ptsc,facesc,(0.5,1/6),(.5,.5),(0,1/3),(0.5,0.5),(0.5,1/6),(1,1/3));;
+icosahedron4():=generic1tri(ptsi,facesi,(0,1/3),(1,1/3),(0.5,5/6));
+tetrahedron4():=generic1tri(ptst,facest,(0,1/3),(1,1/3),(0.5,5/6));
+octahedron4():=(
+generic1tri(ptso,faceso1,(0,1/3),(1,1/3),(0.5,5/6));
+generic1tri(ptso,faceso2,(1,1/3),(0,1/3),(0.5,5/6));
+);
+
+
+showsolid():=(
+if(typm==1,
+   kaleido1((0,0),(1,0),(.5,.5));
+
+);
+
+if(typm==3,
+   kaleido2((0,0),(1,0),(.5,.5));
+
+);
+
+if(typm==4,
+   kaleido3((0,1/3),(1,1/3),(0.5,5/6));
+
+);
+
+if(typm==2,
+   kaleido4((0,2/6),(1,2/6),(1/2,1/2),(0,2/6),(1,2/6),(1/2,1/6));
+
+);
+);
+
+
+
+///////////////////////////////////////////
+//End: Zeichnen Platonischer Körper
+///////////////////////////////////////////
+
+
+///////////////////////////////////////////
+//Begin: Zeichnen Bastelbögen
+///////////////////////////////////////////
+
+
+
+
+kaleidoplan1(r,s,t):=(
+
+  gsave();
+           
+scale(4.3);
+translate((-1.2,-2.05));
+rotate(0.1°);
+  drawmeafftrib([(0,0),(2,1),(0,2)],r,s,t);
+  drawmeafftrib([(0,2),(2,3),(0,4)],r,s,t);
+  drawmeafftrib([(2,1),(0,2),(2,3)],r,t,s);
+  drawmeafftrib([(2,3),(0,4),(2,5)],r,t,s);
+  
+  drawmeafftrib([(4,0),(2,1),(4,2)],r,t,s);
+  drawmeafftrib([(4,2),(2,3),(4,4)],r,t,s);
+  drawmeafftrib([(2,1),(4,2),(2,3)],r,s,t);
+  drawmeafftrib([(2,3),(4,4),(2,5)],r,s,t);
+  
+  drawmeafftrib([(4,0),(6,1),(4,2)],r,s,t);
+  drawmeafftrib([(4,2),(6,3),(4,4)],r,s,t);
+  drawmeafftrib([(6,1),(4,2),(6,3)],r,t,s);
+  drawmeafftrib([(6,3),(4,4),(6,5)],r,t,s);
+ 
+  draw((0,5),(6,5),color->(1,1,1)*.5,size->1);
+  draw((0,5),(0,4),color->(1,1,1)*.5,size->1);
+  draw((4,5),(4,4),color->(1,1,1)*.5,size->1);
+  laschek((0,0),(0,2));
+  laschek((0,2),(0,4));
+
+  grestore();
+);
+
+
+
+
+kaleidoplan4(r,s,t,r1,s1,t1):=(
+
+  gsave();
+           
+scale(4.3);
+translate((-1.2,-2.05));
+rotate(0.1°);
+  drawmeaffbarb([(0,0),(2,1),(0,2)],r,s,t);
+  drawmeaffbarb([(0,2),(2,3),(0,4)],r,s,t);
+  drawmeaffbarb([(2,1),(0,2),(2,3)],r1,s1,t1);
+  drawmeaffbarb([(2,3),(0,4),(2,5)],r1,s1,t1);
+  
+  drawmeaffbarb([(4,0),(2,1),(4,2)],r1,s1,t1);
+  drawmeaffbarb([(4,2),(2,3),(4,4)],r1,s1,t1);
+  drawmeaffbarb([(2,1),(4,2),(2,3)],r,s,t);
+  drawmeaffbarb([(2,3),(4,4),(2,5)],r,s,t);
+  
+  drawmeaffbarb([(4,0),(6,1),(4,2)],r,s,t);
+  drawmeaffbarb([(4,2),(6,3),(4,4)],r,s,t);
+  drawmeaffbarb([(6,1),(4,2),(6,3)],r1,s1,t1);
+  drawmeaffbarb([(6,3),(4,4),(6,5)],r1,s1,t1);
+ 
+  draw((0,5),(6,5),color->(1,1,1)*.5,size->1);
+  draw((0,5),(0,4),color->(1,1,1)*.5,size->1);
+  draw((4,5),(4,4),color->(1,1,1)*.5,size->1);
+  laschek((0,0),(0,2));
+  laschek((0,2),(0,4));
+
+  grestore();
+);
+
+
+
+
+kaleidoplan3(r,s,t):=(
+
+  gsave();
+           
+scale(4.3);
+translate((-1.2,-2.05));
+rotate(0.1°);
+  drawmeafftrib([(0,0),(2,1),(0,2)],r,s,t);
+  drawmeafftrib([(0,2),(2,3),(0,4)],t,r,s);
+  drawmeafftrib([(2,1),(0,2),(2,3)],s,t,r);
+  drawmeafftrib([(2,3),(0,4),(2,5)],r,s,t);
+  
+  drawmeafftrib([(4,0),(2,1),(4,2)],r,s,t);
+  drawmeafftrib([(4,2),(2,3),(4,4)],r,s,t);
+  drawmeafftrib([(2,1),(4,2),(2,3)],r,s,t);
+  drawmeafftrib([(2,3),(4,4),(2,5)],r,s,t);
+  
+  drawmeafftrib([(4,0),(6,1),(4,2)],r,s,t);
+  drawmeafftrib([(4,2),(6,3),(4,4)],r,s,t);
+  drawmeafftrib([(6,1),(4,2),(6,3)],r,s,t);
+  drawmeafftrib([(6,3),(4,4),(6,5)],r,s,t);
+ 
+  draw((0,5),(6,5),color->(1,1,1)*.5,size->1);
+  draw((0,5),(0,4),color->(1,1,1)*.5,size->1);
+  draw((4,5),(4,4),color->(1,1,1)*.5,size->1);
+  laschek((0,0),(0,2));
+  laschek((0,2),(0,4));
+
+  grestore();
+);
+
+
+
+kaleidoplan2(r,s,t):=(
+
+  gsave();
+           
+scale(4.3);
+translate((-1.2,-2.05));
+rotate(0.1°);
+  drawmeaffbarb([(0,0),(2,1),(0,2)],r,s,t);
+  drawmeaffbarb([(0,2),(2,3),(0,4)],r,s,t);
+  drawmeaffbarb([(2,1),(2,3),(0,2)],r,s,t);
+  drawmeaffbarb([(2,3),(2,5),(0,4)],r,s,t);
+  
+  drawmeaffbarb([(4,0),(4,2),(2,1)],r,s,t);
+  drawmeaffbarb([(4,2),(4,4),(2,3)],r,s,t);
+  drawmeaffbarb([(2,1),(4,2),(2,3)],r,s,t);
+  drawmeaffbarb([(2,3),(4,4),(2,5)],r,s,t);
+  
+  drawmeaffbarb([(4,0),(6,1),(4,2)],r,s,t);
+  drawmeaffbarb([(4,2),(6,3),(4,4)],r,s,t);
+  drawmeaffbarb([(6,1),(6,3),(4,2)],r,s,t);
+  drawmeaffbarb([(6,3),(6,5),(4,4)],r,s,t);
+ 
+  draw((0,5),(6,5),color->(1,1,1)*.5,size->1);
+  draw((0,5),(0,4),color->(1,1,1)*.5,size->1);
+  draw((4,5),(4,4),color->(1,1,1)*.5,size->1);
+  laschek((0,0),(0,2));
+  laschek((0,2),(0,4));
+
+  grestore();
+);
+
+
+
+icosahedronplan1(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(1,0)*6; 
+            pt3=(.5,sqrt(.75))*6; 
+            pt4=(.5,-sqrt(.75))*6; 
+           
+  scale(0.93);
+  translate((0,-.2));
+  translate(-(14.5,5.2));
+  rotate(25°);
+  gsave();
+  gsave();
+ // r=(0,0);s=(1,0);t=(0.5,0.5);
+  apply(1..5,
+    translate(pt2);
+    drawmeafftrib([pt1,pt2,pt3],r,s,t);
+    drawmeafftrib([pt2,pt1,pt4],r,s,t);
+    if(#>1,lasche(pt3,pt2));
+    if(#==2,lasche(pt1,pt3));
+  );
+  grestore();
+  translate(pt4);
+  gsave();
+  apply(1..5,
+    translate(pt2);
+    drawmeafftrib([pt1,pt2,pt3],r,s,t);
+    drawmeafftrib([pt2,pt1,pt4],r,s,t);
+    if(#>1,lasche(pt2,pt4));
+    if(#==2,lasche(pt4,pt1));
+    if(#==5,lasche(pt3,pt2));
+
+  );
+
+  grestore();
+
+  grestore();
+);
+
+
+
+icosahedronplan2(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(1,0)*6; 
+            pt3=(.5,sqrt(.75))*6; 
+            pt4=(.5,-sqrt(.75))*6; 
+           
+  scale(0.93);
+  translate((0,-.2));
+  translate(-(14.5,5.2));
+  rotate(25°);
+  gsave();
+  gsave();
+ // r=(0,0);s=(1,0);t=(0.5,0.5);
+  apply(1..5,
+    translate(pt2);
+    drawmeaffbarb([pt1,pt2,pt3],r,s,t);
+    drawmeaffbarb([pt2,pt1,pt4],r,s,t);
+    if(#>1,lasche(pt3,pt2));
+    if(#==2,lasche(pt1,pt3));
+  );
+  grestore();
+  translate(pt4);
+  gsave();
+  apply(1..5,
+    translate(pt2);
+    drawmeaffbarb([pt1,pt2,pt3],r,s,t);
+    drawmeaffbarb([pt2,pt1,pt4],r,s,t);
+    if(#>1,lasche(pt2,pt4));
+    if(#==2,lasche(pt4,pt1));
+    if(#==5,lasche(pt3,pt2));
+
+  );
+
+  grestore();
+
+  grestore();
+);
+
+
+ 
+
+
+octahedronplan1(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(1,0)*6; 
+            pt3=(.5,sqrt(.75))*6; 
+            pt4=(.5,-sqrt(.75))*6; 
+           
+    scale(1.6);
+    translate((10,.8));
+
+    translate(-(14.5,5.2));
+    rotate(20°);
+    gsave();
+    drawmeafftrib([pt1,pt2,pt3],r,s,t);
+    drawmeafftrib([pt3+pt2,pt3,pt2],r,s,t);
+    drawmeafftrib([pt3+pt2,pt2,2*pt2],r,s,t);
+    drawmeafftrib([pt2+pt3,2*pt2,2*pt2+pt3],r,s,t);
+    drawmeafftrib([3*pt2,pt3+2*pt2,2*pt2],r,s,t);
+    drawmeafftrib([3*pt2,3*pt2+pt3,2*pt2+pt3],r,s,t);
+    drawmeafftrib([pt2+pt3,2*pt3,pt3],r,s,t);
+    drawmeafftrib([3*pt2,2*pt2,2*pt2+pt4],r,s,t);
+
+    lasche(pt2+pt3,2*pt2+pt3);
+    lasche(2*pt2+pt3,3*pt2+pt3);
+    lasche(pt2,0*pt2);
+    lasche(2*pt2,pt2);
+    lasche(3*pt2+pt3,3*pt2);
+    grestore();
+);
+
+
+octahedronplan2(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(1,0)*6; 
+            pt3=(.5,sqrt(.75))*6; 
+            pt4=(.5,-sqrt(.75))*6; 
+           
+    scale(1.6);
+    translate((10,.8));
+
+    translate(-(14.5,5.2));
+    rotate(20°);
+    gsave();
+    drawmeaffbarb([pt1,pt2,pt3],r,s,t);
+    drawmeaffbarb([pt3+pt2,pt3,pt2],r,s,t);
+    drawmeaffbarb([pt3+pt2,pt2,2*pt2],r,s,t);
+    drawmeaffbarb([pt2+pt3,2*pt2,2*pt2+pt3],r,s,t);
+    drawmeaffbarb([3*pt2,pt3+2*pt2,2*pt2],r,s,t);
+    drawmeaffbarb([3*pt2,3*pt2+pt3,2*pt2+pt3],r,s,t);
+    drawmeaffbarb([pt2+pt3,2*pt3,pt3],r,s,t);
+    drawmeaffbarb([3*pt2,2*pt2,2*pt2+pt4],r,s,t);
+
+    lasche(pt2+pt3,2*pt2+pt3);
+    lasche(2*pt2+pt3,3*pt2+pt3);
+    lasche(pt2,0*pt2);
+    lasche(2*pt2,pt2);
+    lasche(3*pt2+pt3,3*pt2);
+    grestore();
+);
+
+
+
+octahedronplan3(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(1,0)*6; 
+            pt3=(.5,sqrt(.75))*6; 
+            pt4=(.5,-sqrt(.75))*6; 
+           
+    scale(1.6);
+    translate((10,.8));
+
+    translate(-(14.5,5.2));
+    rotate(20°);
+    gsave();
+    drawmeafftrib([pt1,pt2,pt3],r,s,t);
+    drawmeafftrib([pt3+pt2,pt3,pt2],r,t,s);
+    drawmeafftrib([pt3+pt2,pt2,2*pt2],r,s,t);
+    drawmeafftrib([pt2+pt3,2*pt2,2*pt2+pt3],r,t,s);
+    drawmeafftrib([3*pt2,pt3+2*pt2,2*pt2],r,s,t);
+    drawmeafftrib([3*pt2,3*pt2+pt3,2*pt2+pt3],r,t,s);
+    drawmeafftrib([pt2+pt3,2*pt3,pt3],r,s,t);
+    drawmeafftrib([3*pt2,2*pt2,2*pt2+pt4],r,t,s);
+
+    lasche(pt2+pt3,2*pt2+pt3);
+    lasche(2*pt2+pt3,3*pt2+pt3);
+    lasche(pt2,0*pt2);
+    lasche(2*pt2,pt2);
+    lasche(3*pt2+pt3,3*pt2);
+    grestore();
+);
+
+
+
+
+tetrahedronplan1(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(1,0)*6; 
+            pt3=(.5,sqrt(.75))*6; 
+            pt4=(.5,-sqrt(.75))*6; 
+           
+    scale(2.0);
+    translate((12,1));
+
+    translate(-(14.5,5.2));
+    rotate(20°);
+    gsave();
+    drawmeafftrib([pt1,pt2,pt3],r,s,t);
+    drawmeafftrib([pt3+pt2,pt3,pt2],r,s,t);
+    drawmeafftrib([pt3+pt2,pt2,2*pt2],r,s,t);
+    drawmeafftrib([pt2+pt3,2*pt2,2*pt2+pt3],r,s,t);
+
+    lasche(pt2+pt3,2*pt2+pt3);
+    lasche(2*pt2+pt3,2*pt2);
+    lasche(pt2,0*pt2);
+
+    grestore();
+);
+
+tetrahedronplan2(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(1,0)*6; 
+            pt3=(.5,sqrt(.75))*6; 
+            pt4=(.5,-sqrt(.75))*6; 
+           
+    scale(2.0);
+    translate((12,1));
+
+    translate(-(14.5,5.2));
+    rotate(20°);
+    gsave();
+    drawmeaffbarb([pt1,pt2,pt3],r,s,t);
+    drawmeaffbarb([pt3+pt2,pt3,pt2],r,s,t);
+    drawmeaffbarb([pt3+pt2,pt2,2*pt2],r,s,t);
+    drawmeaffbarb([pt2+pt3,2*pt2,2*pt2+pt3],r,s,t);
+
+    lasche(pt2+pt3,2*pt2+pt3);
+    lasche(2*pt2+pt3,2*pt2);
+    lasche(pt2,0*pt2);
+
+    grestore();
+);
+
+
+
+
+
+
+cubeplan1(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(7,0); 
+            pt3=(7,7); 
+            pt4=(0,7); 
+
+    gsave();
+    translate((-1,-2));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    translate((0,7));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    translate((0,-14));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    translate((-7,7));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    lasche((0,7),(7,7));
+    lasche((7,0),(0,0));
+    translate((14,0));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    lasche((0,7),(7,7));
+    lasche((7,0),(0,0));
+    translate((7,0));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    lasche((0,7),(7,7));
+    lasche((7,0),(0,0));
+    lasche((7,7),(7,0));
+    grestore();
+);
+
+
+cubeplan1(r,s,t):=(
+            pt1=(0,0); 
+            pt2=(7,0); 
+            pt3=(7,7); 
+            pt4=(0,7); 
+
+    gsave();
+    translate((-1,-2));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    translate((0,7));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    translate((0,-14));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    translate((-7,7));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    lasche((0,7),(7,7));
+    lasche((7,0),(0,0));
+    translate((14,0));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    lasche((0,7),(7,7));
+    lasche((7,0),(0,0));
+    translate((7,0));
+    drawmeaffbarb([pt1,pt2,pt3,pt4],r,s,t);
+    lasche((0,7),(7,7));
+    lasche((7,0),(0,0));
+    lasche((7,7),(7,0));
+    grestore();
+);
+
+
+
+dodecahedronplan1(r,s,t):=(
+    
+    pent1=apply(0..4,(sin(72°*#+18°),cos(72°*#+18°)))*2;
+    pent2=apply(0..4,(sin(72°*#-18°),cos(72°*#-18°)))*2;
+    gsave();
+    scale(1.65);
+    translate((8.7,2.5));
+    rotate(2°);
+    drawmeaffbarb(pent1,r,s,t);
+
+    translate(pent1_1+pent1_2);
+    drawmeaffbarb(pent2,r,s,t);
+    lasche2(pent2_5,pent2_1);
+    translate(-pent1_1-pent1_2);
+
+    translate(pent1_2+pent1_3);
+    drawmeaffbarb(pent2,r,s,t);
+    lasche2(pent2_1,pent2_2);
+    translate(-pent1_2-pent1_3);
+
+    translate(pent1_3+pent1_4);
+    drawmeaffbarb(pent2,r,s,t);
+    lasche2(pent2_2,pent2_3);
+    translate(-pent1_3-pent1_4);
+
+    translate(pent1_4+pent1_5);
+    drawmeaffbarb(pent2,r,s,t);
+    lasche2(pent2_3,pent2_4);
+    lasche2(pent2_1,pent2_2);
+    translate(-pent1_4-pent1_5);
+
+    translate(pent1_5+pent1_1);
+    drawmeaffbarb(pent2,r,s,t);
+    translate(-pent1_5-pent1_1);
+
+    translate(2*(pent1_4+pent1_5)+(pent2_4+pent2_5));
+
+    drawmeaffbarb(pent2,r,s,t);
+
+    translate(pent2_1+pent2_2);
+    drawmeaffbarb(pent1,r,s,t);
+    lasche2(pent1_4,pent1_5);
+    lasche2(pent1_5,pent1_1);
+    lasche2(pent1_1,pent1_2);
+    translate(-pent2_1-pent2_2);
+
+    translate(pent2_2+pent2_3);
+    drawmeaffbarb(pent1,r,s,t);
+    lasche2(pent1_5,pent1_1);
+    lasche2(pent1_2,pent1_3);
+    translate(-pent2_2-pent2_3);
+
+    translate(pent2_3+pent2_4);
+    drawmeaffbarb(pent1,r,s,t);
+    lasche2(pent1_1,pent1_2);
+    lasche2(pent1_2,pent1_3);
+    lasche2(pent1_3,pent1_4);
+    translate(-pent2_3-pent2_4);
+
+    translate(pent2_4+pent2_5);
+    drawmeaffbarb(pent1,r,s,t);
+    lasche2(pent1_2,pent1_3);
+    lasche2(pent1_3,pent1_4);
+    lasche2(pent1_4,pent1_5);
+    translate(-pent2_4-pent2_5);
+
+    translate(pent2_5+pent2_1);
+    drawmeaffbarb(pent1,r,s,t);
+    lasche2(pent1_3,pent1_4);
+    lasche2(pent1_4,pent1_5);
+    lasche2(pent1_5,pent1_1);
+    translate(-pent2_5-pent2_1);
+
+
+
+
+    grestore();
+
+
+);
+
+
+
+
+
+showplan():=(
+if(typm==1,
+  if(sel==1,tetrahedronplan1((0,0),(1,0),(0.5,0.5)));
+  if(sel==2,octahedronplan1((0,0),(1,0),(0.5,0.5)));
+  if(sel==3,cubeplan1((0,1/3),(0.5,1/6),(0.5,0.5)));
+  if(sel==4,kaleidoplan1((0,0),(1,0),(0.5,0.5)));
+  if(sel==5,dodecahedronplan1((0,1/3),(0.5,1/6),(0.5,0.5)));
+);
+
+if(typm==3,
+  if(sel==1,tetrahedronplan2((0,0),(1,0),(0.5,0.5)));
+  if(sel==2,octahedronplan2((0,0),(1,0),(0.5,0.5)));
+  if(sel==6,cubeplan1((0,0),(1,0),(0.5,0.5)));
+  if(sel==7,cubeplan2((0,0),(.5,.5),(0,0.5),(0.5,0.5),(0,1),(0,0.5)));
+  if(sel==4,kaleidoplan2((0,0),(1,0),(0.5,0.5)));
+  if(sel==5,dodecahedronplan1((0,0),(1,0),(0.5,0.5)));
+);
+
+if(typm==2,
+  if(sel==2,kaleidoplan4((0,2/6),(1,2/6),(1/2,1/2),(0,2/6),(1,2/6),(1/2,1/6)));
+  if(sel==3,cubeplan2((0.5,1/6),(.5,.5),(0,1/3),(0.5,0.5),(0.5,1/6),(1,1/3)));
+);
+
+if(typm==4,
+  if(sel==2,kaleidoplan3((0,1/3),(1,1/3),(0.5,5/6)));
+  if(sel==3,cubeplan2((0.5,1/6),(.5,.5),(0,1/3),(0.5,0.5),(0.5,1/6),(1,1/3)));
+);
+);
+
+
+///////////////////////////////////////////
+//End: Zeichnen Bastelbögen
+///////////////////////////////////////////
+
+
+
+sx=mouse().x;
+sy=mouse().y;
+drag=false;
+
+
+
+
+buts=[(21,11),(21,7),(21,3),(21,-1),(21,-5),(200,-5),(200,-5)];
+sel=4;
+
+phase=0;
+
+rotm=((cos(120°),sin(120°),0),(-sin(120°),cos(120°),0),(0,0,1));
+
+
+
+ drawmeafftrik(a,b,c,r,s,t):=(
+
+   if(drawit,
+      gsave();
+      clip(polygon([a,b,c]));
+      drawimageref(a,b,c,r,s,t, orna);
+      grestore();
+   );
+ );
+
+  drawmeafftrik(a,b,c,r,s,t):=(
+
+   if(drawit,
+      gsave();
+      clip(polygon([a,b,c]));
+      drawimageref(a,b,c,r,s,t, orna);
+      grestore();
+   );
+ );
+
+
+ drawmeaffbark(a,b,c,r,s,t):=(
+   mid=(a+b+c)/3;
+
+   if(drawit,
+      gsave();
+      clip(polygon(expand([a,b,mid],1.01)));
+      drawimageref(a,b,mid,r,s,t, orna);
+      grestore();
+      gsave();
+      clip(polygon(expand([b,c,mid],1.01)));
+      drawimageref(b,c,mid,r,s,t, orna);
+      grestore();
+      gsave();
+      clip(polygon(expand([c,a,mid],1.01)));
+      drawimageref(c,a,mid,r,s,t, orna);
+      grestore();
+   );
+ );
+
+
+
+
+drawftri(a,b,c,r,s,t):=(
+ norm=cross(a-b,a-c);
+ norm=norm/|norm|;
+
+light=(0,0,1);
+light=light/|light|;
+dd=(light*norm)^.3;
+fillpolygon([projx(a),projx(b),projx(c)],color->(1,1,1));
+drawmeafftrik(projx(a),projx(b),projx(c),r,s,t);
+fillpolygon([projx(a),projx(b),projx(c)],color->(0,0,0),alpha->1-dd-.1);
+
+ drawpolygon([projx(a),projx(b),projx(c)],color->(1,1,1)*.5,size->2)
+);
+
+
+drawfbar(a,b,c,r,s,t):=(
+ norm=cross(a-b,a-c);
+ norm=norm/|norm|;
+
+light=(0,0,1);
+light=light/|light|;
+dd=(light*norm)^.3;
+fillpolygon([projx(a),projx(b),projx(c)],color->(1,1,1));
+drawmeaffbark(projx(a),projx(b),projx(c),r,s,t);
+fillpolygon([projx(a),projx(b),projx(c)],color->(0,0,0),alpha->1-dd-.1);
+ drawpolygon([projx(a),projx(b),projx(c)],color->(1,1,1)*.5,size->2)
+);
+
+drawfactri(a,b,c,r,s,t):=if(area(projx(a),projx(b),projx(c))>0,;
+  drawftri(a,b,c,r,s,t);
+);
+
+drawfacbar(a,b,c,r,s,t):=if(area(projx(a),projx(b),projx(c))>0,;
+  drawfbar(a,b,c,r,s,t);
+);
+
+tetra1tri(a,b,c,d,r,s,t):=(
+drawfactri(a,b,c,r,s,t);
+drawfactri(b,a,d,r,s,t);
+drawfactri(a,c,d,r,s,t);
+drawfactri(b,d,c,r,s,t);
+);
+
+
+tetra2tri(a,b,c,d,r,s,t):=(
+drawfactri(a,b,c,r,s,t);
+drawfactri(b,a,d,r,s,t);
+drawfactri(a,c,d,r,t,s);
+drawfactri(b,d,c,r,t,s);
+);
+
+
+tetra1bar(a,b,c,d,r,s,t):=(
+drawfacbar(a,b,c,r,s,t);
+drawfacbar(b,a,d,r,s,t);
+drawfacbar(a,c,d,r,s,t);
+drawfacbar(b,d,c,r,s,t);
+);
+
+
+tetra2bar(a,b,c,d,r,s,t,ru,su,tu):=(
+drawfacbar(a,b,c,r,s,t);
+drawfacbar(b,a,d,r,s,t);
+drawfacbar(a,c,d,ru,su,tu);
+drawfacbar(b,d,c,ru,su,tu);
+);
+
+
+
+kaleidocalc():=(
+p1=P7.xy;
+p2=P8.xy;
+q1=P9.xy;
+q2=P10.xy;
+
+pw1=p1.x*(1,0,0)+p1.y*(0,0,1);
+pw2=p2.x*(1,0,0)+p2.y*(0,0,1);
+
+qw1=q1.x*(cos(-60°),sin(-60°),0)+q1.y*(0,0,1);
+qw2=q2.x*(cos(-60°),sin(-60°),0)+q2.y*(0,0,1);
+
+aim=sqrt(1/2^2+1);
+corr(a,b):=[
+sqrt(aim^2-|a_[1,2]-b_[1,2]|^2)+b_3-a_3,
+-sqrt(aim^2-|a_[1,2]-b_[1,2]|^2)+b_3-a_3
+];
+
+
+s1=corr(qw1,pw1);
+s2=corr(qw1,pw2);
+s3=corr(qw2,pw1);
+s4=corr(qw2,pw2);
+off=select([[s1_1,s2_1],[s1_1,s2_2],[s1_2,s2_1],[s1_2,s2_2]],|#_1-#_2|<0.0000001)_1_1;
+qw1=qw1+(0,0,off);
+qw2=qw2+(0,0,off);
+off2=(pw1_3+pw2_3+qw1_3+qw2_3)/4;
+
+qw1=qw1+(0,0,-off2);
+qw2=qw2+(0,0,-off2);
+pw1=pw1+(0,0,-off2);
+pw2=pw2+(0,0,-off2);
+
+
+
+P11.xy=(pw1_[1,3]+pw2_[1,3])/2;
+
+projx(p):=(p_1,p_2)*9+(7,2);
+
+pw3=rotm*pw1;
+pw4=rotm*pw2;
+pw5=rotm*pw3;
+pw6=rotm*pw4;
+qw3=rotm*qw1;
+qw4=rotm*qw2;
+qw5=rotm*qw3;
+qw6=rotm*qw4;
+
+
+pw1=pw1*mat;
+pw2=pw2*mat;
+pw3=pw3*mat;
+pw4=pw4*mat;
+pw5=pw5*mat;
+pw6=pw6*mat;
+qw1=qw1*mat;
+qw2=qw2*mat;
+qw3=qw3*mat;
+qw4=qw4*mat;
+qw5=qw5*mat;
+qw6=qw6*mat;
+);
+
+kaleido1(r,s,t):=(
+
+kaleidocalc();
+
+tets=[
+[pw1,pw2,qw1,qw2],
+[qw2,qw1,pw3,pw4],
+[pw4,pw3,qw4,qw3],
+[qw3,qw4,pw6,pw5],
+[pw5,pw6,qw5,qw6],
+[qw5,qw6,pw2,pw1]
+];
+
+tets=sort(tets,t,(sum(t,#_3)));
+apply(tets,tetra1tri(#_1,#_2,#_3,#_4,r,s,t));
+
+
+);
+
+kaleido2(r,s,t):=(
+
+kaleidocalc();
+
+tets=[
+[pw1,pw2,qw1,qw2],
+[qw2,qw1,pw3,pw4],
+[pw4,pw3,qw4,qw3],
+[qw3,qw4,pw6,pw5],
+[pw5,pw6,qw5,qw6],
+[qw5,qw6,pw2,pw1]
+];
+
+tets=sort(tets,t,(sum(t,#_3)));
+apply(tets,tetra1bar(#_1,#_2,#_3,#_4,r,s,t));
+
+
+);
+
+
+kaleido3(r,s,t):=(
+
+kaleidocalc();
+
+tets=[
+[pw1,pw2,qw1,qw2],
+[qw2,qw1,pw3,pw4],
+[pw4,pw3,qw4,qw3],
+[qw3,qw4,pw6,pw5],
+[pw5,pw6,qw5,qw6],
+[qw5,qw6,pw2,pw1]
+];
+
+tets=sort(tets,t,(sum(t_[1,2,3,4],#_3)));
+apply(tets,tetra2tri(#_1,#_2,#_3,#_4,r,s,t));
+
+
+);
+
+
+kaleido4(r,s,t,ru,su,tu):=(
+
+kaleidocalc();
+
+tets=[
+[pw1,pw2,qw1,qw2],
+[qw2,qw1,pw3,pw4],
+[pw4,pw3,qw4,qw3],
+[qw3,qw4,pw6,pw5],
+[pw5,pw6,qw5,qw6],
+[qw5,qw6,pw2,pw1]
+];
+
+tets=sort(tets,t,(sum(t_[1,2,3,4],#_3)));
+apply(tets,tetra2bar(#_1,#_2,#_3,#_4,r,s,t,su,ru,tu));
+
+
+);
+
+
+
+</script>
+<script id="cstick" type="text/x-cindyscript">
+tt=arctan2(D.x+0.5,D.y);;
+D.xy=(-.5,0)+(cos(tt+.01),sin(tt+.01));
+</script>
+<script id="csmousedown" type="text/x-cindyscript">
+
+
+sx=mouse().x;
+sy=mouse().y;
+drag=true;
+apply(1..7,
+   if(|buts_#+butoff,mouse().xy|<2,sel=#)
+);
+phasen=phase;
+if(phase==1 & |mouse().xy,(-8.5,-9.6)|<2,
+  stopanimation(); 
+  phasen=0;
+);
+
+if(phase==1 & |mouse().xy,(22,-8.5)|<2,
+  stopanimation(); 
+  phasen=2;
+);
+
+
+if(phase==2 & |mouse().xy,(-8.5,-9.6)|<2,
+  playanimation(); 
+  phasen=1;
+);
+
+if(phase==2 & |mouse().xy,(22,-8.5)|<2,
+  javascript("cdy.exportPDF()");
+  phasen=3;
+);
+phase=phasen;
+
+</script>
+
+<script id="csmouseup" type="text/x-cindyscript">
+drag=false;
+</script>
+
+<script id="csdraw" type="text/x-cindyscript">
+
+//fillcircle((0,0),100,color->(0,0,0));
+wy=(mouse().x-sx)*.2;
+wx=-(mouse().y-sy)*.2;
+mmmx=[
+  [1,0,0],
+  [0,cos(wx),sin(wx)],
+  [0,-sin(wx),cos(wx)]
+
+];
+
+
+mmmy=[
+  [cos(wy),0,-sin(wy)],
+  [0,1,0],
+  [sin(wy),0,cos(wy)]
+];
+sx=mouse().x;
+sy=mouse().y;
+if(drag,mat=mat*mmmx*mmmy;);
+//mat=mmmrx*mmmry*mat;
+
+
+drawit=(!isundefined(orna));
+
+if(phase==1,showsolid());
+if(or(phase==2,phase==3),gsave();showplan();grestore(););
+
+if(phase==0,
+   drawtext((-8.5,4),"Drag and drop iOrnament tile into this frame",size->40,color->(1,1,1)*.5);
+//   drawtext((-5,0),"Ornament-Kachel hier hineinziehen",size->40,color->(1,1,1)*.5);
+
+);
+
+if(phase==1,
+
+   drawimage((22,-8.5),"next",scale->.4);
+   drawtext((20.5,-9.6),"paper cut out",size->12);
+   drawimage((-8,-8.5),"prev",scale->.4);
+//   drawtext((-8.5,-9.6),"Zurück",size->12);
+
+);
+
+if(phase==2,
+  // drawimage((22,-8.5),"next",scale->.4);
+ //  drawtext((20.5,-9.6),"PDF erzeugen",size->12);
+   drawimage((-8,-8.5),"prev",scale->.4);
+ //  drawtext((-8.5,-9.6),"Zurück",size->12);
+
+);
+
+if(phase==2,
+   javascript("document.getElementById('pdf').style.display = 'block';"),
+   javascript("document.getElementById('pdf').style.display = 'none';")
+
+);
+
+if(phase==3,phase=2);//This is a hack.
+
+</script>
+
+<script id="csondrop" type="text/x-cindyscript">
+  playanimation();
+  forall(dropped(), if(#_2 == "image", 
+     orna = #_1; 
+     createimage("buff",round(imagesize(orna)/10)));
+     canvas((0,0),(1,0),"buff",
+        drawimage((0,0),(1,0),orna);
+     );
+     typ=xmpdescription(orna);
+     if(!isstring(typ),
+        siz=imagesize(orna);
+        if(siz_1==siz_2,
+          typ="P4;0",
+          typ="P6;0");
+    );
+     typm=0;
+     buts=[(21,11),(21,7),(21,3),(21,-1),(21,-5),(200,-5),(200,-5)];
+     if(typ=="P6;0",sel=4;typm=1);
+     if(typ=="P6m;0",sel=4;typm=1);
+     if(typ=="P3m1;0",sel=2;typm=2;
+       buts=[(210,11),(21,11),(21,7),(210,-1),(210,-5),(210,3),(170,3)];
+     );
+     if(typ=="P3;0",sel=2;typm=2;
+       buts=[(210,11),(21,11),(21,7),(210,-1),(210,-5),(210,3),(170,3)];
+     );
+     if(typ=="P31m;0",sel=2;typm=4;
+       buts=[(210,11),(21,11),(21,7),(210,-1),(210,-5),(210,3),(170,3)];
+     );
+     if(typ=="P4;0",sel=4;typm=3;
+			buts=[(21,11),(21,7),(210,3),(21,-1),(21,-5),(21,3),(17,3)];
+     );
+     if(typ=="P4g;0",sel=4;typm=3;
+			buts=[(21,11),(21,7),(210,3),(21,-1),(21,-5),(21,3),(17,3)];
+     );
+     if(typ=="P4m;0",sel=4;typm=3;
+			buts=[(21,11),(21,7),(210,3),(21,-1),(21,-5),(21,3),(17,3)];
+     );
+     if(typm!=0,phase=1;)
+  );
+
+</script>
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+
+var cdy = createCindy({
+  plugins: {imgmeta: plugin},
+  use: ["imgmeta"],
+  ports: [{id: "CSCanvas"}],
+  scripts: "cs*",
+  language: "en",
+  images:{
+  	p1:"imgs/P1.png",
+	p2:"imgs/P2.png",
+	p3:"imgs/P3.png",
+	p4:"imgs/P4.png",
+	p5:"imgs/P5.png",
+	p6:"imgs/P6.png",
+	p7:"imgs/P7.png",
+	prev:"imgs/Prev.png",
+	next:"imgs/Next.png"
+  },
+defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+
+  angleUnit: "°",
+  geometry: [
+    {name: "A", type: "Free", pos: [0.0, -0.0, 4.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "a", type: "Through", pos: [4.0, 2.309401076758503, 0.0], color: [1.0, 0.0, 0.0], args: ["A"], visible: false, labeled: true, size: 2},
+    {name: "b", type: "LineByFixedAngle", angle: 1.0471975511965976, color: [1.0, 0.0, 0.0], args: ["a", "A"], visible: false, labeled: true, size: 2},
+    {name: "B", type: "PointOnLine", pos: [4.0, {r: -5.253631760259034E-16, i: 1.407706387491905E-16}, {r: -4.0, i: 3.697785493223491E-32}], color: [1.0, 0.0, 0.0], args: ["b"], visible: false, labeled: true},
+    {name: "C", type: "Mid", color: [1.0, 0.0, 0.0], args: ["A", "B"], visible: false, labeled: true},
+    {name: "C0", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["C", "A"], visible: false, printname: "$C_{0}$"},
+    {name: "D", type: "PointOnCircle", pos: [{r: -0.4717467869698662, i: -7.802100488268642E-17}, {r: 1.290132596620624, i: 2.2036073362966756E-17}, 4.0], color: [1.0, 0.0, 0.0], args: ["C0"], visible: false, labeled: true},
+    {name: "", type: "OtherPointOnCircle", pos: [{r: -3.528253213030135, i: 8.633422537068401E-18}, {r: -1.290132596620624, i: -8.06122183509341E-17}, 4.0], color: [1.0, 1.0, 1.0], args: ["D"], visible: false, pinned: true, size: 0.0},
+    {name: "c", type: "Orthogonal", color: [0.0, 0.0, 1.0], args: ["b", "D"], visible: false, labeled: true},
+    {name: "d", type: "Orthogonal", color: [0.0, 0.0, 1.0], args: ["b", "C"], visible: false, labeled: true},
+    {name: "e", type: "Orthogonal", color: [0.0, 0.0, 1.0], args: ["c", "D"], visible: false, labeled: true},
+    {name: "E", type: "Meet", color: [0.0, 1.0, 0.0], args: ["b", "c"], visible: false, labeled: true},
+    {name: "C1", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["C", "E"], visible: false, printname: "$C_{1}$"},
+    {name: "F", type: "Meet", color: [1.0, 0.0, 0.0], args: ["d", "e"], visible: false, labeled: true},
+    {name: "C2", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["C", "F"], visible: false, printname: "$C_{2}$"},
+    {name: "Collection__1", type: "IntersectionConicLine", args: ["C2", "b"]},
+    {name: "G", type: "SelectP", pos: [{r: -3.2901325966206247, i: -3.863809749537342E-17}, {r: 4.32128627626741E-16, i: -1.157885167989545E-16}, 4.0], color: [0.831, 0.639, 1.0], args: ["Collection__1"], visible: false, labeled: true},
+    {name: "H", type: "SelectP", pos: [{r: -0.709867403379376, i: 3.863809749537333E-17}, {r: 9.323454839916253E-17, i: -2.4982121950236017E-17}, 4.0], color: [0.831, 0.639, 1.0], args: ["Collection__1"], visible: false, labeled: true},
+    {name: "K", type: "OtherIntersectionCL", color: [0.0, 1.0, 0.0], args: ["C1", "b", "E"], visible: false, labeled: true},
+    {name: "f", type: "Orthogonal", color: [0.0, 0.0, 1.0], args: ["a", "B"], visible: false, labeled: true},
+    {name: "L", type: "Meet", color: [1.0, 0.0, 0.0], args: ["a", "f"], visible: false, labeled: true},
+    {name: "C3", type: "Compass", color: [0.0, 0.0, 1.0], args: ["L", "B", "C"], visible: false, printname: "$C_{3}$"},
+    {name: "Collection__2", type: "IntersectionConicLine", args: ["C3", "b"]},
+    {name: "M", type: "SelectP", pos: [{r: 1.4641016151377544, i: 7.038531937459528E-17}, {r: -1.9229626863835636E-16, i: 5.152562988916578E-17}, 4.0], color: [1.0, 0.0, 0.0], args: ["Collection__2"], visible: false, labeled: true},
+    {name: "Tr0", type: "TrSimilarity", color: [0.0, 0.0, 1.0], args: ["C", "C", "A", "M"], visible: false, dock: {offset: [0.0, -0.0]}},
+    {name: "N", type: "TransformP", color: [0.831, 0.639, 1.0], args: ["Tr0", "G"], visible: false, labeled: true},
+    {name: "Collection__3", type: "IntersectionConicLine", args: ["C3", "d"]},
+    {name: "O", type: "SelectP", pos: [{r: -1.9999999999999996, i: -1.2191094926376107E-16}, {r: 3.464101615137755, i: 2.4651903288156608E-32}, 4.0], color: [1.0, 0.0, 0.0], args: ["Collection__3"], visible: false, labeled: true},
+    {name: "C4", type: "ConicFromPrincipalDirections", color: [1.0, 1.0, 1.0], args: ["C", "O", "N"], visible: false, printname: "$C_{4}$"},
+    {name: "P", type: "Free", pos: [4.0, 3.3846153846153846, 0.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "Q", type: "Free", pos: [4.0, -1.0677966101694913, 0.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "g", type: "Join", color: [0.0, 0.0, 1.0], args: ["P", "Q"], visible: false, labeled: true},
+    {name: "R", type: "Meet", color: [1.0, 0.0, 0.0], args: ["a", "g"], visible: false, labeled: true},
+    {name: "h", type: "PolarOfPoint", color: [0.0, 0.0, 1.0], args: ["R", "C4"], visible: false, labeled: true},
+    {name: "Collection__4", type: "IntersectionConicLine", args: ["C4", "h"]},
+    {name: "S", type: "SelectP", pos: [{r: -0.3349404339984146, i: 8.47631132082938E-17}, {r: 2.3102577828529176, i: -1.07513731527651E-16}, 4.0], color: [1.0, 0.0, 0.0], args: ["Collection__4"], visible: false, labeled: true},
+    {name: "k", type: "Parallel", color: [0.0, 0.0, 1.0], args: ["a", "S"], visible: false, labeled: true},
+    {name: "l", type: "Parallel", color: [0.0, 0.0, 1.0], args: ["b", "S"], visible: false, labeled: true},
+    {name: "C6", type: "Compass", color: [0.0, 0.0, 1.0], args: ["G", "H", "C"], visible: false, printname: "$C_{6}$"},
+    {name: "Collection__5", type: "IntersectionConicLine", args: ["C6", "b"]},
+    {name: "W", type: "SelectP", pos: [4.0, {r: -5.253631760259034E-16, i: 1.407706387491905E-16}, {r: -3.493247514054424, i: 5.893651669893436E-17}], color: [0.467, 0.0, 0.718], args: ["Collection__5"], visible: false, labeled: true},
+    {name: "C7", type: "Compass", color: [1.0, 1.0, 1.0], args: ["A", "B", "C"], visible: false, printname: "$C_{7}$"},
+    {name: "Collection__6", type: "IntersectionConicLine", args: ["C7", "d"]},
+    {name: "X", type: "SelectP", pos: [{r: 1.9999999999999996, i: 1.7596329843648816E-16}, -4.0, {r: -4.0, i: -7.038531937459528E-17}], color: [1.0, 0.0, 0.0], args: ["Collection__6"], visible: false, labeled: true},
+    {name: "C8", type: "ConicFromPrincipalDirections", color: [1.0, 1.0, 1.0], args: ["C", "W", "X"], visible: false, printname: "$C_{8}$"},
+    {name: "T", type: "Meet", color: [1.0, 0.0, 0.0], args: ["a", "l"], visible: false, labeled: true},
+    {name: "Tr1", type: "TrTranslation", color: [0.0, 0.0, 1.0], args: ["S", "T"], visible: false, dock: {offset: [0.0, -0.0]}},
+    {name: "U", type: "TransformP", color: [0.0, 1.0, 0.0], args: ["Tr1", "E"], visible: false, labeled: true},
+    {name: "V", type: "TransformP", color: [0.0, 1.0, 0.0], args: ["Tr1", "K"], visible: false, labeled: true},
+    {name: "m", type: "Segment", color: [0.0, 0.0, 1.0], args: ["U", "V"], visible: false, labeled: true, size: 7},
+    {name: "Y", type: "Mid", color: [1.0, 0.0, 0.0], args: ["U", "V"], visible: false, labeled: true},
+    {name: "Z", type: "Mid", color: [1.0, 0.0, 0.0], args: ["Y", "T"], visible: false, labeled: true},
+    {name: "Collection__7", type: "IntersectionConicLine", args: ["C8", "k"]},
+    {name: "P1", type: "SelectP", pos: [{r: 0.5254670261148807, i: 5.73979542352697E-17}, {r: 0.8199883467253977, i: -6.011588582917391E-17}, 4.0], color: [1.0, 0.0, 0.0], args: ["Collection__7"], visible: false, labeled: true, printname: "$P_{0}$"},
+    {name: "P0", type: "SelectP", pos: [{r: -1.1953478941117104, i: 1.121282721813176E-16}, {r: 3.8005272189804384, i: -1.5491157722612758E-16}, 4.0], color: [1.0, 0.0, 0.0], args: ["Collection__7"], visible: false, labeled: true, printname: "$P_{0}$"},
+    {name: "P2", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr1", "P0"], visible: false, labeled: true, printname: "$P_{2}$"},
+    {name: "P3", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr1", "P1"], visible: false, labeled: true, printname: "$P_{3}$"},
+    {name: "n", type: "Segment", color: [0.0, 0.0, 1.0], args: ["P2", "P3"], visible: false, labeled: true, size: 5},
+    {name: "P4", type: "Mid", color: [1.0, 0.0, 0.0], args: ["P3", "P2"], visible: false, labeled: true, printname: "$P_{4}$"},
+    {name: "C5", type: "Compass", color: [0.0, 0.0, 1.0], args: ["L", "A", "P4"], visible: false, printname: "$C_{5}$"},
+    {name: "o", type: "Orthogonal", color: [0.0, 0.0, 1.0], args: ["a", "P3"], visible: false, labeled: true, clip: "inci"},
+    {name: "p", type: "Orthogonal", color: [0.0, 0.0, 1.0], args: ["a", "P2"], visible: false, labeled: true, clip: "inci"},
+    {name: "C9", type: "Compass", color: [0.0, 0.0, 1.0], args: ["C", "A", "Y"], visible: false, printname: "$C_{9}$"},
+    {name: "r", type: "Orthogonal", color: [0.0, 0.0, 1.0], args: ["b", "U"], visible: false, labeled: true, clip: "inci"},
+    {name: "s", type: "Orthogonal", color: [0.0, 0.0, 1.0], args: ["b", "V"], visible: false, labeled: true, clip: "inci"},
+    {name: "Collection__8", type: "IntersectionConicLine", args: ["C9", "s"]},
+    {name: "P7", type: "SelectP", pos: [4.0, {r: 1.1399094245437975, i: 1.552155101789181E-16}, {r: -3.534239589107908, i: 1.0478017149280504E-15}], color: [1.0, 0.0, 0.0], args: ["Collection__8"], visible: false, labeled: true, printname: "$P_{7}$"},
+    {name: "Collection__9", type: "IntersectionConicLine", args: ["C9", "r"]},
+    {name: "P8", type: "SelectP", pos: [{r: -1.47063430579901, i: -1.393374843892981E-16}, {r: 1.290132596620626, i: -1.9829968894557722E-15}, 4.0], color: [1.0, 0.0, 0.0], args: ["Collection__9"], visible: false, labeled: true, printname: "$P_{8}$"},
+    {name: "t", type: "Segment", color: [0.0, 0.0, 1.0], args: ["P7", "P8"], visible: false, labeled: true, size: 5},
+    {name: "Collection__10", type: "IntersectionConicLine", args: ["C5", "p"]},
+    {name: "P5", type: "SelectP", pos: [{r: 1.21719715772443, i: 1.516182381813679E-15}, -4.0, {r: -3.7121816282615496, i: -3.313333032132178E-16}], color: [1.0, 0.0, 0.0], args: ["Collection__10"], visible: false, labeled: true, printname: "$P_{5}$"},
+    {name: "Collection__11", type: "IntersectionConicLine", args: ["C5", "o"]},
+    {name: "P6", type: "SelectP", pos: [{r: -1.356085212607478, i: 1.6852091903774626E-15}, {r: 0.3103816330908657, i: -1.765017048561474E-16}, 4.0], color: [1.0, 0.0, 0.0], args: ["Collection__11"], visible: false, labeled: true, printname: "$P_{6}$"},
+    {name: "q", type: "Segment", color: [0.0, 0.0, 1.0], args: ["P5", "P6"], visible: false, labeled: true, size: 5},
+    {name: "Tr2", type: "TrSimilarity", color: [0.0, 0.0, 1.0], args: ["A", "A", "O", "B"], visible: false, dock: {offset: [0.0, -0.0]}},
+    {name: "P9", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr2", "P5"], visible: false, labeled: true, printname: "$P_{9}$"},
+    {name: "P10", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr2", "P6"], visible: false, labeled: true, printname: "$P_{10}$"},
+    {name: "u", type: "Segment", color: [0.0, 0.0, 1.0], args: ["P9", "P10"], visible: false, labeled: true, size: 5}
+  ]
+
+});
+
+</script>
+</head>
+
+<body >
+  <canvas id="CSCanvas" width="850" height="600"
+          style="border:2px solid black"></canvas>
+
+<div style="position:absolute;left:760px;top:550px">
+ <button  id="pdf" class="btn" onclick="cdy.exportPDF()" type="button" >PDF</button>
+
+</div>
+</body>
+
+
+</html>

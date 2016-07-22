@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>WebGL testing</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="ex.css">
+<script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script type="text/javascript" src="/dist/v0.7/ComplexCurves.js"></script>
+<script id="csinit" type="text/x-cindyscript">
+  use("ComplexCurves");
+  ComplexCurves("CCCanvas", "y^2-x");
+</script>
+<script type="text/javascript">
+CindyJS({canvasname:"CSCanvas",scripts:"cs*"});
+</script>
+</head>
+
+<body>
+  <canvas id="CCCanvas" style="border: none;" width="800" height="540"></canvas>
+  <div id="CSCanvas" style="display:none"></div>
+</body>
+
+</html>

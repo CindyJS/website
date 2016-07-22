@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    <title>Cindy JS</title>
+    <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+    <script type="text/javascript" src="/dist/v0.7/CindyGL.js"></script>
+     <style type="text/css">
+    * {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+</style>
+  </head>
+    
+	<body>
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+      
+      f(z, c) := z*z+c;
+      fp(c) := (1-sqrt(1-c*4))/2; //Fixpoint of f
+      
+      createimage("juliaconj", 1024, 512);
+      createimage("julia",     400, 400);
+      
+      
+      L = [-2*pi, -pi];
+      R = [2*pi,- pi];
+      
+    </script>
+    
+    <script id="csdraw" type="text/x-cindyscript">
+      c = complex(C);
+      if(re(c)>1.5, c = c - 3);
+      d = fp(c);
+      
+
+      colorplot(L, R, "juliaconj", 
+        z = exp(complex(#))+d;
+        w = z*z+c;
+        r = log(w - d);
+        if(|w|<2, if(re(r) > L.x+.01, imagergb(L, R, "juliaconj", r) + (0.01, 0.02, 0.03), (1,.7,0)), (0,0,0));
+      );
+      drawimage([1,-1.5], [7,-1.5], "juliaconj");
+      
+      colorplot([-1.5,-1.5], [1.5,-1.5], "julia", imagergb(L, R, "juliaconj", log(if( # * (re(d), im(d)) > 0, complex(#), complex(-#))-d)));
+      drawimage([-1.5,-1.5], [1.5,-1.5], "julia");
+      
+      draw([1.5,-1.5],[1.5,1.5], color->(1,1,1));
+    </script>
+
+    <canvas  id="CSCanvas"></canvas>
+    <script type="text/javascript">
+        
+        var gslp=[];
+        cdy = createCindy({canvasname:"CSCanvas",
+                    scripts: "cs*",
+                    geometry:gslp,
+                    autoplay: true,
+                     geometry:[
+                      {name:"C", type:"Free", pos:[-0.79, -0.184], color:[1,0,0], pinned:false, size:6}
+                    ],
+                    ports: [{
+                      id: "CSCanvas",
+                      width: 800,
+                      height: 400,
+                      transform: [ { visibleRect: [-1.5, -1.5, 4.5, 1.5] } ]
+                    }]
+                  });
+    </script>              
+	</body>
+</html>

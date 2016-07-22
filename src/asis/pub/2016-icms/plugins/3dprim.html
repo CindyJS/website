@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>3d primitives</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/dist/v0.7/CindyJS.css">
+<link rel="stylesheet" href="ex.css">
+<style type="text/css">
+  body canvas { display: inline-block; }
+  body { line-height: 0; background-color: #f0f1eb; }
+</style>
+<script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script type="text/javascript" src="/dist/v0.7/Cindy3D.js"></script>
+</head>
+<body><div id="CSCanvas" style="display: none"></div><canvas id="a" width="200" height="150"></canvas><canvas id="b" width="200" height="150"></canvas><canvas id="c" width="200" height="150"></canvas><canvas id="d" width="200" height="150"></canvas>
+<script id="csinit" type="text/x-cindyscript">
+  use("Cindy3D");
+  bg = [0.941, 0.945, 0.922];
+</script>
+<script id="csdraw" type="text/x-cindyscript">
+
+  begin3d(name->"a", supersample->3);
+  fieldofview3d(15°);
+  background3d(bg);
+  draw3d([0,0,0], size->15);
+  end3d();
+
+  begin3d(name->"b", supersample->3);
+  fieldofview3d(15°);
+  background3d(bg);
+  draw3d([-1,0,0], [1,0,0], size->10);
+  end3d();
+
+  begin3d(name->"c", supersample->3);
+  fieldofview3d(15°);
+  background3d(bg);
+  pts = apply(0..7, [sin(#*2*pi/7), cos(#*2*pi/7), 0.25*sin(#*2*pi/7)*cos(#*2*pi/7)]);
+  fillpoly3d(pts, color->[0.75,0,0.75]);
+  end3d();
+
+  begin3d(name->"d", supersample->3);
+  fieldofview3d(15°);
+  lookat3d([0,-3,3], [0,0,0], [0,1,0]);
+  background3d(bg);
+  pts = flatten(apply(-10..10, x, apply(-10..10, y,
+  0.1 * [x, y, cos(0.75*|[x,y]|)])));
+  mesh3d(21, 21, pts, normaltype->"pervertex", color->[0,0.75,0]);
+  end3d();
+</script>
+<script type="text/javascript">
+  CindyJS({
+    scripts:"cs*",
+    ports: [{id: "CSCanvas"}],
+  });
+</script>
+</body>
+</html>

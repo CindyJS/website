@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<g font-family="monospace" font-size="14px">
+<text x="0" y="14" xml:space="preserve"><tspan fill="#BC7A00">&lt;!DOCTYPE&#160;html&gt;</tspan></text>
+<text x="0" y="33" xml:space="preserve">&lt;<tspan fill="#008000" font-weight="bold">html</tspan>&gt;</text>
+<text x="0" y="52" xml:space="preserve"></text>
+<text x="0" y="71" xml:space="preserve">&lt;<tspan fill="#008000" font-weight="bold">head</tspan>&gt;</text>
+<text x="0" y="90" xml:space="preserve">&lt;<tspan fill="#008000" font-weight="bold">title</tspan>&gt;Cindy&#160;JS&#160;Sunflower&lt;/<tspan fill="#008000" font-weight="bold">title</tspan>&gt;</text>
+<text x="0" y="109" xml:space="preserve">&lt;<tspan fill="#008000" font-weight="bold">script</tspan>&#160;<tspan fill="#7D9029">type</tspan><tspan fill="#666666">=</tspan><tspan fill="#BA2121">&quot;text/javascript&quot;</tspan>&#160;<tspan fill="#7D9029">src</tspan><tspan fill="#666666">=</tspan><tspan fill="#BA2121">&quot;Cindy.js&quot;</tspan>&gt;&lt;/<tspan fill="#008000" font-weight="bold">script</tspan>&gt;</text>
+<text x="0" y="128" xml:space="preserve"></text>
+<text x="0" y="147" xml:space="preserve">&lt;<tspan fill="#008000" font-weight="bold">script</tspan>&#160;<tspan fill="#7D9029">id</tspan><tspan fill="#666666">=</tspan><tspan fill="#BA2121">&quot;csdraw&quot;</tspan>&#160;<tspan fill="#7D9029">type</tspan><tspan fill="#666666">=</tspan><tspan fill="#BA2121">&quot;text/x-cindyscript&quot;</tspan>&gt;<tspan fill="#bbbbbb"></tspan></text>
+<text x="0" y="166" xml:space="preserve"><tspan fill="#bbbbbb"></tspan><tspan fill="#0000FF">repeat</tspan>(<tspan fill="#666666">500</tspan>,<tspan fill="#19177C">i</tspan>,<tspan fill="#bbbbbb"></tspan></text>
+<text x="0" y="185" xml:space="preserve"><tspan fill="#bbbbbb">&#160;&#160;&#160;&#160;&#160;&#160;&#160;</tspan><tspan fill="#19177C">w</tspan><tspan fill="#666666">=</tspan><tspan fill="#19177C">i</tspan><tspan fill="#666666">*</tspan>(<tspan fill="#666666">137.508</tspan><tspan fill="#666666">+</tspan><tspan fill="#19177C">B</tspan><tspan fill="#666666">.</tspan><tspan fill="#19177C">x</tspan>)<tspan fill="#666666">;</tspan><tspan fill="#bbbbbb"></tspan></text>
+<text x="0" y="204" xml:space="preserve"><tspan fill="#bbbbbb">&#160;&#160;&#160;&#160;&#160;&#160;&#160;</tspan><tspan fill="#19177C">p</tspan><tspan fill="#666666">=</tspan><tspan fill="#19177C">A</tspan><tspan fill="#666666">+</tspan>(<tspan fill="#0000FF">cos</tspan>(<tspan fill="#19177C">w</tspan>),<tspan fill="#0000FF">sin</tspan>(<tspan fill="#19177C">w</tspan>))<tspan fill="#666666">*</tspan><tspan fill="#0000FF">sqrt</tspan>(<tspan fill="#19177C">i</tspan>)<tspan fill="#666666">;</tspan><tspan fill="#bbbbbb"></tspan></text>
+<text x="0" y="223" xml:space="preserve"><tspan fill="#bbbbbb"></tspan></text>
+<text x="0" y="242" xml:space="preserve"><tspan fill="#bbbbbb">&#160;&#160;&#160;&#160;&#160;&#160;&#160;</tspan><tspan fill="#0000FF">draw</tspan>(<tspan fill="#19177C">p</tspan>,<tspan fill="#19177C">size</tspan><tspan fill="#666666">-&gt;</tspan><tspan fill="#0000FF">sqrt</tspan>(<tspan fill="#19177C">i</tspan>),<tspan fill="#19177C">color</tspan><tspan fill="#666666">-&gt;</tspan><tspan fill="#0000FF">hue</tspan>(<tspan fill="#19177C">i</tspan>))<tspan fill="#666666">;</tspan><tspan fill="#bbbbbb"></tspan></text>
+<text x="0" y="261" xml:space="preserve"><tspan fill="#bbbbbb">&#160;&#160;&#160;&#160;&#160;&#160;&#160;</tspan>)<tspan fill="#666666">;</tspan><tspan fill="#bbbbbb"></tspan></text>
+<text x="0" y="280" xml:space="preserve"><tspan fill="#bbbbbb"></tspan>&lt;/<tspan fill="#008000" font-weight="bold">script</tspan>&gt;</text>
+<text x="0" y="299" xml:space="preserve">&lt;<tspan fill="#008000" font-weight="bold">script</tspan>&#160;<tspan fill="#7D9029">type</tspan><tspan fill="#666666">=</tspan><tspan fill="#BA2121">&quot;text/javascript&quot;</tspan>&gt;</text>
+<text x="0" y="318" xml:space="preserve"><tspan fill="#008000" font-weight="bold">var</tspan>&#160;cdy&#160;<tspan fill="#666666">=</tspan>&#160;CindyJS({&#160;</text>
+<text x="0" y="337" xml:space="preserve">&#160;&#160;ports<tspan fill="#666666">:</tspan>&#160;[{id<tspan fill="#666666">:</tspan>&#160;<tspan fill="#BA2121">&quot;CSCanvas&quot;</tspan>,&#160;width<tspan fill="#666666">:</tspan>&#160;<tspan fill="#666666">500</tspan>,&#160;height<tspan fill="#666666">:</tspan>&#160;<tspan fill="#666666">500</tspan>}],</text>
+<text x="0" y="356" xml:space="preserve">&#160;&#160;scripts<tspan fill="#666666">:</tspan>&#160;<tspan fill="#BA2121">&quot;cs*&quot;</tspan>,</text>
+<text x="0" y="375" xml:space="preserve">&#160;&#160;geometry<tspan fill="#666666">:</tspan>&#160;[</text>
+<text x="0" y="394" xml:space="preserve">&#160;&#160;&#160;&#160;{name<tspan fill="#666666">:</tspan><tspan fill="#BA2121">&quot;A&quot;</tspan>,&#160;type<tspan fill="#666666">:</tspan><tspan fill="#BA2121">&quot;Free&quot;</tspan>,&#160;pos<tspan fill="#666666">:</tspan>[<tspan fill="#666666">0</tspan>,<tspan fill="#666666">0</tspan>]},</text>
+<text x="0" y="413" xml:space="preserve">&#160;&#160;&#160;&#160;{name<tspan fill="#666666">:</tspan><tspan fill="#BA2121">&quot;B&quot;</tspan>,&#160;type<tspan fill="#666666">:</tspan><tspan fill="#BA2121">&quot;Free&quot;</tspan>,&#160;pos<tspan fill="#666666">:</tspan>[<tspan fill="#666666">0</tspan>,<tspan fill="#666666">6</tspan>]}]</text>
+<text x="0" y="432" xml:space="preserve">});</text>
+<text x="0" y="451" xml:space="preserve">&lt;/<tspan fill="#008000" font-weight="bold">script</tspan>&gt;</text>
+<text x="0" y="470" xml:space="preserve">&lt;/<tspan fill="#008000" font-weight="bold">head</tspan>&gt;</text>
+<text x="0" y="489" xml:space="preserve"></text>
+<text x="0" y="508" xml:space="preserve">&lt;<tspan fill="#008000" font-weight="bold">body</tspan>&gt;</text>
+<text x="0" y="527" xml:space="preserve">&#160;&#160;&lt;<tspan fill="#008000" font-weight="bold">div</tspan>&#160;<tspan fill="#7D9029">id</tspan><tspan fill="#666666">=</tspan><tspan fill="#BA2121">&quot;CSCanvas&quot;</tspan>&gt;&lt;/<tspan fill="#008000" font-weight="bold">div</tspan>&gt;</text>
+<text x="0" y="546" xml:space="preserve">&lt;/<tspan fill="#008000" font-weight="bold">body</tspan>&gt;</text>
+<text x="0" y="565" xml:space="preserve"></text>
+<text x="0" y="584" xml:space="preserve">&lt;/<tspan fill="#008000" font-weight="bold">html</tspan>&gt;</text>
+<text x="0" y="603" xml:space="preserve"></text></g></svg>

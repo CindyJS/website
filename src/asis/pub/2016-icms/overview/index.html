@@ -1,0 +1,365 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>CindyJS</title>
+
+		<link rel="stylesheet" href="../reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="../reveal.js/css/theme/serif.css">
+
+		
+		<link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+		
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+<style type="text/css">
+ p { text-align: left; font-size:50% }
+.reveal section ul { text-align: left; font-size:80% }
+.reveal section h1 { font-size:170% }
+.reveal section h2 {  font-size:150% }
+.reveal section h3 {  font-size:130% }
+.reveal section h4 {  font-size:90% }
+.reveal section img {
+  border: 0px solid #000;
+  box-shadow: 0 0 0px rgba(0, 0, 0, 0.15); 
+}
+iframe{
+display:block;
+overflow: hidden;
+margin: 0 auto;
+}
+</style>
+	</head>
+	<body>
+
+<div class="reveal">
+<div class="slides">
+
+<section data-markdown>
+    <script type="text/template">
+## CindyJS - visualization in your pocket
+
+#### M. v. Gagern, U. Kortenkamp, J. Richter-Gebert and M. Strobel
+#### University of Potsdam and Technical University of Munich
+<center>
+<iframe data-src="cindyjs/00_title.html" width=450 height=550></iframe>
+</center>
+    </script>
+</section>
+
+
+<section data-markdown>
+    <script type="text/template">
+## project goals of CindyJS
+* create a versatile visualization framework
+* HTML5 technology: JavaScript/WebGL
+* algorithms stricly based on projective geomery
+* an easy to use scripting language (CindyScript)
+* extensibility by plugins
+* real time performance 
+    </script>
+</section>
+
+<section>
+	<section>
+	<h2>some examples</h2>
+	</section>
+
+	<section>
+	<h3>intersection of conics</h3>
+	<div align="center">
+	<iframe data-src="cindyjs/02_concon.html" width=550 height=550 align="center"></iframe>
+	</div>
+	</section>
+
+	<section>
+	<h3>scripted sunflower</h3>
+<div class="container">
+    <div style="float:left;width:49%">
+	<iframe data-src="cindyjs/01_sunflower.html" width=500 height=500 align="center"></iframe>
+    </div>
+    <div style="float:right;width:49%">
+		<img src="img/sun.svg.png" alt="sunflower"/>
+    </div>
+</div>
+	</section>
+
+
+
+
+</section>
+
+<section>
+	<section data-markdown>
+	    <script type="text/template">
+	        ## history
+	    </script>
+	</section>
+	<section data-markdown>
+	    <script type="text/template">
+	        ### Cinderella 
+		<center><img src="img/cindy.png" alt="netscape"/></center>
+	    </script>
+	</section>
+	<section data-markdown>
+	    <script type="text/template">
+	        ### a very short history of Cinderella
+* 1992: J. Richter-Gebert + H. Crapo developed Cinderella on NeXT
+* 1996: almost missed a talk at conference (CGAL Startup Meeting)
+* 1996: first Java prototype (for a talk at CGAL group)
+* 1996-: active development (U. Kortenkamp / J. Richter-Gebert)
+	    </script>
+	</section>
+
+
+	<section data-markdown>
+	    <script type="text/template">
+	        ### Cinderella on the web (1996)
+		<center><img src="img/netscape.png" alt="netscape"/></center>
+	    </script>
+	</section>
+
+	<section data-markdown>
+	    <script type="text/template">
+		### the decline of Java on the web
+	    </script>
+	</section>
+
+	<section data-markdown>
+	    <script type="text/template">
+		### Start Java!
+		<center><img src="img/java0.png" alt="netscape"/></center>
+	    </script>
+	</section>
+
+	<section data-markdown>
+	    <script type="text/template">
+		### Are you sure?
+		<center><img src="img/java1.png" alt="netscape"/></center>
+	    </script>
+	</section>
+
+	<section data-markdown>
+	    <script type="text/template">
+		### Really?
+		<center><img src="img/java2.png" alt="netscape"/></center>
+	    </script>
+	</section>
+
+	<section data-markdown>
+	    <script type="text/template">
+		### I warned you!
+		<center><img src="img/java3.png" alt="netscape"/></center>
+	    </script>
+	</section>
+
+	<section data-markdown>
+	    <script type="text/template">
+		### Yet another warning
+		<center><img src="img/java4.png" alt="netscape"/></center>
+	    </script>
+	</section>
+	<section data-markdown>
+	    <script type="text/template">
+		### I'm serious!
+		<center><img src="img/java5.png" alt="netscape"/></center>
+	    </script>
+	</section>
+
+	<section data-markdown>
+	    <script type="text/template">
+		### Last chance!
+		<center><img src="img/java6.png" alt="netscape"/></center>
+	    </script>
+	</section>
+
+	<section data-markdown>
+	    <script type="text/template">
+		### Okay, okay...
+		<center><img src="img/java7.png" alt="netscape"/></center>
+	    </script>
+	</section>
+
+
+	<section data-markdown>
+	    <script type="text/template">
+	        ### A very short history of CindyJS 
+* around 2009: Java on the web starts to decline
+* 2013: CindyJS started as viewer for Cinderella in the browser
+* 2016: Oracle announced the discontinuation of the Java plugin
+* today: CindyJS achieved 80% compatibility to Cinderella   
+ i.e. Euclidean geometry, physics, CindyScript
+* runs on almost every device you are carrying  
+	    </script>
+	</section>
+
+
+	<section>
+	<h3>export demo</h3>
+<div class="container">
+    <div style="float:left;width:49%">
+		<img src="img/cindy-win.png" alt="sunflower"/>
+    </div>
+
+
+    <div style="float:right;width:49%">
+		<img src="img/cjs.png" alt="sunflower"/>
+    </div>
+</div>
+	</section>
+
+</section>
+
+
+
+
+
+<section>
+	<section>
+	<h2>challenges</h2>
+	</section>
+	<section>
+		<h3>challenges</h3>
+		<ul>
+			<li> mathematics (geometry, complex analysis, ...)
+			<li> numerics (stability, convergence, ...)
+			<li> computer science (implementation, efficiency, ...)
+		</ul>
+	</section>
+
+	<section>
+	<h3>complex tracing</h3>
+	<div align="center">
+	<iframe data-src="cindyjs/ctracing/vis.html" width=1480 height=900 align="center"></iframe>
+	</div>
+	</section>
+	<section>
+	<h3>analytic continuation: circle intersection</h3>
+	<div align="center">
+	<iframe data-src="cindyjs/circir.html" width=680 height=440 align="center"></iframe>
+	</div>
+	</section>
+
+
+</section>
+
+
+
+<section>
+	<section>
+	<h2> CindyJS in the wild </h2>
+	</section>
+
+<section data-markdown>
+    <script type="text/template">
+## Where can you already find CindyJS?
+* Mathe Vital
+* Bruchrechnen!
+* MC Squared
+* Discretization in Geometry and Dynamics - Gallery
+* ...
+    </script>
+</section>
+
+	<section>
+	<h3> shopping mall </h3>
+		<center><img height=600 src="img/shop1.jpg" alt="pic1"/></center>
+	</section>
+
+	<section>
+	<h3> iOrnament post processing</h2>
+	</section>
+
+
+	<section>
+	<h3>iOrnament</h3>
+	    <ul>
+		    <li> create ornaments on your iPad/iPhone
+		<li> connects mathematical beauty with art
+	    </ul>
+	    <br>
+
+		<center><img height=400 src="iornament/pics/iOrnamentIPad.png" alt="pic1"/></center>
+	</section>
+
+	<section>
+	<h3>iOrnament examples</h3>
+	<h4>Spektrum der Wissenschaft competition</h4>
+<div class="container">
+    <div style="float:left;width:49%">
+		<center><img src="iornament/pics/img1.png" alt="pic1"/></center>
+    </div>
+    <div style="float:right;width:49%">
+		<center><img src="iornament/pics/img25.png" alt="pic1"/></center>
+    </div>
+</div>
+	</section>
+
+
+	<section>
+	<h3>kaleidocycle</h3>
+	<div align="center">
+	<iframe data-src="iornament/code/Kaleido_all.html" width=920 height=650 align="center"></iframe>
+	</div>
+	</section>
+
+	</section>
+
+
+	
+
+
+<section data-markdown>
+    <script type="text/template">
+        ## summary
+* CindyJS is a framework for mathematical visualization
+* projective geometry as basic principle
+* real time capable algoritms
+* easy to use scripting language
+* physics engine and plugins
+* open source, fork us on github!
+    </script>
+</section>
+
+<section data-markdown>
+    <script type="text/template">
+## thank you very much!
+
+#### github.com/cindyjs
+    </script>
+</section>
+
+</div>
+</div>
+
+		<script src="../reveal.js/lib/js/head.min.js"></script>
+		<script src="../reveal.js/js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+				        controls: false,
+				        progress: false,
+
+				
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '../reveal.js/plugin/markdown/marked.js' },
+					{ src: '../reveal.js/plugin/markdown/markdown.js' },
+					{ src: '../reveal.js/plugin/notes/notes.js', async: true },
+				]
+			});
+		</script>
+	</body>
+</html>

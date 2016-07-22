@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html class="nohack">
+<head>
+<title>Escher's impossible cube</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/dist/v0.7/CindyJS.css">
+<link rel="stylesheet" href="ex.css">
+<style type="text/css">
+  #x3D1 { display: inline-block; }
+  #x3D2 { display: none; }
+  .hack #x3D1 { display: none; }
+  .hack #x3D2 { display: inline-block; }
+</style>
+<script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script type="text/javascript" src="Cindy3D-demohack.js"></script>
+<script id="csinit" type="text/x-cindyscript">
+  use("Cindy3D-demohack");
+  initCam = true;
+  initHack = true;
+</script>
+<script id="csdraw" type="text/x-cindyscript">
+Cam = [-5, 5, -20];
+interp(a, c, d) := (v = Cam - a; a + (c.y - d.y) / |v| * v);
+PPP = interp([1, 1, 1], C1, D1);
+PPM = interp([1, 1, -1], C2, D2);
+PMM = interp([1, -1, -1], C3, D3);
+PMP = interp([1, -1, 1], C4, D4);
+MMP = interp([-1, -1, 1], C5, D5);
+MMM = interp([-1, -1, -1], C6, D6);
+MPM = interp([-1, 1, -1], C7, D7);
+MPP = interp([-1, 1, 1], C8, D8);
+vs = [PPP, PPM, PMM, PMP, MMP, MMM, MPM, MPP];
+f = |Cx,Ax|/|Bx,Ax|;
+mix(a, b) := f*b + (1 - f)*a;
+
+hack = |Cy,Ay|/|By,Ay|;
+if (hack < 0.001, hack = 0);
+if (hack > 0 & initHack, initCam = true; initHack = false);
+javascript("document.documentElement.className='" + if (hack > 0, "", "no") + "hack'");
+begin3d(name->if(hack > 0, "x3D2", "x3D1"), demohack->(hack > 0), supersample->2);
+if (hack > 0, hackflat3d(1 + 0.25*hack), hackflat3d(0));
+if (initCam,
+  background3d([0,0,0]);
+  shininess3d(50);
+  lookat3d(Cam, [0, 0, 0], [-1, 100, 0]);
+  fieldofview3d(6°);
+  ambientlight3d(0.4*[1,1,1]);
+  directionallight3d(0, direction->[-2,-1,2],
+    diffuse->0.8*[1,1,1], specular->0.3*[1,1,1]);
+  hackcam3d();
+  initCam = false);
+forall(vs, draw3d(#, color->mix([1,1,0], [1,0,1]), size->mix(3, 5), alpha->0.999));
+forall(cycle(vs) ++ [[PPP, PMP], [PPM, MPM], [PMM, MMM], [MMP, MPP]],
+  draw3d(#_1, #_2, color->[1,1,0], size->3));
+end3d();
+</script>
+<script type="text/javascript">
+  CindyJS({
+    scripts:"cs*",
+    ports: [{
+      id: "CSCanvas",
+      width: 200,
+      height: 500,
+      transform:[{visibleRect:[-1,15,11,-10]}],
+    }],
+    geometry: [
+      {name:"A1",type:"Free",pos:[2,8],visible:false},
+      {name:"B1",type:"Free",pos:[4,14],visible:false},
+      {name:"s1",type:"Segment",args:["A1","B1"]},
+      {name:"C1",type:"PointOnSegment",args:["s1"],pos:[3,11],pinned:true,size:2,color:[0,0,1]},
+      {name:"D1",type:"PointOnSegment",args:["s1"],pos:[3,11]},
+      {name:"A2",type:"Free",pos:[0,6],visible:false},
+      {name:"B2",type:"Free",pos:[2,12],visible:false},
+      {name:"s2",type:"Segment",args:["A2","B2"]},
+      {name:"C2",type:"PointOnSegment",args:["s2"],pos:[1,9],pinned:true,size:2,color:[0,0,1]},
+      {name:"D2",type:"PointOnSegment",args:["s2"],pos:[1,9]},
+      {name:"A3",type:"Free",pos:[0,0],visible:false},
+      {name:"B3",type:"Free",pos:[2,6],visible:false},
+      {name:"s3",type:"Segment",args:["A3","B3"]},
+      {name:"C3",type:"PointOnSegment",args:["s3"],pos:[1,3],pinned:true,size:2,color:[0,0,1]},
+      {name:"D3",type:"PointOnSegment",args:["s3"],pos:[1,3]},
+      {name:"A4",type:"Free",pos:[2,2],visible:false},
+      {name:"B4",type:"Free",pos:[4,8],visible:false},
+      {name:"s4",type:"Segment",args:["A4","B4"]},
+      {name:"C4",type:"PointOnSegment",args:["s4"],pos:[3,5],pinned:true,size:2,color:[0,0,1]},
+      {name:"D4",type:"PointOnSegment",args:["s4"],pos:[3,5]},
+      {name:"A5",type:"Free",pos:[8,2],visible:false},
+      {name:"B5",type:"Free",pos:[10,8],visible:false},
+      {name:"s5",type:"Segment",args:["A5","B5"]},
+      {name:"C5",type:"PointOnSegment",args:["s5"],pos:[9,5],pinned:true,size:2,color:[0,0,1]},
+      {name:"D5",type:"PointOnSegment",args:["s5"],pos:[9,5]},
+      {name:"A6",type:"Free",pos:[6,0],visible:false},
+      {name:"B6",type:"Free",pos:[8,6],visible:false},
+      {name:"s6",type:"Segment",args:["A6","B6"]},
+      {name:"C6",type:"PointOnSegment",args:["s6"],pos:[7,3],pinned:true,size:2,color:[0,0,1]},
+      {name:"D6",type:"PointOnSegment",args:["s6"],pos:[7,3]},
+      {name:"A7",type:"Free",pos:[6,6],visible:false},
+      {name:"B7",type:"Free",pos:[8,12],visible:false},
+      {name:"s7",type:"Segment",args:["A7","B7"]},
+      {name:"C7",type:"PointOnSegment",args:["s7"],pos:[7,9],pinned:true,size:2,color:[0,0,1]},
+      {name:"D7",type:"PointOnSegment",args:["s7"],pos:[7,9]},
+      {name:"A8",type:"Free",pos:[8,8],visible:false},
+      {name:"B8",type:"Free",pos:[10,14],visible:false},
+      {name:"s8",type:"Segment",args:["A8","B8"]},
+      {name:"C8",type:"PointOnSegment",args:["s8"],pos:[9,11],pinned:true,size:2,color:[0,0,1]},
+      {name:"D8",type:"PointOnSegment",args:["s8"],pos:[9,11]},
+      {name:"s12",type:"Segment",args:["C1","C2"], color:[0,0,0]},
+      {name:"s23",type:"Segment",args:["C2","C3"], color:[0,0,0]},
+      {name:"s34",type:"Segment",args:["C3","C4"], color:[0,0,0]},
+      {name:"s45",type:"Segment",args:["C4","C5"], color:[0,0,0]},
+      {name:"s56",type:"Segment",args:["C5","C6"], color:[0,0,0]},
+      {name:"s67",type:"Segment",args:["C6","C7"], color:[0,0,0]},
+      {name:"s78",type:"Segment",args:["C7","C8"], color:[0,0,0]},
+      {name:"s81",type:"Segment",args:["C8","C1"], color:[0,0,0]},
+      {name:"s14",type:"Segment",args:["C1","C4"], color:[0,0,0]},
+      {name:"s27",type:"Segment",args:["C2","C7"], color:[0,0,0]},
+      {name:"s36",type:"Segment",args:["C3","C6"], color:[0,0,0]},
+      {name:"s58",type:"Segment",args:["C5","C8"], color:[0,0,0]},
+      {name:"Ax",type:"Free",pos:[1,-2],visible:false},
+      {name:"Bx",type:"Free",pos:[9,-2],visible:false},
+      {name:"sx",type:"Segment",args:["Ax","Bx"]},
+      {name:"Cx",type:"PointOnSegment",args:["sx"],pos:[1,-2]},
+      {name:"Ay",type:"Free",pos:[1,-4],visible:false},
+      {name:"By",type:"Free",pos:[9,-4],visible:false},
+      {name:"sy",type:"Segment",args:["Ay","By"]},
+      {name:"Cy",type:"PointOnSegment",args:["sy"],pos:[1,-4]},
+      {name:"B",type:"Button",text:"Reset camera",dock:{corner:"UL", offset:[10,-30]},script:"initCam=true"},
+    ],
+  });
+</script>
+</head>
+
+<body><div id="CSCanvas" style="display: inline-block"></div><canvas id="x3D1" width="500" height="500"></canvas><canvas id="x3D2" width="500" height="500"></canvas></body>
+
+</html>

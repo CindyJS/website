@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="ex.css">
+    <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+    <script type="text/javascript" src="/dist/v0.7/katex-plugin.js"></script>
+  </head>
+  <body>
+    <div id="CSCanvas"></div>
+<script id="csinit" type="text/x-cindyscript">
+fmt(x):=(
+  replace(x + "", "*", "\cdot");
+)
+</script>
+<script id="csdraw" type="text/x-cindyscript">
+layer(20);
+m = Tr0.matrix;
+m = m/m_3_3;
+ev = transpose(eigenvectors(m));
+ev = apply(ev,#/#_3);
+drawtext([-10, -9],
+"$\phantom\rightarrow\begin{pmatrix}" +
+m_1_1  + "&" + m_1_2 + "&" + m_1_3 + "\\" +
+m_2_1  + "&" + m_2_2 + "&" + m_2_3 + "\\" +
+m_3_1  + "&" + m_3_2 + "&" + m_3_3 + "\end{pmatrix}$");
+drawtext([-10, -12],
+"$\rightarrow\begin{pmatrix}" + fmt(ev_1_1) + "\\" + fmt(ev_1_2) + "\\" + fmt(ev_1_3) + "\end{pmatrix}," +
+"\begin{pmatrix}" + fmt(ev_2_1) + "\\" + fmt(ev_2_2) + "\\" + fmt(ev_2_3) + "\end{pmatrix}," +
+"\begin{pmatrix}" + fmt(ev_3_1) + "\\" + fmt(ev_3_2) + "\\" + fmt(ev_3_3) + "\end{pmatrix}"
+);
+drawall(select(ev, evi, length(select(evi, abs(im(#)) > 0.0001)) == 0));
+
+</script>
+
+    <script type="text/javascript">
+createCindy({ 
+	scripts: "cs*", 
+	defaultAppearance: {}, 
+	geometry: [ 
+		{ name: "A", type: "Free", pos: [ -2.46875, -4.0, 0.78125 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "B", type: "Free", pos: [ 4.0, 2.632911392405063, -1.2658227848101264 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "a", type: "Segment", pos: [ 1.2658227848101264, 1.8698493046318425E-16, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "A", "B" ], size: 1 }, 
+		{ name: "C", type: "Free", pos: [ -0.3582089552238805, -4.0, 0.7462686567164178 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "b", type: "Segment", pos: [ 0.8231278859666734, 0.6725557117044769, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "B", "C" ], size: 1 }, 
+		{ name: "D", type: "Free", pos: [ -0.3870967741935483, -4.0, 1.6129032258064515 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "c", type: "Segment", pos: [ 4.0, -0.33333333333333326, 0.1333333333333334 ], color: [ 0.0, 0.0, 1.0 ], args: [ "C", "D" ], size: 1 }, 
+		{ name: "d", type: "Segment", pos: [ 0.21805494984736157, 1.591801133885739, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "D", "B" ], size: 1 }, 
+		{ name: "E", type: "Free", pos: [ 4.0, 0.125, -3.125 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "e", type: "Segment", pos: [ 3.2176656151419563, -2.9652996845425874, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "B", "E" ], size: 1 }, 
+		{ name: "f", type: "Segment", pos: [ 3.083923154701719, 1.314459049544995, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "E", "D" ], size: 1 }, 
+		{ name: "g", type: "Segment", pos: [ -1.5980629539951572, 1.7675544794188862, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "D", "A" ], size: 1 }, 
+		{ name: "h", type: "Segment", pos: [ 0.0662983425414366, 0.7403314917127072, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "A", "C" ], size: 1 }, 
+		{ name: "F", type: "Free", pos: [ 3.3450292397660824, -4.0, 0.584795321637427 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "G", type: "Free", pos: [ 4.0, -0.02247191011235955, 0.5617977528089888 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "H", type: "Free", pos: [ 4.0, -1.3284671532846715, 0.36496350364963503 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "K", type: "Free", pos: [ 4.0, -2.845188284518828, 0.41841004184100417 ], color: [ 1.0, 0.0, 0.0 ], labeled: false }, 
+		{ name: "Tr0", type: "TrProjection", color: [ 0.0, 0.0, 1.0 ], args: [ "A", "F", "C", "K", "B", "G", "D", "H" ] }, 
+		{ name: "k", type: "Transform", pos: [ -0.5611487044066672, 0.11553061561313764, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "a" ], size: 1 }, 
+		{ name: "l", type: "Transform", pos: [ -0.562939275840245, -0.20319109956363873, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "b" ], size: 1 }, 
+		{ name: "m", type: "Transform", pos: [ -0.31815069872336993, 0.14095284120655635, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "c" ], size: 1 }, 
+		{ name: "n", type: "Transform", pos: [ -0.5651846269781461, -0.6028636021100229, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "d" ], size: 1 }, 
+		{ name: "o", type: "Transform", pos: [ -0.5513042376429304, 1.8678456995581216, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "e" ], size: 1 }, 
+		{ name: "p", type: "Transform", pos: [ -0.3506526133304591, 0.04308993348850757, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "f" ], size: 1 }, 
+		{ name: "q", type: "Transform", pos: [ -0.2363996335805679, 0.3871043999881801, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "g" ], size: 1 }, 
+		{ name: "r", type: "Transform", pos: [ -0.006039012017634149, 0.579745153692856, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "h" ], size: 1 }, 
+		{ name: "s", type: "Transform", pos: [ -0.2491871063084806, 0.14257634157663235, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "k" ], size: 1 }, 
+		{ name: "t", type: "Transform", pos: [ -0.2599321784272701, 0.10213304238857744, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "l" ], size: 1 }, 
+		{ name: "u", type: "Transform", pos: [ -0.23286700453188178, 0.1512350661289176, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "m" ], size: 1 }, 
+		{ name: "v", type: "Transform", pos: [ -0.2698355400365222, 0.0648578512960867, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "n" ], size: 1 }, 
+		{ name: "w", type: "Transform", pos: [ 0.3194668578874355, 2.2829288821828966, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "o" ], size: 1 }, 
+		{ name: "x", type: "Transform", pos: [ -0.24037056559707623, 0.13370294868655336, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "p" ], size: 1 }, 
+		{ name: "y", type: "Transform", pos: [ -0.20632100600996892, 0.21325995799923395, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "q" ], size: 1 }, 
+		{ name: "z", type: "Transform", pos: [ -0.1224316932555644, 0.3515883798382945, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "r" ], size: 1 }, 
+		{ name: "S0", type: "Transform", pos: [ -0.22710379566145034, 0.15335965742194935, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "s" ], size: 1, printname: "$S_{0}$" }, 
+		{ name: "S1", type: "Transform", pos: [ -0.23057522985083803, 0.14522310522473925, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "t" ], size: 1, printname: "$S_{1}$" }, 
+		{ name: "S2", type: "Transform", pos: [ -0.22506009320187975, 0.1556089910196908, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "u" ], size: 1, printname: "$S_{2}$" }, 
+		{ name: "S3", type: "Transform", pos: [ -0.23356269941501576, 0.13822089786018144, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "v" ], size: 1, printname: "$S_{3}$" }, 
+		{ name: "S4", type: "Transform", pos: [ -0.42666577260071037, -0.3143854742324476, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "w" ], size: 1, printname: "$S_{4}$" }, 
+		{ name: "S5", type: "Transform", pos: [ -0.22691334858955373, 0.15181902632869357, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "x" ], size: 1, printname: "$S_{5}$" }, 
+		{ name: "S6", type: "Transform", pos: [ -0.21789183701038445, 0.17026829704004764, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "y" ], size: 1, printname: "$S_{6}$" }, 
+		{ name: "S7", type: "Transform", pos: [ -0.1935409508044302, 0.21496458529250978, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "z" ], size: 1, printname: "$S_{7}$" }, 
+		{ name: "S8", type: "Transform", pos: [ -0.22438168370969847, 0.15623194977779709, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S0" ], size: 1, printname: "$S_{8}$" }, 
+		{ name: "S9", type: "Transform", pos: [ -0.2252617243623295, 0.15443731471612945, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S1" ], size: 1, printname: "$S_{9}$" }, 
+		{ name: "S10", type: "Transform", pos: [ -0.22403422965077727, 0.1567689313214072, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S2" ], size: 1, printname: "$S_{10}$" }, 
+		{ name: "S11", type: "Transform", pos: [ -0.2260066710567703, 0.1529181718754891, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S3" ], size: 1, printname: "$S_{11}$" }, 
+		{ name: "S12", type: "Transform", pos: [ -0.25808530245264505, 0.08750137952477581, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S4" ], size: 1, printname: "$S_{12}$" }, 
+		{ name: "S13", type: "Transform", pos: [ -0.2244709360988423, 0.1559163577164979, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S5" ], size: 1, printname: "$S_{13}$" }, 
+		{ name: "S14", type: "Transform", pos: [ -0.2223081112889094, 0.16013879902269326, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S6" ], size: 1, printname: "$S_{14}$" }, 
+		{ name: "S15", type: "Transform", pos: [ -0.2163824243855686, 0.1713034755836395, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S7" ], size: 1, printname: "$S_{15}$" }, 
+		{ name: "S16", type: "Transform", pos: [ -0.22392701701166254, 0.15692199943107965, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S8" ], size: 1, printname: "$S_{16}$" }, 
+		{ name: "S17", type: "Transform", pos: [ -0.22413497126591359, 0.1565165046842619, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S9" ], size: 1, printname: "$S_{17}$" }, 
+		{ name: "S18", type: "Transform", pos: [ -0.22385671888807643, 0.15704642143220157, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S10" ], size: 1, printname: "$S_{18}$" }, 
+		{ name: "S19", type: "Transform", pos: [ -0.22431032361114442, 0.15617458114396515, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S11" ], size: 1, printname: "$S_{19}$" }, 
+		{ name: "S20", type: "Transform", pos: [ -0.23131450727617064, 0.14251696354847865, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S12" ], size: 1, printname: "$S_{20}$" }, 
+		{ name: "S21", type: "Transform", pos: [ -0.2239575071613339, 0.15685270370233909, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S13" ], size: 1, printname: "$S_{21}$" }, 
+		{ name: "S22", type: "Transform", pos: [ -0.2234563328086107, 0.1578159740783167, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S14" ], size: 1, printname: "$S_{22}$" }, 
+		{ name: "S23", type: "Transform", pos: [ -0.2220862848315205, 0.16041811825285196, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0", "S15" ], size: 1, printname: "$S_{23}$" }, 
+		{ name: "Tr1", type: "TrInverse", color: [ 0.0, 0.0, 1.0 ], args: [ "Tr0" ] }, 
+		{ name: "S24", type: "Transform", pos: [ 0.8628016583688009, -0.05621631935596782, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "a" ], size: 1, printname: "$S_{24}$" }, 
+		{ name: "S25", type: "Transform", pos: [ 0.648429547409054, 0.22340837091965263, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "b" ], size: 1, printname: "$S_{25}$" }, 
+		{ name: "S26", type: "Transform", pos: [ 0.9224963589525448, -0.05902266681491362, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "c" ], size: 1, printname: "$S_{26}$" }, 
+		{ name: "S27", type: "Transform", pos: [ -0.3074469764718289, 1.4702434920335103, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "d" ], size: 1, printname: "$S_{27}$" }, 
+		{ name: "S28", type: "Transform", pos: [ 1.154371919257631, -0.43653745128683874, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "e" ], size: 1, printname: "$S_{28}$" }, 
+		{ name: "S29", type: "Transform", pos: [ 0.748688637161271, 0.15708344102478375, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "f" ], size: 1, printname: "$S_{29}$" }, 
+		{ name: "S30", type: "Transform", pos: [ 1.3776225108643345, -0.6249097301286552, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "g" ], size: 1, printname: "$S_{30}$" }, 
+		{ name: "S31", type: "Transform", pos: [ 0.07075223706547236, 0.8187157754069003, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "h" ], size: 1, printname: "$S_{31}$" }, 
+		{ name: "S32", type: "Transform", pos: [ 0.8677697968398492, -0.09263804553144565, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S24" ], size: 1, printname: "$S_{32}$" }, 
+		{ name: "S33", type: "Transform", pos: [ 0.7640034747474364, 0.03321472067476663, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S25" ], size: 1, printname: "$S_{33}$" }, 
+		{ name: "S34", type: "Transform", pos: [ 0.8698367931466126, -0.09015067635274855, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S26" ], size: 1, printname: "$S_{34}$" }, 
+		{ name: "S35", type: "Transform", pos: [ 3.4632450335377327, -4.0, 0.8350999244494177 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S27" ], size: 1, printname: "$S_{35}$" }, 
+		{ name: "S36", type: "Transform", pos: [ 0.9589198588720652, -0.20318920717333075, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S28" ], size: 1, printname: "$S_{36}$" }, 
+		{ name: "S37", type: "Transform", pos: [ 0.7974978273495095, -0.002391528811595586, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S29" ], size: 1, printname: "$S_{37}$" }, 
+		{ name: "S38", type: "Transform", pos: [ 0.9871345693898161, -0.23245230781993065, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S30" ], size: 1, printname: "$S_{38}$" }, 
+		{ name: "S39", type: "Transform", pos: [ 0.0028963913220448447, 0.9204048697456136, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S31" ], size: 1, printname: "$S_{39}$" }, 
+		{ name: "S40", type: "Transform", pos: [ 0.8781541662359028, -0.10731448127028718, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S32" ], size: 1, printname: "$S_{40}$" }, 
+		{ name: "S41", type: "Transform", pos: [ 0.8375508989929572, -0.05900227817926215, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S33" ], size: 1, printname: "$S_{41}$" }, 
+		{ name: "S42", type: "Transform", pos: [ 0.8774839926925382, -0.1061384018342445, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S34" ], size: 1, printname: "$S_{42}$" }, 
+		{ name: "S43", type: "Transform", pos: [ 1.2583703397755448, -0.5597184931107639, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S35" ], size: 1, printname: "$S_{43}$" }, 
+		{ name: "S44", type: "Transform", pos: [ 0.9082027685314245, -0.14306811084931823, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S36" ], size: 1, printname: "$S_{44}$" }, 
+		{ name: "S45", type: "Transform", pos: [ 0.8500031143769585, -0.07341268354531068, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S37" ], size: 1, printname: "$S_{45}$" }, 
+		{ name: "S46", type: "Transform", pos: [ 0.9153668607859351, -0.15125137293235183, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S38" ], size: 1, printname: "$S_{46}$" }, 
+		{ name: "S47", type: "Transform", pos: [ -0.32931978421410746, 1.318345573374723, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "Tr1", "S39" ], size: 1, printname: "$S_{47}$" } ], 
+use:["katex"],
+	ports: [ 
+		{ id: "CSCanvas", width: 800, height: 540, transform: [ { visibleRect: [ -10, 5, 20, -15 ] } ] } ] });
+    </script>
+  </body>
+</html>

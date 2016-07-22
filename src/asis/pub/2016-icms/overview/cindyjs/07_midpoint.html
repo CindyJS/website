@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Construction.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+
+    <script type="text/javascript">
+createCindy({ 
+	scripts: "cs*", 
+	defaultAppearance: { fontFamily: "sans-serif", lineSize: 1, pointSize: 5.0, textsize: 12.0 }, 
+	angleUnit: "°", 
+	geometry: [ 
+		{ name: "A", type: "Free", pos: [ 4.0, -1.6216216216216217, -1.3513513513513513 ], color: [ 1.0, 0.0, 0.0 ], labeled: true }, 
+		{ name: "B", type: "Free", pos: [ 4.0, 2.2344827586206897, 0.689655172413793 ], color: [ 1.0, 0.0, 0.0 ], labeled: true }, 
+		{ name: "a", type: "Segment", color: [ 0.0, 0.0, 1.0 ], args: [ "A", "B" ], labeled: true }, 
+		{ name: "C0", type: "CircleMr", radius:6, color: [ 0.0, 0.0, 1.0 ], args: [ "A" ], printname: "$C_{0}$" }, 
+		{ name: "C1", type: "CircleMr", radius:6,color: [ 0.0, 0.0, 1.0 ], args: [ "B" ], printname: "$C_{1}$" }, 
+		{ name: "Collection__1", type: "IntersectionCircleCircle", args: [ "C0", "C1" ] }, 
+		{ name: "D", type: "SelectP", pos: [ 4.0, -2.840862450356505, 1.723517244299429 ], color: [ 1.0, 0.0, 0.0 ], args: [ "Collection__1" ], visible: false, labeled: true }, 
+		{ name: "C", type: "SelectP", pos: [ -0.34109031982371685, -4.0, -0.6569985385228523 ], color: [ 1.0, 0.0, 0.0 ], args: [ "Collection__1" ], visible: false, labeled: true }, 
+		{ name: "b", type: "Segment", color: [ 0.0, 0.0, 1.0 ], args: [ "C", "D" ], labeled: true }, 
+		{ name: "M", type: "Meet", color: [ 1.0, 0.0, 0.0 ], args: [ "a", "b" ], labeled: true } ], 
+	ports: [ 
+		{ id: "CSCanvas", width: 500, height: 335, transform: [ { visibleRect: [ -15.69582089552239, 10.66507462686567, 18.405671641791045, -6.1349253731343305 ] } ], background: "rgb(168,176,192)" } ], 
+	cinderella: { build: 1835, version: [ 2, 9, 1835 ] } });
+    </script>
+</head>
+<body>
+    <canvas id="CSCanvas"></canvas>
+</body>
+</html>

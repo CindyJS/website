@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>WebGL testing</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="ex.css">
+<script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script type="text/javascript" src="/dist/v0.7/Cindy3D.js"></script>
+<script id="csinit" type="text/x-cindyscript">use("Cindy3D")</script>
+<script id="csdraw" type="text/x-cindyscript">
+begin3d(supersample->2);
+background3d([0,0,0]);
+res=.2;
+rr=30;
+ss=30;
+m=apply(-rr..rr,ii,u=ii/20;
+  apply(-ss..ss,jj,v=jj/20;
+  x = u - u^3/3 + u*v^2;
+  y = v - v^3/3 + v*u^2;
+  z= u^2 - v^2;
+  (x,y,z)
+));
+m=flatten(m,levels->1);
+size3d(.6);
+color3d((.9,.1,.1));
+forall(m,draw3d(#));
+alpha3d(.6);
+color3d((.5,.5,1));
+mesh3d(2*rr+1,2*ss+1,m,normaltype->"pervertex");
+end3d()
+</script>
+<script type="text/javascript">
+CindyJS({canvasname:"CSCanvas",scripts:"cs*"});
+</script>
+</head>
+
+<body>
+  <canvas id="Cindy3D" style="border: none;" width="800" height="540"></canvas>
+  <div id="CSCanvas" style="display:none"></div>
+</body>
+
+</html>
