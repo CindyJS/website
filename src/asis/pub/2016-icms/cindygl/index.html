@@ -50,6 +50,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <link rel="stylesheet" href="../reveal.js/css/theme/serif.css" id="theme">
   <style type="text/css">
   .reveal ol, .reveal dl, .reveal ul { display:  block; }
+  .cindy {
+    width: 405px;
+    height: 405px;
+    float: right;
+  }
+  code > span.gr { color: #40cc00; font-weight: bold;}
+  code > span.dg { color: #00aa00; font-weight: bold;}
+  code > span.un { color: #902060;}
   </style>
   <!-- Printing and PDF exports -->
   <script>
@@ -76,13 +84,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <section class="slide level1">
 
 <h2 id="what-is-cindygl">What is <code>CindyGL</code>?</h2>
-<style type="text/css">
-.cindy {
-  width: 405px;
-  height: 405px;
-  float: right;
-}
-</style>
 <iframe data-src="applets/colorplot.html" class="cindy">
 </iframe>
 <div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="at">f</span>(z) <span class="op">:=</span> z<span class="op">^</span><span class="dv">7</span> <span class="op">-</span> <span class="dv">1</span><span class="op">;</span>
@@ -143,11 +144,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <section class="slide level1">
 
 <h2 id="technical-background">Technical background</h2>
-<style type="text/css">
-code > span.gr { color: #40cc00; font-weight: bold;}
-code > span.dg { color: #00aa00; font-weight: bold;}
-code > span.un { color: #902060;}
-</style>
 <div class="sourceCode" style="float:right; width:500px;">
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 colorplot(
@@ -221,7 +217,7 @@ colorplot(
 <h2 id="enhancement-conjugation">Enhancement: Conjugation</h2>
 <ul>
 <li>Internal computations can be done on an exp-log-conjugated texture.</li>
-<li>Center of this conjugation: a fixed point of <span class="math inline"><em>z</em><sup>2</sup> + <em>c</em></span>. <iframe data-src="applets/31_julia_conjugated.html" width="1010" height="510" frameBorder="0"></iframe></li>
+<li>Center of this conjugation: a fixed point of <span class="math inline"><em>z</em><sup>2</sup> + <em>c</em></span>. <iframe data-src="applets/31_julia_conjugated.html" width="1010" height="510"></iframe></li>
 </ul>
 </section>
 <section class="slide level1">
