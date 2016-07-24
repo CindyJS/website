@@ -18,14 +18,16 @@
 
     <!-- Header -->
     <header class="top-bar">
-      <h1><a href="/">CindyJS</a></h1>
-      <nav>
-        <ul id="topBarLinks">
-          <li><a href="/gallery/">Gallery</a></li>
-          <li><a href="/docs/">Docs</a></li>
-          <li><a href="/project/">Project</a></li>
-        </ul>
-      </nav>
+      <div>
+        <h1><a href="/">CindyJS</a></h1>
+        <nav>
+          <ul id="topBarLinks">
+            <li><a href="/gallery/">Gallery</a></li>
+            <li><a href="/docs/">Docs</a></li>
+            <li><a href="/project/">Project</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
 
     <div id="between-bars">
@@ -49,30 +51,32 @@
     </div>
 
     <footer>
-      <div class="footer-item">
-        <p class="footer-label">Made possible by:</p>
-        <ul class="footer-links">
-          <li><a href="http://ma.tum.de/">Technische Universität München, Zentrum Mathematik, Germany</a></li>
-          <li><a href="http://discretization.de/">DFG SFB Transregio 109 DGD, Germany</a></li>
-          <li><a href="http://mc2-project.eu/">M C Squared, 7th Framework Programme, EU</a></li>
-        </ul>
-      </div>
-      <div class="footer-sep"><hr></div>
-      <div class="footer-item">
-        <p class="footer-label">This page:</p>
-        <ul class="footer-links">
+      <div>
+        <div class="footer-item">
+          <p class="footer-label">Made possible by:</p>
+          <ul class="footer-links">
+            <li><a href="http://ma.tum.de/">Technische Universität München, Zentrum Mathematik, Germany</a></li>
+            <li><a href="http://discretization.de/">DFG SFB Transregio 109 DGD, Germany</a></li>
+            <li><a href="http://mc2-project.eu/">M C Squared, 7th Framework Programme, EU</a></li>
+          </ul>
+        </div>
+        <div class="footer-sep"><hr></div>
+        <div class="footer-item">
+          <p class="footer-label">This page:</p>
+          <ul class="footer-links">
 {{#if github}}
-          <li><a href="https://github.com/{{github.repo}}/blob/{{github.branch}}/{{github.path}}">View source</a></li>
-          <li><a href="https://github.com/{{github.repo}}/edit/{{github.branch}}/{{github.path}}">Edit page</a></li>
+            <li><a href="https://github.com/{{github.repo}}/blob/{{github.branch}}/{{github.path}}">View source</a></li>
+            <li><a href="https://github.com/{{github.repo}}/edit/{{github.branch}}/{{github.path}}">Edit page</a></li>
 {{/if}}
 {{#if license}}
-          <li><a href="{{license.url}}" rel="license">{{license.name}}
+            <li><a href="{{license.url}}" rel="license">{{license.name}}
 {{#if license.icon}}
-            <img src="{{license.icon}}" alt="{{license.name}}">
+              <img src="{{license.icon}}" alt="{{license.name}}">
 {{/if}}
-          </a></li>
+            </a></li>
 {{/if}}
-        </ul>
+          </ul>
+        </div>
       </div>
     </footer>
 

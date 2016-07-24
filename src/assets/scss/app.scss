@@ -93,8 +93,11 @@ body {
 header {
   background: $titlebar-background;
   color: $titlebar-color;
-  padding: $default-padding;
-  display: flex;
+  display: block;
+  &>div {
+    padding: $default-padding;
+    display: flex;
+  }
   h1 {
     margin: 0px;
     flex: 1;
@@ -138,9 +141,13 @@ header {
 footer {
   background: $footer-background;
   color: $footer-color;
-  display: flex;
-  justify-content: space-between;
   font-family: $condensed;
+  display: block;
+
+  &>div {
+    display: flex;
+    justify-content: space-between;
+  }
 
   .footer-item {
     padding: $default-padding;
