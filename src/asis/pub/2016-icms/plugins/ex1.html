@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simple Plugin Demo Example</title>
+    <link rel="stylesheet" href="ex.css">
+    <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+  </head>
+  <body>
+    <div id="CSCanvas"></div>
+    <script type="text/javascript">
+
+// Register a plugin called "hello", using plugin API version 1
+CindyJS.registerPlugin(1, "hello", function(api) {
+
+    // Define a CindyScript function called "greet"
+    // that takes a single argument
+    api.defineFunction("greet", 1, function(args, modifs) {
+
+        // Evaluate the argument expression
+        // (as opposed to inspecting the unevaluated formula)
+        var arg0 = api.evaluate(args[0]);
+
+        // Return string as a CindyScript value object,
+        // we might want to offer some API for this one day
+        return {
+            ctype: "string",
+            value: "Hello, " + api.instance.niceprint(arg0)
+        };
+    });
+});
+
+var cdy = CindyJS({
+  ports: [{id: "CSCanvas", width: 500, height: 300,
+           transform:[{visibleRect:[-1,5,11,-1]}]}],
+  scripts: "cs*",
+  language: "en",
+  geometry: [{name:"A", type:"FreePoint", pos:[0,0]}]
+});
+
+    </script>
+    <script id="csinit" type="text/x-cindyscript">
+      use("hello");
+    </script>
+    <script id="csdraw" type="text/x-cindyscript">
+      drawtext(A, greet("ICMS"), offset->[5,5], size->50);
+    </script>
+  </body>
+</html>

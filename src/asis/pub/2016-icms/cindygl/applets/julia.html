@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    <title>Cindy JS</title>
+    <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+    <script type="text/javascript" src="/dist/v0.7/CindyGL.js"></script>
+    <style type="text/css">
+    * {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+</style>
+  </head>
+    
+	<body style="font-family:Arial;">
+    
+    
+               
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+      
+      f(z, c) := z*z+c;
+      
+      createimage("julia", 800, 800);
+      expl = false;
+    </script>
+    
+    <script id="cskeydown" type="text/x-cindyscript">
+      print("pressed key" + keycode());
+      if(keycode()==32, colorplot("julia", 0)); //space -> black
+      if(keycode()==69, expl = !expl); //E  -> explain
+    </script>
+    
+    <script id="csdraw" type="text/x-cindyscript">
+      c = complex(C);
+
+      color(z) := (
+        z = f(z, c);
+        if(abs(z)<1.5,
+          imagergb("julia", z) + 0.01*(1,2,3),
+          (0,0,0)
+        )
+      );
+      
+      
+      colorplot("julia", (color(complex(#))));
+      drawimage([-1.5,-1.5], [1.5,-1.5], "julia");
+      
+      if(expl,
+        M =complex(mouse());
+        tp(a) := (re(a), im(a));
+        repeat(30,i,
+            draw(tp(M),tp(f(M,c)), color->[.7,.5,0], alpha->.6-.6*i/30);
+            draw(tp(M), color->hue(i/6), alpha->1-i/30);
+            M = f(M,c);
+          );
+          
+          drawcircle((0,0), 1.5, color->(1,.8,0));
+      );
+    </script>
+
+    <div  id="CSCanvas"></div>
+    <script type="text/javascript">
+        
+
+        cdy = CindyJS({canvasname:"CSCanvas",
+                    scripts: "cs*",
+                    geometry:[{name:"C", type:"Free", pos:[-0.79, -0.184], color:[1,0,0], pinned:false, size:6}],
+                    autoplay: true,
+                    ports: [{
+                      id: "CSCanvas",
+                      width: 400,
+                      height: 400,
+                      transform: [ { visibleRect: [-1.5, -1.5, 1.5, 1.5] } ]
+                    }]
+                  });
+    </script>              
+	</body>
+</html>

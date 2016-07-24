@@ -123,7 +123,11 @@ gulp.task("pages", ["cjsdeps"], function() {
         gulp.dest("dist"));
 });
 
-gulp.task("validate", ["pages"], function() {
+gulp.task("asis", [], function() {
+    return gulp.src("src/asis/**/*").pipe(gulp.dest("dist"));
+});
+
+gulp.task("validate", ["pages", "asis"], function() {
     return pipeline(
         gulp.src("dist/**/*.html"),
         validator());
@@ -226,7 +230,7 @@ gulp.task('images', function() {
 });
 
 // Build the "dist" folder by running all of the named tasks
-gulp.task('build', ['pages', 'sass', 'javascript', 'images', 'copy']);
+gulp.task('build', ['pages', 'sass', 'javascript', 'images', 'copy', 'asis']);
 
 // Clean the "dist" folder before recreating its contents
 gulp.task('rebuild', function(done) {
@@ -264,4 +268,5 @@ gulp.task('default', ['rebuild', 'server'], function() {
   gulp.watch(['src/assets/scss/**/*.scss'], ['sass', browser.reload]);
   gulp.watch(['src/assets/js/**/*.js'], ['javascript', browser.reload]);
   gulp.watch(['src/assets/img/**/*'], ['images', browser.reload]);
+  gulp.watch(['src/asis/**/*'], ['asis', browser.reload]);
 });

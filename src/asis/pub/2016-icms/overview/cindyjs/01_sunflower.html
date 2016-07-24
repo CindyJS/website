@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+        <title>Cindy JS</title>
+        <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<style type="text/css">
+ 
+  * {  
+    margin: 0;  
+    padding: 0 auto;  
+}
+</style>
+    </head>
+
+	<body style="font-family:Arial;">
+
+
+        <script id='csmove' type='text/x-cindyscript'>
+            repeat(500,i,
+                   w=i*pi/180*(137.508+B.x*0.5);
+                   p=A+(cos(w),sin(w))*0.3*sqrt(i);
+                   a=i;
+                   draw(p,size->sqrt(i)*.4,color->hue(i/34));
+                   );
+
+
+
+            </script>
+
+
+
+        <canvas  id="CSCanvas" width=430 height=450  ></canvas>
+
+        <script type="text/javascript">
+
+            var gslp=[
+                      {name:"A", kind:"P", type:"Free", pos:[0,0]},
+                      {name:"B", kind:"P", type:"Free", pos:[0,7.5]},
+                      ];
+
+            createCindy({canvasname:"CSCanvas",
+                        defaultAppearance: {pointColor: [1,0.7,0]},
+                        movescript:"csmove",
+                        geometry:gslp});
+
+
+
+
+
+            </script>
+
+
+
+	</body>
+</html>

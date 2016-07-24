@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Construction.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+timosWinkel(B,A,C,r,col):=(
+  regional(w1,w2);
+  r=min(|B,A|/4,r);
+  r=min(|A,C|/4,r);
+  w1=arctan2(B-A);
+  w2=arctan2(C-A);
+  if(w1>w2,w1=w1-360°);
+  regional(l,n);
+  l=[A];
+  n=(w2-w1)*30;
+  repeat(n,start->w1,stop->w2,w,
+    l=l++[gauss(exp(i*w)*r*25/screenresolution())+A]
+  );
+  l=l++[A.xy];
+  fillpoly(l,color->col*.5+(1,1,1)*.5);
+  connect(l,size->1,border->false,color->col);
+  p=gauss(exp(i*(w1+w2)/2)*((r*25+20)/screenresolution()))+A;
+  drawtext(p,(w2-w1),align->"center",color->col*.5);
+);
+//timosWinkel(C,B,A,1,(0,.5,.5));
+//timosWinkel(B,A,C,1,(.5,0,.5));
+timosWinkel(M,O,L,1,(.5,.5,0));
+;
+</script>
+
+    <script type="text/javascript">
+createCindy({ 
+	scripts: "cs*", 
+	defaultAppearance: { fontFamily: "sans-serif", lineSize: 1, pointSize: 5.0, textsize: 12.0 }, 
+	angleUnit: "°", 
+	geometry: [ 
+		{ name: "A", type: "Free", pos: [ 4.0, 0.48000000000000004, -1.3333333333333333 ], color: [ 1.0, 0.0, 0.0 ], visible: false, labeled: true }, 
+		{ name: "O", type: "Free", pos: [ 4.0, -2.8014120534540314, -1.6813954785602154 ], color: [ 1.0, 0.0, 0.0 ], labeled: false, size: 1}, 
+		{ name: "m", type: "Through", pos: [ 0.5422004085775591, -1.6266012257326776, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "O" ], labeled: true }, 
+		{ name: "l", type: "Through", pos: [ 1.0012728451637005, -0.9711140245262394, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "O" ], labeled: true }, 
+		{ name: "c", type: "FreeLine", pos: [ -0.26174534609068395, -0.4051397072634406, 4.0 ], color: [ 0.0, 0.0, 1.0 ], pinned: true, labeled: true }, 
+		{ name: "L", type: "Meet", color: [ 1.0, 0.0, 0.0 ], args: [ "l", "c" ], labeled: true }, 
+		{ name: "M", type: "Meet", color: [ 1.0, 0.0, 0.0 ], args: [ "m", "c" ], labeled: true }, 
+		{ name: "J", type: "PointOnLine", pos: [ 4.0, 0.8207451311098463, 0.3448744566296182 ], color: [ 1.0, 0.0, 0.0 ], args: [ "c" ], labeled: true, pinned:true }, 
+		{ name: "I", type: "PointOnLine", pos: [ 0.5791140408857792, -4.0, -0.3672446059990349 ], color: [ 1.0, 0.0, 0.0 ], args: [ "c" ], labeled: true, pinned:true } ], 
+	ports: [ 
+		{ id: "CSCanvas", width: 483, height: 235, transform: [ { visibleRect: [ -6.124341232227489, 12.188815165876779, 18.488056872037916, 0.21383886255924092 ] } ], background: "rgb(168,176,192)" } ], 
+	cinderella: { build: 1835, version: [ 2, 9, 1835 ] } });
+    </script>
+</head>
+<body>
+    <canvas id="CSCanvas"></canvas>
+</body>
+</html>

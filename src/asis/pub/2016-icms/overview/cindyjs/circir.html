@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Construction.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script id="csinit" type="text/x-cindyscript">
+eps = 0.00001;
+</script>
+<script id="csdraw" type="text/x-cindyscript">
+l = cross(C.homog, D.homog);
+
+if(|C,D| < eps,
+l = C1.matrix*D.homog;
+draw(line(l), color->[0,0,0], size->2);,
+ll = cross(C,D);
+ll = ll/max(ll);
+draw(line(ll), size->2);
+);
+</script>
+
+    <script type="text/javascript">
+createCindy({ 
+	scripts: "cs*", 
+	snap:true,
+	grid:1,
+	defaultAppearance: { fontFamily: "sans-serif", lineSize: 1, pointSize: 5.0, textsize: 12.0 }, 
+	angleUnit: "°", 
+
+  geometry: [
+    {name: "A", type: "Free", pos: [2.0, 4, 1.0], color: [1.0, 0.0, 0.0], labeled: true},
+    {name: "C0", type: "CircleByRadius", pos: {xx: -0.19974432726110575, yy: -0.19974432726110575, zz: 1.0, xy: -0.0, xz: -0.798977309044423, yz: -0.7031000319590922}, color: [0.0, 0.0, 0.0], radius: 4.0, args: ["A"], printname: "$C_{0}$", size:2},
+    {name: "B", type: "Free", pos: [4.0, 1.0, 1.0], color: [1.0, 0.0, 0.0], labeled: true},
+    {name: "C1", type: "CircleByRadius", pos: {xx: -0.2747252747252747, yy: -0.2747252747252747, zz: -0.649230769230769, xy: -0.0, xz: 1.9999999999999998, yz: -0.6813186813186812}, color: [0.0, 0.0, 0.0], radius: 4.0, args: ["B"], printname: "$C_{1}$", size:2},
+    {name: "Collection__1", type: "IntersectionCircleCircle", args: ["C0", "C1"]},
+    {name: "C", type: "SelectP", pos: [-1.1041580012442445, -4.0, -1.1255566454129227], color: [0.0, 1.0, 0.0], args: ["Collection__1"], labeled: true},
+    {name: "D", type: "SelectP", pos: [2.4110090342027313, -2.194440475185767, 4.0], color: [1.0, 0.0, 0.0], args: ["Collection__1"], labeled: true},
+    {name: "a", type: "Join", color: [0.0, 0.0, 1.0], args: ["C", "D"], labeled: true, size:2}
+  ],
+
+	ports: [ 
+		{ id: "CSCanvas", width: 680, height: 335, transform: [ { visibleRect: [ -9.06, 9.34, 18.14, -4.06 ] } ], } ], 
+	cinderella: { build: 1835, version: [ 2, 9, 1835 ] } });
+    </script>
+</head>
+<body>
+    <canvas id="CSCanvas"></canvas>
+</body>
+</html>

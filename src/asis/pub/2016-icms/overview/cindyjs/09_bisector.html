@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Cindy JS Example</title>
+<meta charset="UTF-8">
+<script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script id="csinit" type="text/x-cindyscript">
+
+// Initialization code, executed once up front.
+
+</script>
+<script id="csdraw" type="text/x-cindyscript">
+
+// Drawing code, executed whenever the canvas gets redrawn.
+
+</script>
+<script type="text/javascript">
+
+var cdy = createCindy({ // See ref/createCindy documentation for details.
+  canvasname: "CSCanvas",
+  scripts: "cs*",
+  language: "en",
+  grid:1,
+  snap:true,
+  defaultAppearance: {
+    // See GeoBasics.js for possible attributes.
+  },
+  geometry: [
+    {name:"A", type:"Free", pos:[-1,1]},
+    {name:"B", type:"Free", pos:[1,-1]},
+    {name:"C", type:"Free", pos:[-3,-3]},
+    {name:"D", type:"Free", pos:[3,3]},
+    {name:"l", type:"Join", args:["A","B"],color:[0,0,1]},
+    {name:"m", type:"Join", args:["C","D"],color:[0,0,1]},
+
+    {name:"aBi", type:"angleBisector", args:["l","m"]},
+
+    {name:"al1", type:"SelectL", args:["aBi"], index:1, color:[1,0,0]},
+    {name:"al2", type:"SelectL", args:["aBi"], index:2, color:[0,1,0]},
+
+    // For allowed types, see GeoOps.js.
+    // For allowed properties, see csinit in GeoBasics.js.
+  ] // End of geometry array.
+});
+
+// Remove all comments after adjusting this template for your use case.
+
+</script>
+<style type="text/css">
+ 
+  * {  
+    margin: 0;  
+    padding: 0 auto;  
+}
+</style>
+</head>
+
+	<body style="font-family:Arial; margin:0, display:block">
+  <canvas id="CSCanvas" width="500" height="500"
+          ></canvas>
+</body>
+
+</html>

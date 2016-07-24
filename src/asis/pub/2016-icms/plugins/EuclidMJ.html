@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Euclidean Algorithm with MathJax</title>
+    <link rel="stylesheet" href="ex.css">
+    <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  </head>
+  <body>
+        <script id="eadraw" type="text/x-cindyscript">
+            linecolor((0,0,0));
+            sq(a,b):=(
+                      n1=a-b;
+                      n2=(-n1_2,n1_1);
+                      pol=(a,a-n2,b-n2,b);
+                    fillpoly(pol,color->col*.2+.8*(1,1,1),alpha->1);
+                      draw(a,b,size->2);
+                      draw(a,a-n2,size->2);
+                      draw(b,b-n2,size->2);
+                      draw(a-n2,b-n2,size->e2);
+                      );
+            
+            
+            i=0;
+            
+            ii=complex((0,1));
+            arrow(aa,bb):=(
+                           a1=complex(aa);
+                           b1=complex(bb);
+                           draw(gauss(a1),gauss(b1),color->(0,0,0.6));
+                           draw(gauss(b1-((b1-a1)/|b1-a1|)*exp(ii*.4) ),gauss(b1),color->(0,0,0.6));
+                           draw(gauss(b1-((b1-a1)/|b1-a1|)*exp(-ii*.4) ),gauss(b1),color->(0,0,0.6));
+                           
+                           );
+            
+
+            
+            kb(a,b,c,n):=if(n>0,
+                            col=hue(.3*n/2);
+                            if(abs(a-b)<abs(a-c),
+                               (sq(b,a);nn=perp(a-b);kb(a+nn,b+nn,c,n-1)),
+                               (sq(a,c);nn=perp(a-c);kb(a-nn,b,c-nn,n-1))
+                               ));
+                               
+                               
+            nn=2.5;
+            
+              a=round((A.x)*nn);
+              b=round((A.y)*nn);
+              if (a<0,a=0);
+              if (b<0,b=0);
+                      aa = a;
+                      bb = b;
+            A.xy=(a/nn,b/nn);
+                        
+            if(mover()==B,
+              a=round((A.x)*nn);
+              b=round((B.y)*nn);
+              if (a<0,a=0);
+              if (b<0,b=0);
+              B.xy=(0,b/nn);
+              A.xy=(a/nn,b/nn);
+
+            );   
+            
+            
+
+                            
+            if(mover()==C,
+              a=round((C.x)*nn);
+              b=round((A.y)*nn);
+              if (a<0,a=0);
+              if (b<0,b=0);
+              C.xy=(a/nn,0);
+              A.xy=(a/nn,b/nn);
+
+            );        
+            
+            B.xy=(0,b/nn);
+            C.xy=(a/nn,0);
+                              
+            family = "'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif";
+            drawtext(A+(-.2,.4),"("+a+","+b+")",family->family,align->"right",size->25);
+            scale(1/nn);
+            apply(0..nn*20,
+                  draw((0,#),(nn*20,#),color->(0,0,0),alpha->0.2);
+                  draw((#,0),(#,nn*20),color->(0,0,0),alpha->0.2);
+                  
+                  );
+            kb((0,0),(0,b),(a,0),250);
+
+            gsave();
+            scale(1/2);
+            translate((40,45));
+
+            drawtext((65,50-i*4),"Euclidean Algorithm:",size->25,color->(0.6,0,0),family->family);
+                     while(b>0,
+                           k=floor(a/b);
+                           r=a-k*b;
+                           drawtext((70,43-i*7),a,size->25,align->"right",family->family);
+                           drawtext((70,43-i*7),"=",size->25,family->family);
+                           drawtext((78,43-i*7),k,size->25,align->"right",family->family);
+                           drawtext((78,43-i*7),"×",size->25,family->family);
+                           drawtext((87,43-i*7),b,size->25,align->"right",family->family);
+                           drawtext((87,43-i*7),"+",size->25,family->family);
+                           drawtext((96,43-i*7),r,size->25,align->"right",color->if(r==0,(0.6,0,0),(0,0,0)),family->family);
+                           a=round(b);
+                           b=round(r);
+                           if (b>0,
+                               arrow((93,42.5-i*7),(86,39.5-i*7));
+                               arrow((82,42.5-i*7),(70,39.5-i*7)),
+                               arrow((82,42.5-i*7),(70,34-i*7));
+                               i=i+1;
+                               );
+                           i=i+1;
+                           
+                           );
+                     
+                     drawtext((88,44-i*7),a+" is the gcd",size->25,color->(0.6,0,0),family->family,align->"right");
+                     
+//******************************************
+x=aa/bb;
+i=1;
+kb=[];
+while(!(|(round(x)-x)|<0.00000001) & i<10,
+  k=floor(x);
+  r=x-k;
+  x=1/r;
+  i=i+1;
+  kb=kb++[k];
+);
+
+  k=round(x);
+  r=x-k;
+
+  pk=""+k;
+  kb=kb++[k];
+kn=length(kb);
+
+taa=format(aa,2);
+tbb=format(bb,2);
+tbr=format(aa/bb,7);
+if(length(tbr)>5,tbr=tbr+"\ldots");
+
+t="\begin{array}{l}{"+taa+"\over"+tbb+"}="+tbr+"\\=";
+apply(1..(kn-1),i,
+
+  t=t+"{"+kb_i+"+\,{1\over ";
+);
+if(kn==10,
+  t=t+kb_kn+"+\cdots",
+  t=t+kb_kn
+);
+apply(1..(kn-1)*2,t=t+"}");
+t=t+"\end{array}";
+javascript("renderEq('" + replace(t, "\", "\\") + "')");
+            grestore();
+            
+        </script>
+        <div id="eacanvas"></div>
+        <div id="tex" style="position: absolute; margin-left:auto; right: 15px; bottom: 5px; font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif; font-size: 30px; color:#900"></div>
+
+        <script type="text/javascript">
+            
+          var eacdy = createCindy({ports:[{
+            id:"eacanvas",
+            width: 800, height: 540,
+            transform:[{visibleRect: [-0.25, 20.25, 30, -0.25]}],
+          }],
+          scripts:"ea*",
+                        geometry:[
+                      {name:"A", kind:"P", type:"Free", pos:[18,13.2,1],size:4,color:[0,0,0]},
+                      {name:"B", kind:"P", type:"Free", pos:[0,13.2,1],size:4,color:[0,0,0]},
+                      {name:"C", kind:"P", type:"Free", pos:[18,0,1],size:4,color:[0,0,0]}
+                      ]});
+
+function renderEq(latex){
+console.log(latex);
+        document.getElementById('tex').innerHTML=latex;
+        MathJax.Hub.Queue(['Typeset',MathJax.Hub,'tex']);
+          }
+        </script>
+  </body>
+</html>

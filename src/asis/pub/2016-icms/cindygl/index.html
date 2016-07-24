@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Jürgen Richter-Gebert and Aaron Montag">
+  <title>CindyGL</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="../reveal.js/css/theme/serif.css" id="theme">
+  <style type="text/css">
+  .reveal ol, .reveal dl, .reveal ul { display:  block; }
+  .cindy {
+    width: 405px;
+    height: 405px;
+    float: right;
+  }
+  code > span.gr { color: #40cc00; font-weight: bold;}
+  code > span.dg { color: #00aa00; font-weight: bold;}
+  code > span.un { color: #902060;}
+  </style>
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="../reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+  <h1 class="title">CindyGL</h1>
+  <h2 class="author">Jürgen Richter-Gebert and <em>Aaron Montag</em></h2>
+  <h3 class="date">ICMS 2016</h3>
+</section>
+
+<section class="slide level1">
+
+<h2 id="what-is-cindygl">What is <code>CindyGL</code>?</h2>
+<iframe data-src="applets/colorplot.html" class="cindy">
+</iframe>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="at">f</span>(z) <span class="op">:=</span> z<span class="op">^</span><span class="dv">7</span> <span class="op">-</span> <span class="dv">1</span><span class="op">;</span>
+<span class="at">colorplot</span>(
+  <span class="at">hue</span>(<span class="at">im</span>(<span class="at">log</span>(<span class="at">f</span>(<span class="at">complex</span>(#)))) / (<span class="dv">2</span><span class="op">*</span>pi))<span class="op">;</span>
+)<span class="op">;</span></code></pre></div>
+<div class="fragment">
+<ul>
+<li>a plug-in for <code>CindyJS</code>.</li>
+<li>provides <strong>access to the GPU fragment shader</strong> via <code>WebGL</code>.</li>
+<li><code>WebGL</code>: a JavaScript API for interactive 3D and 2D graphics without the use of plug-ins.</li>
+</ul>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="why-cindygl">Why CindyGL?</h2>
+<iframe data-src="applets/interference.html" class="cindy">
+</iframe>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript">t <span class="op">=</span> <span class="at">seconds</span>() <span class="op">-</span> t0<span class="op">;</span>
+<span class="at">colorplot</span>(
+  (<span class="at">sin</span>(<span class="op">|</span>A<span class="op">,</span>#<span class="op">|-</span>t) <span class="op">+</span> <span class="at">sin</span>(<span class="op">|</span>B<span class="op">,</span>#<span class="op">|-</span>t) <span class="op">+</span> <span class="dv">2</span>) 
+   <span class="op">*</span> (<span class="dv">1</span>/<span class="dv">2</span><span class="op">,</span> <span class="dv">1</span>/<span class="dv">3</span><span class="op">,</span> <span class="dv">1</span>/<span class="dv">4</span>) <span class="co">// rgb-vector</span>
+)<span class="op">;</span></code></pre></div>
+<div class="fragment">
+<p><strong>few line of code</strong></p>
+</div>
+<div class="fragment">
+<p><strong>efficient as native applications</strong></p>
+</div>
+<div class="fragment">
+<ul>
+<li>Aim: Making <code>WebGL</code> <strong>easy</strong> for <em>mathematically oriented users.</em></li>
+<li>One programming language for <em>both CPU and GPU</em></li>
+<li>Tool for <em>high level parallelization</em> <!--- Providing a minimal framework for *feedbackloops*--></li>
+</ul>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="raycasting-algebraic-surfaces">Raycasting algebraic surfaces</h2>
+<p><span class="math inline"><em>F</em>(<em>x</em>,<em>y</em>,<em>z</em>) = <em>x</em><sup>2</sup> + <em>y</em><sup>2</sup> + <em>z</em><sup>2</sup> + 2 ⋅ <em>x</em> <em>y</em> <em>z</em> − 1 = 0</span></p>
+<iframe data-src="applets/raytracer.html" class="cindy">
+</iframe>
+<div class="fragment">
+<ul>
+<li>possible using <code>colorplot</code>:
+<ul>
+<li>For every pixel <code>#</code>:
+<ul>
+<li>compute <em>intersection</em> of corresponding ray with surface</li>
+<li><em>colorize</em> according to normal of surface at intersection point</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="technical-background">Technical background</h2>
+<div class="sourceCode" style="float:right; width:500px;">
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+colorplot(
+  <span class="dg">polyvalues</span> = evaluate_F_at_ray(<span class="gr">#</span>);
+  <span class="dg">poly</span> = <span class="un">inverse(
+   [[0^0, 0^1, 0^2, 0^3],
+    [1^0, 1^1, 1^2, 1^3],
+    [2^0, 2^1, 2^2, 2^3],
+    [3^0, 3^1, 3^2, 3^3]
+   ])</span>*<span class="dg">polyvalues</span>; <span class="co">// interpolate</span>
+   
+  <span class="co">// ray intersection</span>
+  <span class="dg">x</span> = ray(<span class="gr">#</span>, firstroot(<span class="dg">poly</span>)); 
+  
+  <span class="co">// shading using dF</span>
+  colorize(<span class="dg">x</span>)
+);
+</code></pre>
+</div>
+<div class="fragment">
+<p><strong>What happens if <code>colorplot(...#...)</code> is called?</strong></p>
+<ol type="1">
+<li>Obtain syntax tree of expression</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="2" type="1">
+<li>Extract those terms that dependent on <code>#</code> <span class="math inline">→</span> suitable for parallelization on GPU</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="3" type="1">
+<li>Detect the types</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="4" type="1">
+<li>Transpile into Shading Language</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="5" type="1">
+<li>Loading of textures, embedding into the WebGL-API</li>
+</ol>
+</div>
+</section>
+<section id="image-feedback-loops" class="slide level1">
+<h1>Image Feedback loops</h1>
+</section>
+<section class="slide level1">
+
+<h2 id="fractals-julia-set">Fractals (Julia set)</h2>
+<iframe data-src="applets/julia.html" class="cindy">
+</iframe>
+<p>Initialization:</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="at">createimage</span>(<span class="st">&quot;julia&quot;</span><span class="op">,</span> <span class="dv">400</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></code></pre></div>
+<p>Rendering:</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="at">colorplot</span>(<span class="st">&quot;julia&quot;</span><span class="op">,</span> <span class="co">// plots to texture</span>
+ z <span class="op">=</span> <span class="at">complex</span>(#)<span class="op">;</span>
+ <span class="co">// if |z|&lt;2 take the color at z^2+c </span>
+ <span class="cf">if</span>(<span class="op">|</span>z<span class="op">|&lt;</span><span class="dv">2</span><span class="op">,</span>
+  <span class="at">imagergb</span>(<span class="st">&quot;julia&quot;</span><span class="op">,</span> z<span class="op">^</span><span class="dv">2</span><span class="op">+</span>c)<span class="co">// and make</span>
+   <span class="op">+</span> (<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.02</span><span class="op">,</span> <span class="fl">0.03</span>)<span class="op">,</span>  <span class="co">// it brighter</span>
+ <span class="co">// otherwise: display black.</span>
+  (<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)
+ )
+)<span class="op">;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="enhancement-conjugation">Enhancement: Conjugation</h2>
+<ul>
+<li>Internal computations can be done on an exp-log-conjugated texture.</li>
+<li>Center of this conjugation: a fixed point of <span class="math inline"><em>z</em><sup>2</sup> + <em>c</em></span>. <iframe data-src="applets/31_julia_conjugated.html" width="1010" height="510"></iframe></li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="generating-fractals-ifs">Generating Fractals (IFS)</h2>
+<iframe data-src="applets/barnsley.html" class="cindy" style="width:300px; height:600px">
+</iframe>
+<iframe data-src="applets/sierpinski.html" style="width:300px; height:300px;">
+</iframe>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript">w1<span class="op">=</span><span class="at">map</span>(A<span class="op">,</span> B<span class="op">,</span> C<span class="op">,</span>  A<span class="op">,</span> D<span class="op">,</span> F)<span class="op">;</span> <span class="co">//matrices for</span>
+w2<span class="op">=</span><span class="at">map</span>(A<span class="op">,</span> B<span class="op">,</span> C<span class="op">,</span>  D<span class="op">,</span> B<span class="op">,</span> E)<span class="op">;</span> <span class="co">//affine maps</span>
+w3<span class="op">=</span><span class="at">map</span>(A<span class="op">,</span> B<span class="op">,</span> C<span class="op">,</span>  F<span class="op">,</span> E<span class="op">,</span> C)<span class="op">;</span>
+
+<span class="at">colorplot</span>(<span class="st">&quot;ifs&quot;</span><span class="op">,</span> <span class="co">//plot and read same texture</span>
+  hom <span class="op">=</span> [#.<span class="at">x</span><span class="op">,</span> #.<span class="at">y</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">;</span> <span class="co">//Homogeneous coordinate</span>
+  <span class="at">imagergba</span>(<span class="st">&quot;ifs&quot;</span><span class="op">,</span> <span class="at">inverse</span>(w1)<span class="op">*</span>hom) <span class="op">+</span>
+  <span class="at">imagergba</span>(<span class="st">&quot;ifs&quot;</span><span class="op">,</span> <span class="at">inverse</span>(w2)<span class="op">*</span>hom) <span class="op">+</span>
+  <span class="at">imagergba</span>(<span class="st">&quot;ifs&quot;</span><span class="op">,</span> <span class="at">inverse</span>(w3)<span class="op">*</span>hom)
+)<span class="op">;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="cas-game-of-life">CAs (Game of Life)</h2>
+<iframe data-src="applets/gol.html" class="cindy" style="width:210px; height:410px;">
+</iframe>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="at">get</span>(x<span class="op">,</span> y) <span class="op">:=</span> <span class="co">//function that reads texture &quot;gol&quot; as T2</span>
+  <span class="at">imagergb</span>(<span class="st">&quot;gol&quot;</span><span class="op">,</span> (<span class="at">mod</span>(x<span class="op">,</span> <span class="dv">80</span>)<span class="op">,</span> <span class="at">mod</span>(y<span class="op">,</span> <span class="dv">80</span>))).<span class="at">r</span><span class="op">;</span>
+
+<span class="at">newstate</span>(x<span class="op">,</span> y) <span class="op">:=</span> ( number <span class="op">=</span> <span class="co">// # living neighbors</span>
+ <span class="at">get</span>(x<span class="dv">-1</span><span class="op">,</span> y<span class="dv">+1</span>) <span class="op">+</span> <span class="at">get</span>(x<span class="op">,</span> y<span class="dv">+1</span>) <span class="op">+</span> <span class="at">get</span>(x<span class="dv">+1</span><span class="op">,</span> y<span class="dv">+1</span>) <span class="op">+</span>
+ <span class="at">get</span>(x<span class="dv">-1</span><span class="op">,</span> y) <span class="op">+</span>                 <span class="at">get</span>(x<span class="dv">+1</span><span class="op">,</span> y) <span class="op">+</span>
+ <span class="at">get</span>(x<span class="dv">-1</span><span class="op">,</span> y<span class="dv">-1</span>) <span class="op">+</span> <span class="at">get</span>(x<span class="op">,</span> y<span class="dv">-1</span>) <span class="op">+</span> <span class="at">get</span>(x<span class="dv">+1</span><span class="op">,</span> y<span class="dv">-1</span>)<span class="op">;</span>
+ <span class="cf">if</span>(<span class="at">get</span>(x<span class="op">,</span>y)<span class="op">==</span><span class="dv">1</span><span class="op">,</span> <span class="co">//cell lives and less than 2 </span>
+                 <span class="co">//or more than 3 neighbors -&gt; die</span>
+  <span class="cf">if</span>((number <span class="op">&lt;</span> <span class="dv">2</span>) <span class="op">%</span> (number <span class="op">&gt;</span> <span class="dv">3</span>)<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">,</span>
+                 <span class="co">//cell dead + 3 neighbors -&gt; born</span>
+  <span class="cf">if</span>(number<span class="op">==</span><span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span>)
+ )
+)<span class="op">;</span>
+
+<span class="at">colorplot</span>(<span class="st">&quot;gol&quot;</span><span class="op">,</span> <span class="at">newstate</span>(#.<span class="at">x</span><span class="op">,</span> #.<span class="at">y</span>))<span class="op">;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="a-reaction-diffusion-system">A reaction diffusion system</h2>
+<iframe data-src="applets/reactiondiffusion.html" class="cindy" style="width:520px; height:520px;">
+</iframe>
+<ul>
+<li>Another application of feedbackloops: Numerical simulations of PDEs.</li>
+<li>Here:</li>
+</ul>
+<p><span class="math inline"><em>x</em>′=<em>a</em>∇<sup>2</sup><em>x</em> − <em>x</em> <em>y</em><sup>2</sup> + <em>f</em> (1 − <em>x</em>)</span></p>
+<p><span class="math inline"><em>y</em>′=<em>b</em>∇<sup>2</sup><em>y</em> + <em>x</em> <em>y</em><sup>2</sup> − (<em>f</em> + <em>k</em>)<em>y</em></span></p>
+</section>
+<section class="slide level1">
+
+<h2 id="further-work">Further work</h2>
+<div class="fragment">
+<ul>
+<li>Implement high-dimensional (&gt;4) vectors and matrices</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Not all operations have been transfered to Shading Language yet</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Use floating-point expansions for higher accuracy (similarly to CAMPARY)</li>
+</ul>
+</div>
+</section>
+<section class="slide level1">
+
+<h2 id="function-explorer">Function Explorer</h2>
+<iframe data-src="applets/22_explorer.html" style="width:840px; height:600px;">
+</iframe>
+</section>
+<section id="thank-you" class="slide level1">
+<h1>Thank you!</h1>
+<iframe data-src="applets/randomtree.html" class="cindy" style="width:500px; height:500px;">
+</iframe>
+<h2 id="do-you-have-any-questions">Do you have any questions?</h2>
+</section>
+    </div>
+  </div>
+
+  <script src="../reveal.js/lib/js/head.min.js"></script>
+  <script src="../reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Display a presentation progress bar
+        progress: false,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: '../reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
