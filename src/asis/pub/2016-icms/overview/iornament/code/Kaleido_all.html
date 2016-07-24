@@ -1352,8 +1352,10 @@ if(phase==3,phase=2);//This is a hack.
 <script id="csondrop" type="text/x-cindyscript">
   playanimation();
   forall(dropped(), if(#_2 == "image", 
-     orna = #_1; 
-     createimage("buff",round(imagesize(orna)/10)));
+     orna = #_1;
+     ornasize = round(imagesize(orna)/10);
+     err(ornasize);
+     createimage("buff", ornasize_1, ornasize_2);
      canvas((0,0),(1,0),"buff",
         drawimage((0,0),(1,0),orna);
      );
@@ -1387,7 +1389,7 @@ if(phase==3,phase=2);//This is a hack.
 			buts=[(21,11),(21,7),(210,3),(21,-1),(21,-5),(21,3),(17,3)];
      );
      if(typm!=0,phase=1;)
-  );
+  ));
 
 </script>
 <script type="text/javascript">

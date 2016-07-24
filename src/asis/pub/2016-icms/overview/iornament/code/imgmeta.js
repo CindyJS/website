@@ -91,18 +91,10 @@ function utf8Decode(bytes) {
 function plugin(api) {
     api.defineFunction("xmpdescription", 1, function(args, modifs) {
         var img = api.evaluate(args[0]);
-        if (img.ctype === "image") { // dropped image file
-            img = img.value;
-        } else if (img.ctype === "string") {
-            img = api.getImage(img.value);
-            if (!img || !img.src) {
-                console.warn(img.value + " does not name an image");
-                return api.nada;
-            }
-        } else {
-            console.warn("Argument does not name an image");
-            return api.nada;
-        }
+        img = api.getImage(img);
+        if (!img) return api.nada;
+        img = img.img;
+        if (!img.src) return api.nada;
         var data = img.src.replace(/^data:image\/png;base64,/, "");
         if (data === img.src) {
             console.warn("Only data:image/png;base64,… supported");
