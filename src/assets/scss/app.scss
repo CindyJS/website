@@ -228,11 +228,20 @@ a {
 
 main a {
   color: $link-color;
-  text-decoration: underline;
-  text-decoration-color: rgba($link-color, 0); // completely transparent
-  transition: text-decoration-color 0.25s;
+  text-decoration: none;
   &:hover {
-    text-decoration-color: rgba($link-color, 1); // completely opaque
+    text-decoration: underline;
+  }
+}
+
+@supports (text-decoration-color: rgba($link-color, 0)) {
+  main a {
+    text-decoration: underline;
+    text-decoration-color: rgba($link-color, 0); // completely transparent
+    transition: text-decoration-color 0.25s;
+    &:hover {
+      text-decoration-color: rgba($link-color, 1); // completely opaque
+    }
   }
 }
 
