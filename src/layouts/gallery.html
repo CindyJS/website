@@ -1,0 +1,20 @@
+<gallerynav>
+  <ul>
+    <li><a href="/gallery/">Official Gallery</a></li>
+    <li><a href="/gallery/cindygl/">CindyGL</a></li>
+    <li><a href="/examples/">Examples shipped with the source tree</a></li>
+  </ul>
+</gallerynav>
+<div>
+{{#if description}}
+{{{description}}}
+{{/if}}
+</div>
+<div class="gallery">
+
+{{#each files}}
+<div>
+  <a href="{{href}}"><img src="{{imgurl}}" alt="{{basename}}" />{{title}}</a>
+</div>
+{{/each}}
+</div>

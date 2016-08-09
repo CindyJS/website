@@ -23,6 +23,8 @@ var relativize = require("./lib/relativize");
 var toc = require("./lib/toc");
 var validator = require("./lib/validator-nu");
 
+
+
 // Check for --production flag
 var isProduction = !!(argv.production);
 
@@ -44,6 +46,28 @@ var PATHS = {
     'src/assets/js/app.js'
   ]
 };
+
+
+//all automatically generated galleries
+var Galleries = [
+  {
+    src: gulp.src(["gallery/cindygl/*.html"], {cwd: "src", base: "src"}),
+    dest: "gallery/cindygl",
+    title: "CindyGL-Gallery",
+    description: "These examples demonstrate the CindyGL-Plugin",
+    imgpath : "", //local folder
+    innavbar: true
+  },
+  {
+    src: gulp.src(["examples/**/*.html"], {cwd: "CindyJS", base: "CindyJS"}),
+    dest: "examples",
+    title: "Examples shipped with the source tree",
+    description: "This shows the examples <a href='https://github.com/CindyJS/CindyJS'>from the repository</a>, demonstrating individual functions and operations. Most of them demonstrate a single technical feature and are not intended to be examples of what well-designed CindyJS widgets can look like.",
+    imgpath : "/assets/img/thumbnail/",
+    innavbar: true
+  }
+];
+
 
 function pipeline(first) {
     var stream = first;
@@ -83,7 +107,8 @@ gulp.task("cjsdeps", ["cjsmod"], function() {
         });
 }); 
 
-gulp.task("pages", ["cjsdeps"], function() {
+
+gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function() {
     return pipeline(
         merge(
             pipeline(
@@ -92,12 +117,26 @@ gulp.task("pages", ["cjsdeps"], function() {
                 github("CindyJS/website"),
                 licenses.ccbysa40()
             ),
-            pipeline(
-                gulp.src(["examples/**/*.html"], {cwd: "CindyJS", base: "CindyJS"}),
-                examples(),
-                github("CindyJS/CindyJS"),
-                index("examples", "src/layouts/dirlist.html", {
-                    title: "Examples shipped with the source tree",
+            merge(
+              Galleries.map(
+                gallery => pipeline(
+                  gallery.src,
+                  examples(),
+                  github("CindyJS/CindyJS"),
+                  index(gallery.dest, "src/layouts/gallery.html", gallery),
+                  licenses.apache2()
+                )
+              )
+            ),
+            pipeline( //TODO: Make this smarter
+                merge(
+                  gulp.src(["gallery/cindygl", "gallery/cindygl"], {cwd: "src", base: "src"}),
+                  gulp.src(["examples"], {cwd: "CindyJS", base: "CindyJS"})
+                ),
+                index("gallery", "src/layouts/gallery.html", {
+                    title: "Gallery",
+                    description: "This is an overview for all examples.",
+                    imgpath : ""
                 }),
                 licenses.apache2()
             ),
@@ -122,6 +161,16 @@ gulp.task("pages", ["cjsdeps"], function() {
         }),
         gulp.dest("dist"));
 });
+
+gulp.task("copyexampleimages", [], function() {
+    return gulp.src(["examples/**/*.png", "examples/**/*.jpg"], {cwd: "CindyJS", base: "CindyJS"}).pipe(gulp.dest("dist"));
+});
+
+gulp.task("copygallerydata", [], function() {
+    return gulp.src(['gallery/**/*', '!gallery/**/*.html'], {cwd: "src", base: "src"}).pipe(gulp.dest("dist"));//copies everything that is not a html
+});
+
+
 
 gulp.task("asis", [], function() {
     return gulp.src("src/asis/**/*").pipe(gulp.dest("dist"));
@@ -265,8 +314,10 @@ gulp.task('default', ['rebuild', 'server'], function() {
   gulp.watch(PATHS.assets, ['copy', browser.reload]);
   gulp.watch(['src/pages/**/*.{html,md}'], ['pages', browser.reload]);
   gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages', browser.reload]);
+  gulp.watch(['src/gallery/**/*'], ['pages', browser.reload]);
   gulp.watch(['src/assets/scss/**/*.scss'], ['sass', browser.reload]);
   gulp.watch(['src/assets/js/**/*.js'], ['javascript', browser.reload]);
   gulp.watch(['src/assets/img/**/*'], ['images', browser.reload]);
   gulp.watch(['src/asis/**/*'], ['asis', browser.reload]);
+  
 });
