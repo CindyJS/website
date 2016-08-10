@@ -23,4 +23,4 @@ In oder to set up the local web-server for the website run
 
 `npm start`
 
-Then you can access the website on `http://localhost:8163/`
+Then you can access the website on [http://localhost:8163/](http://localhost:8163/)
