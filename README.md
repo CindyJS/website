@@ -16,6 +16,7 @@ In order to download the website clone the repository with
 Then enter the just downloaded folder `website` and install all dependencies with
 
 `"git submodule update --init ."`
+
 `"npm install"`
 
 In oder to set up the local web-server for the website run
