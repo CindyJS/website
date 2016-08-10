@@ -12,63 +12,49 @@ concepts, from geometry in particular and mathematics in general,
 but also from various other fields.
 
 <div class="flex">
-<div id="Bouncer" class="example" style="float:left;"></div>
-<div><div></div>
-
-
-##### Use CindyJS for your own interactive physics simulations
-
-Freely experiment with masses, springs, charges
-and fields! Liberated from the constraints of
-reality, scenarios ranging from atom physics,
-classical mechanic to planetary orbits may be
-examined. Effortlessly sketch experiments using
-the mouse and bring them to life with a simple
-click.
-
-</div></div>
+  <div id="Bouncer" class="example" style="float:left;"></div>
+  <div>
+    <h5>Use CindyJS for your own interactive physics simulations</h5>
+    Freely experiment with masses, springs, charges
+    and fields! Liberated from the constraints of
+    reality, scenarios ranging from atom physics,
+    classical mechanic to planetary orbits may be
+    examined. Effortlessly sketch experiments using
+    the mouse and bring them to life with a simple
+    click.
+  </div>
+</div>
 
 <div class="flex">
-<div><div></div>
-
-##### Add brain power to your applications with *CindyScript*
-
-CindyJS has its own easy-to-learn scripting language *CindyScript*, which can be used for a variety of smart applets.
-
-Have you ever explained something to another mathematician, while sitting in
-a loud pub and having nothing but a pen and a napkin?
-*CindyScript* is the programming equivalent of the napkin. In other words, *CindyScript* has been designed to be expressible in sketchy, sometimes non-formal, nevertheless complete
-and most of all understandable way.
-
-It allows for a high level implementation of mathematical concepts.
-
-</div>
-<div id="Tree" class="example"></div>
+  <div>
+    <h5>Add brain power to your applications with <i>CindyScript</i></h5>
+    <p>CindyJS has its own easy-to-learn scripting language <i>CindyScript</i>, which can be used for a variety of smart applets.</p>
+    <p>Have you ever explained something to another mathematician, while sitting in
+    a loud pub and having nothing but a pen and a napkin?
+    <i>CindyScript</i> is the programming equivalent of the napkin. In other words, <i>CindyScript</i> has been designed to be expressible in sketchy, sometimes non-formal, nevertheless complete
+    and most of all understandable way.</p>
+    <p>It allows for a high level implementation of mathematical concepts.</p>
+  </div>
+  <div id="Tree" class="example"></div>
 </div>
 
 
 <div class="flex">
-<div id="ComplexPlot" class="example"></div>
-<div><div></div>
+  <div id="ComplexPlot" class="example"></div>
+  <div>
+    <h5>Use the GPU without learning WebGL</h5>
+    <p>CindyJS provides the high-level mathematically oriented user with access to the shader language of the GPU without learning a shader language.</p>
+    <p>On the right you see an GPU rendered example of a complex phase portrait rendered in CindyJS. You can enter any arbitrary complex function or chose a predefined  function and view its complex phase portrait.</p>
 
-#####  Use the GPU without learning WebGL
-
-CindyJS provides the high-level mathematically oriented user with access to the shader language of the GPU without learning a shader language.
-
-On the right you see an GPU rendered example of a complex phase portrait rendered in CindyJS. You can enter any arbitrary complex function or chose a predefined  function and view its complex phase portrait.
-
-f(z) = <input type="text" id="inp" value="z^5-1"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { cdy.evokeCS('f(z) := (' + this.value + '); forcerecompile();'); }" style="font-size:18px"> <select id="sel" onchange="document.getElementById('inp').value = this.value; cdy.evokeCS('f(z) := (' + this.value + '); forcerecompile();');">
-  <option>(z^5-1)</option>
-  <option>(z^(-5)-1)</option>
-  <option>(z-1)/(z+1)</option>
-  <option>z^(1+i)</option>
-  <option>z=2\*z+pi/2;(sin(z-i)/sin(z+i))^(1+i)</option>
-  <option value="repeat(11, z = z - (z^3-1)/(3*z^2));">Newton</option>
-</select>
-
-
-For more WebGL-related content, visit our [CindyGL-Gallery](/gallery/cindygl/).
-
+    <p>f(z) = <input type="text" id="inp" value="z^5-1"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { cdy.evokeCS('f(z) := (' + this.value + '); forcerecompile();'); }" style="font-size:18px"> <select id="sel" onchange="document.getElementById('inp').value = this.value; cdy.evokeCS('f(z) := (' + this.value + '); forcerecompile();');">
+      <option>(z^5-1)</option>
+      <option>(z^(-5)-1)</option>
+      <option>(z-1)/(z+1)</option>
+      <option>z^(1+i)</option>
+      <option>z=2\*z+pi/2;(sin(z-i)/sin(z+i))^(1+i)</option>
+      <option value="repeat(11, z = z - (z^3-1)/(3*z^2));">Newton</option>
+    </select></p>
+  <p>For more WebGL-related content, visit our <a href="/gallery/cindygl/">CindyGL-Gallery</a>.</p>
 </div></div>
 
 

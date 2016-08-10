@@ -43,9 +43,20 @@
 
       <!-- Main part -->
       <main>
+{{#if galleries}}
+      <!-- navigation within gallery -->
+      <div class="gallerynav"><ul>
+        {{#each galleries}}
+          <li{{#if highlight}} class="highlight"{{/if}}><a href="/{{href}}">{{title}}</a></li>
+        {{/each}}
+        </ul>
+      </div>
+{{/if}}
+
 {{#if title}}
         <h1>{{title}}</h1>
 {{/if}}
+
 {{{body}}}
       </main>
     </div>

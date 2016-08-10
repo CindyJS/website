@@ -349,18 +349,16 @@ pre {
   }
 }
 
-gallerynav {
-
+.gallerynav {
   ul {
     overflow: auto;
     list-style-type: none;
   }
    
   li {
-    //height: 25px;
     float: left;
     margin-right: 0px;
-    border-right: 1px solid #aaa;
+    border-right: 1px solid #cccccc;
     padding: 0 20px;
   }
    
@@ -369,18 +367,22 @@ gallerynav {
   }
    
   li a {
-    text-decoration: none;
-    color: #ccc;
-    //text-transform: uppercase;
+    color: #cccccc;
     transition: all 0.5s ease;
+  }
+  
+  li.highlight a{
+    color: #666666;
   }
    
   li a:hover {
-    color: #666;
+    color: #000000;
   }
    
   li.active a {
     font-weight: bold;
     color: #333;
   }
+  
+  
 }
