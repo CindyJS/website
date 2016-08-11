@@ -22,6 +22,9 @@ var ref = require("./lib/ref");
 var relativize = require("./lib/relativize");
 var toc = require("./lib/toc");
 var validator = require("./lib/validator-nu");
+var galleryindex = require("./lib/galleryindex");
+
+
 
 // Check for --production flag
 var isProduction = !!(argv.production);
@@ -34,16 +37,32 @@ var COMPATIBILITY = ['last 2 versions', 'ie >= 9'];
 
 // File paths to various assets are defined here.
 var PATHS = {
-  assets: [
-    'src/assets/**/*',
-    '!src/assets/{img,js,scss}/**/*'
-  ],
-  sass: [
-  ],
-  javascript: [
-    'src/assets/js/app.js'
-  ]
+    assets: [
+        'src/assets/**/*',
+        '!src/assets/{img,js,scss}/**/*'
+    ],
+    sass: [],
+    javascript: [
+        'src/assets/js/app.js'
+    ]
 };
+
+
+//all automatically generated galleries
+var Galleries = [{
+    src: "src/gallery/cindygl/*.html",
+    dest: "gallery/cindygl",
+    title: "CindyGL-Gallery",
+    description: "These examples demonstrate the CindyGL-Plugin",
+    imgpath: "", //local folder
+}, {
+    src: "CindyJS/examples/**/*.html",
+    dest: "examples",
+    title: "Examples shipped with the source tree",
+    description: "This shows the examples <a href='https://github.com/CindyJS/CindyJS'>from the repository</a>, demonstrating individual functions and operations. Most of them demonstrate a single technical feature and are not intended to be examples of what well-designed CindyJS widgets can look like.",
+    imgpath: "/assets/img/thumbnail/",
+}];
+
 
 function pipeline(first) {
     var stream = first;
@@ -56,55 +75,101 @@ function pipeline(first) {
 }
 
 function github(repo, branch) {
-    return $.data(function(file) { return xtend({github: {
-        repo: repo,
-        branch: branch || "master",
-        path: path.relative(file.cwd, file.path),
-    }}, file.data); });
+    return $.data(function(file) {
+        return xtend({
+            github: {
+                repo: repo,
+                branch: branch || "master",
+                path: path.relative(file.cwd, file.path),
+            }
+        }, file.data);
+    });
 }
 
 handlebars.registerHelper("json", function(data) {
     return new handlebars.SafeString(
         JSON.stringify(data, null, "  ")
-            .replace(/-(?=-)/g, "\\x2d")
-            .replace(/</g, "\\x3c")
+        .replace(/-(?=-)/g, "\\x2d")
+        .replace(/</g, "\\x3c")
     );
 });
 
 gulp.task("cjsmod", function() {
     return cmd.unlessExists("CindyJS", ["git", "submodule", "update", "--init", "CindyJS"]);
-}); 
+});
 
 gulp.task("cjsdeps", ["cjsmod"], function() {
     return cmd.unlessExists(
         "CindyJS/node_modules", ["npm", "install"], {
             cwd: "CindyJS",
-            extraEnv: {CINDYJS_SKIP_PREPUBLISH: "true"}
+            extraEnv: {
+                CINDYJS_SKIP_PREPUBLISH: "true"
+            }
         });
-}); 
+});
 
-gulp.task("pages", ["cjsdeps"], function() {
+
+function gallerynavigation(currentdir) {
+    return {
+        galleries: [{
+            href: "gallery",
+            highlight: "gallery" == currentdir,
+            title: "Overview"
+        }].concat(Galleries.map(function(g) {
+            return {
+                href: g.dest,
+                highlight: g.dest == currentdir,
+                title: g.title
+            };
+        }))
+    };
+}
+
+gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function() {
     return pipeline(
         merge(
             pipeline(
                 gulp.src(["src/pages/**/*.md", "src/pages/**/*.html"]),
-                $.frontMatter({property: "data"}),
+                $.frontMatter({
+                    property: "data"
+                }),
                 github("CindyJS/website"),
                 licenses.ccbysa40()
             ),
+            merge(
+                Galleries.map(
+                    gallery => pipeline(
+                        gulp.src([gallery.src.split('/').slice(1).join('/')], {
+                            cwd: gallery.src.split('/')[0],
+                            base: gallery.src.split('/')[0]
+                        }),
+                        examples(),
+                        addData(gallerynavigation(gallery.dest)),
+                        github(gallery.dest == 'examples' ? "CindyJS/CindyJS" : "CindyJS/website"),
+                        index(gallery.dest, "src/layouts/gallery.html", xtend(gallery, gallerynavigation(gallery.dest))),
+                        licenses.apache2()
+                    )
+                )
+            ),
             pipeline(
-                gulp.src(["examples/**/*.html"], {cwd: "CindyJS", base: "CindyJS"}),
-                examples(),
-                github("CindyJS/CindyJS"),
-                index("examples", "src/layouts/dirlist.html", {
-                    title: "Examples shipped with the source tree",
+                gulp.src(["gallery"], {
+                    cwd: "src",
+                    base: "src"
                 }),
+                galleryindex(Galleries, "Gallery"),
+                addData(gallerynavigation("gallery")),
+                github("CindyJS/website"),
                 licenses.apache2()
             ),
             pipeline(
-                gulp.src(["ref/**/*.md"], {cwd: "CindyJS", base: "CindyJS"}),
+                gulp.src(["ref/**/*.md"], {
+                    cwd: "CindyJS",
+                    base: "CindyJS"
+                }),
                 github("CindyJS/CindyJS"),
-                addData({toc: true}),
+                addData({
+                    toc: true
+                }),
                 ref(),
                 index("ref", "src/layouts/dirlist.html", {
                     title: "Reference Manual",
@@ -112,8 +177,10 @@ gulp.task("pages", ["cjsdeps"], function() {
                 licenses.apache2()
             )
         ),
-        $.if(function(file) { return file.path.endsWith('.md') },
-               $.markdown()),
+        $.if(function(file) {
+                return file.path.endsWith('.md')
+            },
+            $.markdown()),
         toc(),
         hbs(gulp.src("src/layouts/**/*.html"), {
             dataSource: "data",
@@ -122,6 +189,22 @@ gulp.task("pages", ["cjsdeps"], function() {
         }),
         gulp.dest("dist"));
 });
+
+gulp.task("copyexampleimages", [], function() {
+    return gulp.src(["examples/**/*.png", "examples/**/*.jpg"], {
+        cwd: "CindyJS",
+        base: "CindyJS"
+    }).pipe(gulp.dest("dist"));
+});
+
+gulp.task("copygallerydata", [], function() {
+    return gulp.src(['gallery/**/*', '!gallery/**/*.html'], {
+        cwd: "src",
+        base: "src"
+    }).pipe(gulp.dest("dist")); //copies everything that is not a html
+});
+
+
 
 gulp.task("asis", [], function() {
     return gulp.src("src/asis/**/*").pipe(gulp.dest("dist"));
@@ -149,15 +232,17 @@ gulp.task("validate-examples", ["cjsmod"], function() {
 gulp.task("relative", ["build"], function() {
     return pipeline(
         gulp.src("dist/**"),
-        $.if(function(file) { return file.path.endsWith(".html") },
-               relativize()),
+        $.if(function(file) {
+                return file.path.endsWith(".html")
+            },
+            relativize()),
         gulp.dest("relative"));
 });
 
 // Delete the "dist" folder
 // This happens every time a build starts
 gulp.task('clean', function(done) {
-  rimraf('dist', done);
+    rimraf('dist', done);
 });
 
 // Copy files out of the assets folder
@@ -171,15 +256,15 @@ gulp.task('copy', function() {
 // Compile Sass into CSS
 // In production, the CSS is compressed
 gulp.task('sass', function() {
-  var uncss = $.if(isProduction, $.uncss({
-    html: ['src/**/*.html'],
-    ignore: [
-      new RegExp('^meta\..*'),
-      new RegExp('^\.is-.*')
-    ]
-  }));
+    var uncss = $.if(isProduction, $.uncss({
+        html: ['src/**/*.html'],
+        ignore: [
+            new RegExp('^meta\..*'),
+            new RegExp('^\.is-.*')
+        ]
+    }));
 
-  var minifycss = $.if(isProduction, $.minifyCss());
+    var minifycss = $.if(isProduction, $.minifyCss());
 
     return pipeline(
         gulp.src('src/assets/scss/app.scss'),
@@ -199,10 +284,10 @@ gulp.task('sass', function() {
 // Combine JavaScript into one file
 // In production, the file is minified
 gulp.task('javascript', function() {
-  var uglify = $.if(isProduction, $.uglify()
-    .on('error', function (e) {
-      console.log(e);
-    }));
+    var uglify = $.if(isProduction, $.uglify()
+        .on('error', function(e) {
+            console.log(e);
+        }));
 
     return pipeline(
         gulp.src(PATHS.javascript),
@@ -222,8 +307,13 @@ gulp.task('images', function() {
 
     return pipeline(
         merge(
-            gulp.src('src/assets/img/**/*', {base: "src"}),
-            gulp.src(["ref/img/**"], {cwd: "CindyJS", base: "CindyJS"})
+            gulp.src('src/assets/img/**/*', {
+                base: "src"
+            }),
+            gulp.src(["ref/img/**"], {
+                cwd: "CindyJS",
+                base: "CindyJS"
+            })
         ),
         imagemin,
         gulp.dest("dist"));
@@ -251,22 +341,22 @@ gulp.task('server', ['rebuild'], function() {
         port: PORT,
         notify: false,
         ghostMode: false,
-        rewriteRules: [
-            {
-                match: /(['"])(\/dist\/)/g,
-                replace: "$1http://cindyjs.org$2"
-            }
-        ],
+        rewriteRules: [{
+            match: /(['"])(\/dist\/)/g,
+            replace: "$1http://cindyjs.org$2"
+        }],
     });
 });
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default', ['rebuild', 'server'], function() {
-  gulp.watch(PATHS.assets, ['copy', browser.reload]);
-  gulp.watch(['src/pages/**/*.{html,md}'], ['pages', browser.reload]);
-  gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages', browser.reload]);
-  gulp.watch(['src/assets/scss/**/*.scss'], ['sass', browser.reload]);
-  gulp.watch(['src/assets/js/**/*.js'], ['javascript', browser.reload]);
-  gulp.watch(['src/assets/img/**/*'], ['images', browser.reload]);
-  gulp.watch(['src/asis/**/*'], ['asis', browser.reload]);
+    gulp.watch(PATHS.assets, ['copy', browser.reload]);
+    gulp.watch(['src/pages/**/*.{html,md}'], ['pages', browser.reload]);
+    gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages', browser.reload]);
+    gulp.watch(['src/gallery/**/*'], ['pages', browser.reload]);
+    gulp.watch(['src/assets/scss/**/*.scss'], ['sass', browser.reload]);
+    gulp.watch(['src/assets/js/**/*.js'], ['javascript', browser.reload]);
+    gulp.watch(['src/assets/img/**/*'], ['images', browser.reload]);
+    gulp.watch(['src/asis/**/*'], ['asis', browser.reload]);
+
 });

@@ -10,20 +10,30 @@
 //////////////////////////////////////////////////////////////////////
 // Configurable settings
 
-$bar-color: #30c0a9;
+
+$bar-color: #f0f0ee;
+//$bar-color: #e0e0de;
+$page-color: lighten($bar-color, 10%);
 $bar-color-1: $bar-color;
-$bar-color-2: lighten($bar-color, 20%);
-$titlebar-background: linear-gradient(100deg, $bar-color-1, $bar-color-2);
+$titlebar-background: $bar-color;
 $titlebar-color: #000000;
 $footer-background: $bar-color;
 $footer-color: #000000;
 $link-color: #2043a3;
-$page-color: #f4faf4;
+
 $code-color: #fcfccf;
 
+$shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+$hover-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
+$active-shadow: 0px 0px 20px 0px rgba(255, 100, 10, .4);
+
 $default-padding: em-calc(5) em-calc(15);
+$max-width: em-calc(1000);
 
 $small-size: em-calc(480);
+
+
+$index-example-width: 45vw;
 
 //////////////////////////////////////////////////////////////////////
 // Media selection
@@ -33,11 +43,11 @@ $small: "only screen and (max-width: #{$small-size})";
 //////////////////////////////////////////////////////////////////////
 // Fonts
 
-@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,300italic|Roboto:400,700,400italic,700italic|Raleway:500,700|Roboto+Condensed:400,700,400italic&subset=latin,greek);
+@import url(https://fonts.googleapis.com/css?family=Raleway+Mono:400,300italic|Raleway:500,700|Raleway+Condensed:400,700,400italic&subset=latin,greek);
 
-$sans: Roboto, sans-serif;
-$condensed: "Roboto Condensed", Roboto, sans-serif;
-$mono: "Roboto Mono", monospace;
+$sans: Raleway, sans-serif;
+$condensed: "Raleway Condensed", Raleway, sans-serif;
+$mono: "Raleway Mono", monospace;
 
 body {
   font-family: $sans;
@@ -58,12 +68,12 @@ strong {
 h1,h2,h3,h4,h5,h6 {
   margin: 1em 0em 0.25em 1rem; // top, right, bottom, left
   padding: 0px;
-  font-family: Raleway, $sans;
+  font-family: $sans;
   font-style: normal;
   font-weight: 500;
 }
 
-h2,h4,h6 { font-style: italic; }
+//h2,h4,h6 { font-style: italic; }
 h1,h2,h3,h4 { font-weight: 700; }
 h1 { font-size: 2.80em; }
 h2 { font-size: 2.28em; }
@@ -76,6 +86,7 @@ h6 { font-size: 1.23em; }
 // Top levels
 
 html,body {
+  transition: all 1s;
   padding: 0px;
   margin: 0px;
   height: 100%;
@@ -85,6 +96,7 @@ html,body {
 body {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -94,8 +106,15 @@ header {
   background: $titlebar-background;
   color: $titlebar-color;
   display: block;
+  box-shadow: $shadow;
+  flex-shrink: 0;
   &>div {
     padding: $default-padding;
+    max-width: $max-width;
+    background-image: url("../img/logo_small.png");
+    background-position: 120px 0px;
+    background-repeat: no-repeat;
+    margin: auto;
     display: flex;
   }
   h1 {
@@ -109,22 +128,20 @@ header {
     padding: 0px;
   }
   li a {
+    background: $page-color;
     font-size: 1.2rem;
-    transition: font-size 1s;
+    transition: all 1s;
     margin: 0.1em 0.25em 0.1em;
     padding: 0.15em 0.25em;
     display: inline-block;
     border-radius: 0.25em;
     position: relative;
-    box-shadow: inset 0.1em 0.1em 0.2em #fff,
-                inset -0.1em -0.1em 0.2em #666;
+    box-shadow: $shadow;
     &:hover {
-      box-shadow: inset 0.2em 0.2em 0.4em #fff,
-                  inset -0.2em -0.2em 0.4em #666;
+      box-shadow: $hover-shadow;
     }
     &:active {
-      box-shadow: inset -0.2em -0.2em 0.4em #fff,
-                  inset 0.2em 0.2em 0.4em #666;
+      box-shadow: $active-shadow;
     }
   }
 }
@@ -142,7 +159,9 @@ footer {
   background: $footer-background;
   color: $footer-color;
   font-family: $condensed;
-  display: block;
+  //display: block;
+  flex-shrink: 0;
+  box-shadow: $shadow;
 
   &>div {
     display: flex;
@@ -151,6 +170,8 @@ footer {
 
   .footer-item {
     padding: $default-padding;
+    max-width: $max-width;
+    margin: auto;
   }
 
   .footer-sep {
@@ -190,15 +211,21 @@ footer {
 // Main content area
 
 #between-bars {
-  flex: 1;
+  //flex: 1 0;
+  flex-shrink: 0;
+  flex-grow: 1;
 }
 
 main {
   padding: $default-padding;
+  max-width: $max-width;
+  margin: auto;
 }
 
 #between-bars nav {
-  position: relative;
+  //position: absolute;
+  //left: 0px;
+  float: right;
   h2 {
     font-family: Raleway, $sans;
     font-style: italic;
@@ -206,7 +233,7 @@ main {
     font-size: 1.23em;
     margin-top: 0em;
   }
-  margin: 1em 2em 0em;
+  margin: 4em 2em 2em 1em;
   border: em-calc(1) solid $bar-color-1;
   border-radius: 1em;
   padding: $default-padding;
@@ -218,10 +245,13 @@ main {
   }
 }
 
+
+
 //////////////////////////////////////////////////////////////////////
 // Links
 
 a {
+  transition: all 1s;
   color: inherit;
   text-decoration: none;
 }
@@ -267,4 +297,92 @@ pre {
     background-color: inherit;
     box-shadow: none;
   }
+}
+
+////////////////////////
+// CindyJS example
+
+#CSCanvas, #cindy, #Cindy3D, .example {
+  background: #ffffff;
+  display: block;
+  box-shadow: $shadow;
+  margin: 10px !important; 
+  border: 0px !important;
+  position:relative !important;
+  flex-shrink: 0.1;
+}
+
+.flex {
+  //margin: 0px;
+  //background: linear-gradient($bar-color,$page-color, $bar-color);
+  display: flex;
+  //box-shadow: $shadow;
+  flex-direction: row;
+  div {
+    padding: 0 20px 0 20px;
+    margin: auto;
+    //font-weight: 700;
+    //font-size: 1.4em;
+  }
+}
+
+@media #{$small} {
+  .flex { flex-direction: column;}
+}
+
+
+.gallery {
+  display:flex;
+  flex-wrap: wrap;
+  div {
+    width: 300px;
+    margin: 10px;
+    img {
+      box-shadow: $shadow;
+      &:hover {
+        box-shadow: $hover-shadow;
+      }
+      &:active {
+        box-shadow: $active-shadow;
+      }
+    }
+  }
+}
+
+.gallerynav {
+  ul {
+    overflow: auto;
+    list-style-type: none;
+  }
+   
+  li {
+    float: left;
+    margin-right: 0px;
+    border-right: 1px solid #cccccc;
+    padding: 0 20px;
+  }
+   
+  li:last-child {
+    border-right: none;
+  }
+   
+  li a {
+    color: #cccccc;
+    transition: all 0.5s ease;
+  }
+  
+  li.highlight a{
+    color: #666666;
+  }
+   
+  li a:hover {
+    color: #000000;
+  }
+   
+  li.active a {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  
 }

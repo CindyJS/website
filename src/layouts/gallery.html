@@ -1,0 +1,12 @@
+{{#if description}}
+<div>
+{{{description}}}
+</div>
+{{/if}}
+<div class="gallery">
+{{#each files}}
+<div>
+  <a href="{{href}}"><img src="{{imgurl}}" alt="{{basename}}" />{{title}}</a>
+</div>
+{{/each}}
+</div>
