@@ -312,27 +312,26 @@ pre {
   flex-shrink: 0.1;
 }
 
-.flex {
-  //margin: 0px;
-  //background: linear-gradient($bar-color,$page-color, $bar-color);
+.flex, .flex-reverse {
   display: flex;
-  //box-shadow: $shadow;
   flex-direction: row;
   div {
     padding: 0 20px 0 20px;
     margin: auto;
-    //font-weight: 700;
-    //font-size: 1.4em;
   }
 }
 
+.flex-reverse {
+  flex-direction: row-reverse;
+}
+
 @media #{$small} {
-  .flex { flex-direction: column;}
+  .flex, .flex-reverse { flex-direction: column;}
 }
 
 
 .gallery {
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
   div {
     width: 300px;
