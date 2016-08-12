@@ -11,9 +11,9 @@
 // Configurable settings
 
 
-$bar-color: #f0f0ee;
+$bar-color: #e6e6e4;
 //$bar-color: #e0e0de;
-$page-color: lighten($bar-color, 10%);
+$page-color: lighten($bar-color, 9%);
 $bar-color-1: $bar-color;
 $titlebar-background: $bar-color;
 $titlebar-color: #000000;
@@ -66,7 +66,7 @@ strong {
 }
 
 h1,h2,h3,h4,h5,h6 {
-  margin: 1em 0em 0.25em 1rem; // top, right, bottom, left
+  margin: 0.5em 0em 0.25em 1rem; // top, right, bottom, left
   padding: 0px;
   font-family: $sans;
   font-style: normal;
@@ -318,6 +318,10 @@ pre {
   div {
     padding: 0 20px 0 20px;
     margin: auto;
+  }
+  .example {
+    width: 300px;
+    height: 300px;
   }
 }
 

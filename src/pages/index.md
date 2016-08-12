@@ -89,7 +89,7 @@ CindyJS is licensed under the
 
 <script type="text/javascript">
 var cdy = {
-  tree: CindyJS({
+  tree: CindyJS.newInstance({
     scripts: "tree*",
     geometry: [
       { name: "A", type: "Free", pos: [0, -1.75], color: [1, 0, 0], pinned: false, size: 6, alpha: .3 },
@@ -105,7 +105,7 @@ var cdy = {
       transform: [{ visibleRect: [-3, -2.5, 3, 3.5] }]
     }]
   }),
-  bouncer: CindyJS({
+  bouncer: CindyJS.newInstance({
     defaultAppearance: { dimDependent: 0.7 },
     movescript: "csmove",
     initscript: "init",
@@ -125,13 +125,10 @@ var cdy = {
     behavior: [
       { behavior: { type: "Environment", gravity: -.2 } },
       { name: "A", behavior: { type: "Mass", friction: 0.0, vx: 0.3 } },
-
       { name: "a", behavior: { type: "Bouncer" } },
       { name: "b", behavior: { type: "Bouncer" } },
       { name: "c", behavior: { type: "Bouncer" } },
       { name: "d", behavior: { type: "Bouncer" } }
-
-
     ],
     autoplay: true,
     ports: [{
@@ -141,7 +138,7 @@ var cdy = {
       transform: [{ visibleRect: [-10, -10, 10, 10] }]
     }]
   }),
-  complexPlot: CindyJS({
+  complexPlot: CindyJS.newInstance({
     ports: [{
       id: "ComplexPlot",
       width: 300,
@@ -156,16 +153,18 @@ var cdy = {
 };
 
 
-updateVisibility();
-
 var doingsth = false;
+
+document.addEventListener('DOMContentLoaded', function(event) {
+  updateVisibility();
+});
 
 window.addEventListener('scroll', function(e) {
   if (!doingsth) {
     window.requestAnimationFrame(function() {
       updateVisibility();
       doingsth = false;
-    });
+    }, 10); //10 ms delay
   }
   doingsth = true;
 });
@@ -173,18 +172,20 @@ window.addEventListener('scroll', function(e) {
 
 function updateVisibility() {
   for (var i in cdy) {
-    if (cdy[i].canvas) {
-      var rect = cdy[i].canvas.getBoundingClientRect();
-      if (rect.bottom >= 0 && rect.top <= window.innerHeight) { //rect is visible
-        cdy[i].play();
-        //console.log("play" + i);
-      } else {
-        cdy[i].pause();
-        //console.log("pause" + i);
+    var rect = document.getElementById(cdy[i].config.ports[0].id)
+      .getBoundingClientRect();
+    if (rect.bottom >= 0 && rect.top <= window.innerHeight) { //rect is visible
+      if (!cdy[i].started) {
+        cdy[i].startup();
+        cdy[i].started = true;
       }
+      cdy[i].play();
+    } else {
+      if (cdy[i].started) cdy[i].pause();
     }
   }
 }
+
 </script>
 
 
@@ -237,10 +238,6 @@ function updateVisibility() {
   drawimage(L, R, "out" + (1-m), alpha -> (1-f));
 </script>
 
-
-
-
-
 <script id='init' type='text/x-cindyscript'>
 l=[];
 
@@ -254,13 +251,7 @@ al=damp^(length(l));
 forall(1..length(l),
 draw(l_#,alpha->al,color->(1,.5,.5),size->7*al);
 al=al/damp);
-
-
 </script>
-
-
-
-
 
 
 <script id="complexinit" type="text/x-cindyscript">
