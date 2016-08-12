@@ -189,20 +189,21 @@ function updateVisibility() {
 
 
 <script id="treeinit" type="text/x-cindyscript">
-  N = 10;
+  N = 5;
+  imagetime = 1.8; //time for a single image to be displayed
   forall(0..N-1,
-    createimage("tree"+#, 800, 800); //supersampling+greater drawing area
+    createimage("tree"+#, 600, 600); //supersampling
   );
   forall(0..1,
-    createimage("out"+#, 800, 800);
+    createimage("out"+#, 600, 600);
   );
   it = 1;
   o1(it) := "tree" + mod(it - 1, N);
   o2(it) := "tree" + mod(floor(it - 2 - (N-3)*random()), N);
   rp() := ((random(), random()) - (.5, .5))*.25;
   
-  L = (-4,-2);
-  R = (4,-2);
+  L = (-3,-2.5);
+  R = (3,-2.5);
   
   lastsecond = -1;
   cnt = 0;
@@ -223,15 +224,15 @@ function updateVisibility() {
     );
   );
   
-  m = mod(floor(seconds()),2);
+  m = mod(floor(seconds()/imagetime),2);
   
-  if(floor(seconds()) > lastsecond,
+  if(floor(seconds()/imagetime) > lastsecond,
     clearimage("out"+m);
     canvas(L, R, "out"+m, drawimage(L, R, "tree" + it));
-    lastsecond = floor(seconds());
+    lastsecond = floor(seconds()/imagetime);
     cnt = 0;
   );
-  f = (1-cos(mod(seconds(), 1)*pi))*.5; //f = mod(seconds(), 1);
+  f = (1-cos(mod(seconds()/imagetime, 1)*pi))*.5;
   drawimage(L, R, "out" + m, alpha -> f);
   drawimage(L, R, "out" + (1-m), alpha -> (1-f));
 </script>
