@@ -12,7 +12,7 @@ concepts, from geometry in particular and mathematics in general,
 but also from various other fields.
 
 <div class="flex">
-  <div id="Bouncer" class="example" style="float:left;"></div>
+  <div id="Bouncer" class="example"></div>
   <div>
     <h5>Use CindyJS for your own interactive physics simulations</h5>
     Freely experiment with masses, springs, charges
@@ -25,7 +25,8 @@ but also from various other fields.
   </div>
 </div>
 
-<div class="flex">
+<div class="flex-reverse">
+  <div id="Tree" class="example"></div>
   <div>
     <h5>Add brain power to your applications with <i>CindyScript</i></h5>
     <p>CindyJS has its own easy-to-learn scripting language <i>CindyScript</i>, which can be used for a variety of smart applets.</p>
@@ -35,7 +36,6 @@ but also from various other fields.
     and most of all understandable way.</p>
     <p>It allows for a high level implementation of mathematical concepts.</p>
   </div>
-  <div id="Tree" class="example"></div>
 </div>
 
 
@@ -44,9 +44,9 @@ but also from various other fields.
   <div>
     <h5>Use the GPU without learning WebGL</h5>
     <p>CindyJS provides the high-level mathematically oriented user with access to the shader language of the GPU without learning a shader language.</p>
-    <p>On the right you see an GPU rendered example of a complex phase portrait rendered in CindyJS. You can enter any arbitrary complex function or chose a predefined  function and view its complex phase portrait.</p>
+    <p>Here you see an GPU rendered example of a complex phase portrait rendered in CindyJS. You can enter any arbitrary complex function or chose a predefined  function and view its complex phase portrait.</p>
 
-    <p>f(z) = <input type="text" id="inp" value="z^5-1"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { cdy.evokeCS('f(z) := (' + this.value + '); forcerecompile();'); }" style="font-size:18px"> <select id="sel" onchange="document.getElementById('inp').value = this.value; cdy.evokeCS('f(z) := (' + this.value + '); forcerecompile();');">
+    <p>f(z) = <input type="text" id="inp" value="z^5-1"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { cdy.complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();'); }" style="font-size:18px"> <select id="sel" onchange="document.getElementById('inp').value = this.value; cdy.complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();');">
       <option>(z^5-1)</option>
       <option>(z^(-5)-1)</option>
       <option>(z-1)/(z+1)</option>
@@ -84,10 +84,109 @@ Be sure to check for known issues first, though.
 CindyJS is licensed under the
 [Apache 2 license](/license.html).
 
-
-
 <script type="text/javascript" src="http://cindyjs.org/dist/latest/Cindy.js"></script>
 <script type="text/javascript" src="http://cindyjs.org/dist/latest/CindyGL.js"></script>
+
+<script type="text/javascript">
+var cdy = {
+  tree: CindyJS({
+    scripts: "tree*",
+    geometry: [
+      { name: "A", type: "Free", pos: [0, -1.75], color: [1, 0, 0], pinned: false, size: 6, alpha: .3 },
+      { name: "B", type: "Free", pos: [0, -.8], color: [1, 0, 0], pinned: false, size: 6, alpha: .3 },
+      { name: "C", type: "Free", pos: [-.34, -.18], color: [1, 0, 0], pinned: false, size: 6, alpha: .3 },
+      { name: "D", type: "Free", pos: [.34, -.18], color: [1, 0, 0], pinned: false, size: 6, alpha: .3 }
+    ],
+    animation: { autoplay: true },
+    ports: [{
+      id: "Tree",
+      width: 300,
+      height: 300,
+      transform: [{ visibleRect: [-3, -2.5, 3, 3.5] }]
+    }]
+  }),
+  bouncer: CindyJS({
+    defaultAppearance: { dimDependent: 0.7 },
+    movescript: "csmove",
+    initscript: "init",
+    geometry: [
+      { name: "A", type: "Free", pos: [-5, 5], color: [1, .5, .5] },
+      { name: "B", type: "Free", pos: [-9, 7], color: [0, 0, 0], size: 3 },
+      { name: "C", type: "Free", pos: [-7, -8], color: [0, 0, 0], size: 3 },
+      { name: "D", type: "Free", pos: [7, -8], color: [0, 0, 0], size: 3 },
+      { name: "E", type: "Free", pos: [9, 7], color: [0, 0, 0], size: 3 },
+      { name: "F", type: "Free", pos: [-3, -4], color: [0, 0, 0], size: 3 },
+      { name: "G", type: "Free", pos: [1, -2], color: [0, 0, 0], size: 3 },
+      { name: "a", type: "Segment", args: ["B", "C"], color: [0, 0, 0], size: 1 },
+      { name: "b", type: "Segment", args: ["C", "D"], color: [0, 0, 0], size: 1 },
+      { name: "c", type: "Segment", args: ["D", "E"], color: [0, 0, 0], size: 1 },
+      { name: "d", type: "Segment", args: ["F", "G"], color: [0, 0, 0], size: 1 }
+    ],
+    behavior: [
+      { behavior: { type: "Environment", gravity: -.2 } },
+      { name: "A", behavior: { type: "Mass", friction: 0.0, vx: 0.3 } },
+
+      { name: "a", behavior: { type: "Bouncer" } },
+      { name: "b", behavior: { type: "Bouncer" } },
+      { name: "c", behavior: { type: "Bouncer" } },
+      { name: "d", behavior: { type: "Bouncer" } }
+
+
+    ],
+    autoplay: true,
+    ports: [{
+      id: "Bouncer",
+      width: 300,
+      height: 300,
+      transform: [{ visibleRect: [-10, -10, 10, 10] }]
+    }]
+  }),
+  complexPlot: CindyJS({
+    ports: [{
+      id: "ComplexPlot",
+      width: 300,
+      height: 300,
+      transform: [{ visibleRect: [-1.5, -1.5, 1.5, 1.5] }]
+    }],
+    scripts: "complex*",
+    geometry: [],
+    animation: { autoplay: true },
+    use: ["CindyGL"]
+  })
+};
+
+
+updateVisibility();
+
+var doingsth = false;
+
+window.addEventListener('scroll', function(e) {
+  if (!doingsth) {
+    window.requestAnimationFrame(function() {
+      updateVisibility();
+      doingsth = false;
+    });
+  }
+  doingsth = true;
+});
+
+
+function updateVisibility() {
+  for (var i in cdy) {
+    if (cdy[i].canvas) {
+      var rect = cdy[i].canvas.getBoundingClientRect();
+      if (rect.bottom >= 0 && rect.top <= window.innerHeight) { //rect is visible
+        cdy[i].play();
+        //console.log("play" + i);
+      } else {
+        cdy[i].pause();
+        //console.log("pause" + i);
+      }
+    }
+  }
+}
+</script>
+
 
 <script id="treeinit" type="text/x-cindyscript">
   N = 10;
@@ -211,80 +310,5 @@ colorplot(
   z = complex(#);
   color(f(z))
 );
-
-
 </script>
 
-
-<script type="text/javascript">
-  CindyJS({canvasname:"Tree",
-              scripts: "tree*",
-              geometry:[
-                {name:"A", type:"Free", pos:[0, -1.75], color:[1,0,0], pinned:false, size:6, alpha: .3},
-                {name:"B", type:"Free", pos:[0, -.8], color:[1,0,0], pinned:false, size:6, alpha: .3},
-                {name:"C", type:"Free", pos:[-.34, -.18], color:[1,0,0], pinned:false, size:6, alpha: .3},
-                {name:"D", type:"Free", pos:[.34, -.18], color:[1,0,0], pinned:false, size:6, alpha: .3}
-              ],
-              animation: {autoplay: true},
-              ports: [{
-                id: "Tree",
-                width: 300,
-                height: 300,
-                transform: [ { visibleRect: [-3, -2.5, 3, 3.5] } ]
-              }]
-            });
-            
-            
-
-CindyJS({canvasname:"Bouncer",
-            defaultAppearance: {dimDependent: 0.7},
-            movescript:"csmove",
-            initscript:"init",
-            geometry:[
-          {name:"A", type:"Free", pos:[-5,5],color:[1,.5,.5]},
-          {name:"B", type:"Free", pos:[-9,7],color:[0,0,0],size:3},
-          {name:"C", type:"Free", pos:[-7,-8],color:[0,0,0],size:3},
-          {name:"D", type:"Free", pos:[7,-8],color:[0,0,0],size:3},
-          {name:"E", type:"Free", pos:[9,7],color:[0,0,0],size:3},
-          {name:"F", type:"Free", pos:[-3,-4],color:[0,0,0],size:3},
-          {name:"G", type:"Free", pos:[1,-2],color:[0,0,0],size:3},
-          {name:"a", type:"Segment", args:["B","C"],color:[0,0,0],size:1 },
-          {name:"b", type:"Segment", args:["C","D"],color:[0,0,0],size:1 },
-          {name:"c", type:"Segment", args:["D","E"],color:[0,0,0],size:1 },
-          {name:"d", type:"Segment", args:["F","G"],color:[0,0,0],size:1 }
-        ],
-            behavior:[
-           {behavior:{type:"Environment",gravity:-.2}},
-           {name:"A", behavior:{type:"Mass",friction:0.0,vx:0.3}},
-
-           {name:"a", behavior:{type:"Bouncer"}},
-           {name:"b", behavior:{type:"Bouncer"}},
-           {name:"c", behavior:{type:"Bouncer"}},
-           {name:"d", behavior:{type:"Bouncer"}}
-
-
-           ],
-            autoplay: true,
-             ports: [{
-    id: "Bouncer",
-    width: 300,
-    height: 300,
-    transform: [ { visibleRect: [-10, -10, 10, 10] } ]
-  }]
-});
-
-var cdy = CindyJS({
-  ports: [{
-    id: "ComplexPlot",
-      width: 300,
-      height: 300,
-      transform: [ { visibleRect: [-1.5, -1.5, 1.5, 1.5] } ] 
-  }],
-  scripts: "complex*",
-  geometry: [],
-  animation: {autoplay: true},
-  use: ["CindyGL"]
-});
-
-
-</script>
