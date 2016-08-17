@@ -111,11 +111,12 @@ header {
   &>div {
     padding: $default-padding;
     max-width: $max-width;
-    background-image: url("../img/logo_small.png");
-    background-position: 120px 0px;
-    background-repeat: no-repeat;
     margin: auto;
     display: flex;
+  }
+  .logo {
+    vertical-align: middle;
+    margin: -1rem 0.5rem;
   }
   h1 {
     margin: 0px;
