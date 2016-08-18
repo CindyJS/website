@@ -56,7 +56,9 @@ var Galleries = [{
     description: "These examples demonstrate the CindyGL-Plugin",
     imgpath: "", //local folder
 }, {
-    src: "CindyJS/examples/**/*.html",
+    cwd: "CindyJS",
+    base: "CindyJS",
+    src: "examples/**/*.html",
     dest: "examples",
     title: "Examples shipped with the source tree",
     description: "This shows the examples <a href='https://github.com/CindyJS/CindyJS'>from the repository</a>, demonstrating individual functions and operations. Most of them demonstrate a single technical feature and are not intended to be examples of what well-designed CindyJS widgets can look like.",
@@ -141,7 +143,8 @@ gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function
                 Galleries.map(
                     gallery => pipeline(
                         gulp.src([gallery.src], {
-                            base: gallery.base || gallery.src.split('/')[0]
+                            base: gallery.base || gallery.src.split('/')[0],
+                            cwd: gallery.cwd || ".",
                         }),
                         examples(),
                         addData(gallerynavigation(gallery.dest)),
