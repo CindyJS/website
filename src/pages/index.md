@@ -84,8 +84,8 @@ Be sure to check for known issues first, though.
 CindyJS is licensed under the
 [Apache 2 license](/license.html).
 
-<script type="text/javascript" src="http://cindyjs.org/dist/latest/Cindy.js"></script>
-<script type="text/javascript" src="http://cindyjs.org/dist/latest/CindyGL.js"></script>
+<script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
+<script type="text/javascript" src="/dist/v0.7/CindyGL.js"></script>
 
 <script type="text/javascript">
 var cdy = {
