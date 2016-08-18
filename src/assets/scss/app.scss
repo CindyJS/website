@@ -39,6 +39,7 @@ $index-example-width: 45vw;
 // Media selection
 
 $small: "only screen and (max-width: #{$small-size})";
+$not-small: "not screen and (max-width: #{$small-size})";
 
 //////////////////////////////////////////////////////////////////////
 // Fonts
@@ -297,6 +298,29 @@ pre {
   code {
     background-color: inherit;
     box-shadow: none;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// List formatting
+
+@media #{$not-small} {
+  ul.inlinelist {
+    display: block;
+    margin: 0em;
+    padding: 0em;
+
+    &>li {
+      display: inline;
+      &::before {
+        content: "● ";
+        margin: 0em 0.5em;
+      }
+      &:first-child::before {
+        content: "";
+        margin: 0em;
+      }
+    }
   }
 }
 

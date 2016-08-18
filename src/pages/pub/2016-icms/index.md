@@ -10,9 +10,11 @@ The presentations and extended abstracts from this occasion are available here.
 
 ## Overview
 
-[**Presentation (HTML)**](overview/) ∙
-[Extended Abstract (PDF)](/docs/2016-icms/ICMS_Extended_Abstract.pdf) ∙
-[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_39)
+<ul class="inlinelist">
+<li>[**Presentation (HTML)**](overview/)</li>
+<li>[Extended Abstract (PDF)](/docs/2016-icms/ICMS_Extended_Abstract.pdf)</li>
+<li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_39)</li>
+</ul>
 
 Martin von Gagern, Ulrich Kortenkamp, Jürgen Richter-Gebert and Michael Strobel
 
@@ -25,9 +27,11 @@ Martin von Gagern, Ulrich Kortenkamp, Jürgen Richter-Gebert and Michael Strobel
 
 ## Plugins
 
-[**Presentation (HTML)**](plugins/) ∙
-[Extended Abstract (PDF)](/docs/2016-icms/ICMS_Plugins_Extended_Abstract.pdf) ∙
-[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_40)
+<ul class="inlinelist">
+<li>[**Presentation (HTML)**](plugins/)</li>
+<li>[Extended Abstract (PDF)](/docs/2016-icms/ICMS_Plugins_Extended_Abstract.pdf)</li>
+<li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_40)</li>
+</ul>
 
 Martin von Gagern and Jürgen Richter-Gebert
 
@@ -40,9 +44,11 @@ Martin von Gagern and Jürgen Richter-Gebert
 
 ## CindyGL
 
-[**Presentation (HTML)**](cindygl/) ∙
-[Extended Abstract (PDF)](/docs/2016-icms/ICMS_CindyGL_Extended_Abstract.pdf) ∙
-[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_44)
+<ul class="inlinelist">
+<li>[**Presentation (HTML)**](cindygl/)</li>
+<li>[Extended Abstract (PDF)](/docs/2016-icms/ICMS_CindyGL_Extended_Abstract.pdf)</li>
+<li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_44)</li>
+</ul>
 
 Aaron Montag and Jürgen Richter-Gebert
 
