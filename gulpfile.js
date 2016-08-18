@@ -157,7 +157,6 @@ gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function
                 }),
                 galleryindex(Galleries, "Gallery"),
                 addData(gallerynavigation("gallery")),
-                github("CindyJS/website"),
                 licenses.apache2()
             ),
             pipeline(
