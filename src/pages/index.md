@@ -11,7 +11,8 @@ Together, these components make it very easy to visualize various
 concepts, from geometry in particular and mathematics in general,
 but also from various other fields.
 
-<div class="flex">
+<div class="examplel">
+  <h5>Use CindyJS for your own interactive physics simulations</h5>
   <div id="Bouncer" class="example"></div>
   <div>
     <h5>Use CindyJS for your own interactive physics simulations</h5>
@@ -25,7 +26,8 @@ but also from various other fields.
   </div>
 </div>
 
-<div class="flex-reverse">
+<div class="exampler">
+  <h5>Add brain power to your applications with <i>CindyScript</i></h5>
   <div id="Tree" class="example"></div>
   <div>
     <h5>Add brain power to your applications with <i>CindyScript</i></h5>
@@ -39,7 +41,8 @@ but also from various other fields.
 </div>
 
 
-<div class="flex">
+<div class="examplel">
+  <h5>Use the GPU without learning WebGL</h5>
   <div id="ComplexPlot" class="example"></div>
   <div>
     <h5>Use the GPU without learning WebGL</h5>

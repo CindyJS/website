@@ -111,11 +111,12 @@ header {
   &>div {
     padding: $default-padding;
     max-width: $max-width;
-    background-image: url("../img/logo_small.png");
-    background-position: 120px 0px;
-    background-repeat: no-repeat;
     margin: auto;
     display: flex;
+  }
+  .logo {
+    vertical-align: middle;
+    margin: -1rem 0.5rem;
   }
   h1 {
     margin: 0px;
@@ -312,7 +313,7 @@ pre {
   flex-shrink: 0.1;
 }
 
-.flex, .flex-reverse {
+.examplel, .exampler {
   display: flex;
   flex-direction: row;
   div {
@@ -323,14 +324,26 @@ pre {
     width: 300px;
     height: 300px;
   }
+  >h5 {
+    display: none;
+  }
 }
 
-.flex-reverse {
+.exampler {
   flex-direction: row-reverse;
 }
 
 @media #{$small} {
-  .flex, .flex-reverse { flex-direction: column;}
+  .examplel, .exampler {
+    flex-direction: column;
+    >h5 {
+      margin-top: 2em;
+      display: block;
+    }
+    >div>h5 {
+      display: none;
+    }
+  }
 }
 
 
