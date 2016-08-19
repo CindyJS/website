@@ -64,6 +64,7 @@ var Galleries = [{
     description: "This shows the examples <a href='https://github.com/CindyJS/CindyJS'>from the repository</a>, demonstrating individual functions and operations. Most of them demonstrate a single technical feature and are not intended to be examples of what well-designed CindyJS widgets can look like.",
     imgpath: "/assets/img/thumbnail/",
     github: "CindyJS/CindyJS",
+    license: licenses.apache2,
 }];
 
 
@@ -150,7 +151,7 @@ gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function
                         addData(gallerynavigation(gallery.dest)),
                         github(gallery.github || "CindyJS/website"),
                         index(gallery.dest, "src/layouts/gallery.html", xtend(gallery, gallerynavigation(gallery.dest))),
-                        licenses.apache2()
+                        (gallery.license ||  licenses.ccbysa40)()
                     )
                 )
             ),
@@ -160,7 +161,7 @@ gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function
                 }),
                 galleryindex(Galleries, "Gallery"),
                 addData(gallerynavigation("gallery")),
-                licenses.apache2()
+                licenses.ccbysa40()
             ),
             pipeline(
                 gulp.src(["ref/**/*.md"], {
