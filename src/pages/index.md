@@ -12,10 +12,10 @@ concepts, from geometry in particular and mathematics in general,
 but also from various other fields.
 
 <div class="examplel">
-  <h5>Use CindyJS for your own interactive physics simulations</h5>
+  <h2>Use CindyJS for your own interactive physics simulations</h2>
   <div id="Bouncer" class="example"></div>
   <div>
-    <h5>Use CindyJS for your own interactive physics simulations</h5>
+    <h2>Use CindyJS for your own interactive physics simulations</h2>
     Freely experiment with masses, springs, charges
     and fields! Liberated from the constraints of
     reality, scenarios ranging from atom physics,
@@ -27,10 +27,10 @@ but also from various other fields.
 </div>
 
 <div class="exampler">
-  <h5>Add brain power to your applications with <i>CindyScript</i></h5>
+  <h2>Add brain power to your applications with <i>CindyScript</i></h2>
   <div id="Tree" class="example"></div>
   <div>
-    <h5>Add brain power to your applications with <i>CindyScript</i></h5>
+    <h2>Add brain power to your applications with <i>CindyScript</i></h2>
     <p>CindyJS has its own easy-to-learn scripting language <i>CindyScript</i>, which can be used for a variety of smart applets.</p>
     <p>Have you ever explained something to another mathematician, while sitting in
     a loud pub and having nothing but a pen and a napkin?
@@ -42,10 +42,10 @@ but also from various other fields.
 
 
 <div class="examplel">
-  <h5>Use the GPU without learning WebGL</h5>
+  <h2>Use the GPU without learning WebGL</h2>
   <div id="ComplexPlot" class="example"></div>
   <div>
-    <h5>Use the GPU without learning WebGL</h5>
+    <h2>Use the GPU without learning WebGL</h2>
     <p>CindyJS provides the high-level mathematically oriented user with access to the shader language of the GPU without learning a shader language.</p>
     <p>Here you see an GPU rendered example of a complex phase portrait rendered in CindyJS. You can enter any arbitrary complex function or chose a predefined  function and view its complex phase portrait.</p>
 
@@ -205,10 +205,10 @@ function updateVisibility() {
   o1(it) := "tree" + mod(it - 1, N);
   o2(it) := "tree" + mod(floor(it - 2 - (N-3)*random()), N);
   rp() := ((random(), random()) - (.5, .5))*.25;
-  
+
   L = (-3,-2.5);
   R = (3,-2.5);
-  
+
   lastsecond = -1;
   cnt = 0;
 </script>
@@ -219,7 +219,7 @@ function updateVisibility() {
 
     f1 = map(A, B, B, C + rp());
     f2 = map(A, B, B, D + rp());
-    
+
     clearimage("tree"+it);
     canvas(L, R, "tree"+it,
       draw(A, B, color->[0,0,0], size->13);
@@ -227,9 +227,9 @@ function updateVisibility() {
       drawimage(f2*L.homog, f2*R.homog, o2(it), alpha->.55+random()/2);
     );
   );
-  
+
   m = mod(floor(seconds()/imagetime),2);
-  
+
   if(floor(seconds()/imagetime) > lastsecond,
     clearimage("out"+m);
     canvas(L, R, "out"+m, drawimage(L, R, "tree" + it));
@@ -265,12 +265,12 @@ t0 = seconds();
 <script id="complexdraw" type="text/x-cindyscript">
 hsvToRGB(h, s, v) := (
   regional(j, p, q, t, f);
-  
+
   h = (h-floor(h))*6;
-  
+
   j = floor(h);
   f = h - j;
-  
+
   p = 1 - s;
   q = 1 - s*f;
   t = 1 - s*(1-f);
@@ -289,15 +289,15 @@ time = t0-seconds();
 
 color(z) := ( //what color should be given to a complex number z?
   regional(n, grey1, grey2);
-  
+
   n = 12;
   z = log(z)/2/pi + i*time*.1;
-  
+
   zfract = n*z - floor(n*z); //value of n*z in C mod Z[i]
-  
+
   grey1 = im(zfract);
   grey2 = 1;//re(zfract);
-  
+
   hsvToRGB(im(z), 1., .5+.5*re(sqrt(grey1*grey2)))
 );
 
@@ -306,4 +306,3 @@ colorplot(
   color(f(z))
 );
 </script>
-
