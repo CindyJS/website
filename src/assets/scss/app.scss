@@ -225,9 +225,8 @@ main {
 }
 
 #between-bars nav {
-  //position: absolute;
-  //left: 0px;
-  float: right;
+  padding: $default-padding;
+  max-width: $max-width;
   h2 {
     font-family: Raleway, $sans;
     font-style: italic;
@@ -235,7 +234,7 @@ main {
     font-size: 1.23em;
     margin-top: 0em;
   }
-  margin: 4em 2em 2em 1em;
+  margin: 4em auto 2em;
   border: em-calc(1) solid $bar-color-1;
   border-radius: 1em;
   padding: $default-padding;
@@ -299,6 +298,69 @@ pre {
     background-color: inherit;
     box-shadow: none;
   }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Reference manual (similar to CindyJS/ref/ref.css)
+
+.codeblock {
+  pre {
+    background-color: inherit;
+    box-shadow: none;
+    border-style: none;
+    border-radius: 0em;
+  }
+
+  border: 1px solid #66cc66;
+  padding: 3px;
+  margin: 0ex 3em;
+  background: #ddddff;
+  pre { margin: 0px; padding: 2px; }
+  pre.code { color: #000066; margin-top: 1em; padding: 0px; }
+  pre.code.fst { margin-top: 0px; }
+  pre.result { color: #006600; background: #ddffdd; }
+  pre.regexp { color: #99ccaa; background: #eeffdd; }
+  pre.output { color: #993333; background: #dddddd; }
+  pre.draw2d { color: #aa9999; background: #ddeedd; }
+  pre.pragma { color: #996600; background: #ffffcc; }
+}
+
+table {
+  border-collapse:collapse;
+  td, th {
+    padding: 0.5ex 1em;
+    border: 1px solid black;
+    background: #ffffff;
+  }
+  code {
+    background-color: inherit;
+    box-shadow: none;
+  }
+}
+
+a.hlink {
+  margin-left: 0.5em;
+  opacity: 0.1;
+  color: #003;
+  &:hover {
+    opacity: 0.8;
+  }
+  &::after {
+    content: "¶";
+  }
+}
+
+kbd {
+  display: inline-block;
+  padding: 0.2em 0.3em;
+  margin: 0em 0.1em;
+  color: #555;
+  vertical-align: middle;
+  background-color: #eee;
+  border: solid 1px #bbb;
+  border-bottom-color: #aaa;
+  border-radius: 0.3em;
+  box-shadow: inset 0 -1px 0 #aaa;
 }
 
 //////////////////////////////////////////////////////////////////////
