@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Infinity.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+snap(X):=if(|X.xy-round(X.xy)|<0.2,X.xy=round(X.xy));
+apply([A,B,C,D,E],snap(#));
+
+lim=7;
+
+
+fillpoly((L,M,N,O),color->(1,1,1),alpha->0.5);
+
+
+mat=Tr0.matrix;
+
+apply((0..2*lim)/(2*lim),l,
+ p1=(1-l)*F+G*l;
+  p2=(1-l)*H+K*l;
+  p1=mat*p1.homog;
+  p2=mat*p2.homog;
+  infp=meet(e,join(p1,p2));
+  draw(p1,p2,color->(1,1,1)*.6);
+  draw(p1,infp,color->(1,1,1)*.6);
+//  draw(p2,infp,color->(1,1,1)*.6);
+
+  p1=(1-l)*F+H*l;
+  p2=(1-l)*G+K*l;
+  p1=mat*p1.homog;
+  p2=mat*p2.homog;
+  infp=meet(e,join(p1,p2));
+  draw(p1,p2,color->(1,1,1)*.6);
+  draw(p1,infp,color->(1,1,1)*.6);
+//  draw(p2,infp,color->(1,1,1)*.6);
+
+);
+
+
+connect(size->2,(L,M,N,O,L),color->(0,0,0));
+draw(line(e.homog),size->3,color->(1,1,1));
+fillpoly(((-30,-30),(S.x,-30),(S.x,30),(-30,30)),color->(168,176,192)/255);
+
+fillpoly(((lim,lim),(-lim,lim),(-lim,-lim),(lim,-lim)),color->(1,1,1),alpha->0.5);
+
+apply((0..2*lim)/(2*lim),l,
+  p1=(1-l)*F+G*l;
+  p2=(1-l)*H+K*l;
+  draw(p1,p2,color->(1,1,1)*.6);
+  p1=(1-l)*F+H*l;
+  p2=(1-l)*G+K*l;
+  draw(p1,p2,color->(1,1,1)*.6);
+);
+
+connect(size->2,((lim,lim),(-lim,lim),(-lim,-lim),(lim,-lim),(lim,lim)),color->(0,0,0));
+
+con=C0.matrix;
+if(con_3_3!=0,con=con/con_3_3);
+de=det([[con_1_1,con_1_2],[con_2_1,con_2_2]]);
+det2=det(con);
+
+if(de>0,te="ellipse");
+if(de<0,te="hyperbola");
+if(de~=0,te="parabola");
+if(det2~=0,te="pair of lines");
+if(det2~=0&de~=0,te="parallel pair of lines");
+
+drawtext((-7,-8),te,size->16);
+
+mat=apply([A,B,C,D,E],cub(#.xy+(0,0.00001)));
+pars=linearsolve(mat,-(1,1,1,1,1));
+pars=apply(pars,#+.000000001);
+
+//x*a+y*b+1=0
+
+
+
+repeat(350,start->-lim,stop->lim,i,
+
+   pol=reverse(px(i,pars));
+   roo=roots(pol);
+
+   apply(roo,if(|im(#)|<0.00001&|#|<lim,drawcircle((#,i),0.03,
+        size->1,border->false,color->(0,0,.8))));
+
+   pol=reverse(py(i,pars));
+   roo=roots(pol);
+   apply(roo,if(|im(#)|<0.00001&|#|<lim,drawcircle((i,#),0.03,
+        size->1,border->false,color->(0,0,.8))));
+);
+
+
+
+mat=apply([Y,Z,X,P0,P1],cub(#.xy+(0,0.00001)));
+pars=linearsolve(mat,-(1,1,1,1,1));
+
+//x*a+y*b+1=0
+
+
+
+repeat(350,start->-10,stop->10,i,
+
+   pol=reverse(px(i,pars));
+   roo=roots(pol);
+   apply(roo,if(|im(#)|<0.00001&#>S.x&#<T.x,drawcircle((#,i),0.03,
+        size->1,border->false,color->(0,0,.8))));
+);
+repeat(350,start->S.x,stop->T.x,i,
+   pol=reverse(py(i,pars));
+   roo=roots(pol);
+   apply(roo,if(|im(#)|<0.00001&|#|<10,drawcircle((i,#),0.03,
+        size->1,border->false,color->(0,0,.8))));
+);
+
+
+
+
+
+;
+</script>
+<script id="csinit" type="text/x-cindyscript">
+cub(p):=(p.x^2,p.x*p.y,p.y^2,p.x,p.y);
+px(y,pp):=(
+       pp_1,
+     y*pp_2+    pp_4,
+   y^2*pp_3+  y*pp_5+    1
+);
+py(x,pp):=(
+       pp_3,
+     x*pp_2+    pp_5,
+   x^2*pp_1+  x*pp_4+    1
+);
+;
+</script>
+    <script type="text/javascript">
+createCindy({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "A", type: "Free", pos: [4.0, -0.0, -1.0], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, labeled: true, textsize: 15.0},
+    {name: "B", type: "Free", pos: [-2.6666666666666665, -4.0, 1.3333333333333333], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, labeled: true, textsize: 15.0},
+    {name: "C", type: "Free", pos: [0.0, -4.0, 1.0], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, labeled: true, textsize: 15.0},
+    {name: "D", type: "Free", pos: [2.6666666666666665, -4.0, 1.3333333333333333], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, labeled: true, textsize: 15.0},
+    {name: "E", type: "Free", pos: [4.0, 0.0, 1.0], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, labeled: true, textsize: 15.0},
+    {name: "F", type: "Free", pos: [4.0, -4.0, -0.5714285714285714], color: [0.0, 0.0, 0.0], pinned: true, size: 2.0},
+    {name: "G", type: "Free", pos: [4.0, 4.0, 0.5714285714285714], color: [0.0, 0.0, 0.0], pinned: true, size: 2.0},
+    {name: "H", type: "Free", pos: [4.0, 4.0, -0.5714285714285714], color: [0.0, 0.0, 0.0], pinned: true, size: 2.0},
+    {name: "K", type: "Free", pos: [4.0, -4.0, 0.5714285714285714], color: [0.0, 0.0, 0.0], pinned: true, size: 2.0},
+    {name: "L", type: "Free", pos: [4.0, 0.19161676646706588, 0.2994011976047904], color: [0.0, 0.0, 0.0], size: 2.0},
+    {name: "M", type: "Free", pos: [4.0, -3.376811594202899, 0.3623188405797102], color: [0.0, 0.0, 0.0], size: 2.0},
+    {name: "N", type: "Free", pos: [4.0, -0.8907216494845361, 0.2061855670103093], color: [0.0, 0.0, 0.0], size: 2.0},
+    {name: "O", type: "Free", pos: [4.0, 0.08591885441527446, 0.23866348448687347], color: [0.0, 0.0, 0.0], size: 2.0},
+    {name: "Tr0", type: "TrProjection", color: [0.0, 0.0, 1.0], args: ["G", "O", "F", "L", "H", "M", "K", "N"], visible: false, dock: {offset: [0.0, -0.0]}},
+    {name: "a", type: "Join", color: [0.0, 0.0, 0.0], args: ["M", "L"], visible: false, labeled: true, overhang: 1.065, clip: "inci"},
+    {name: "b", type: "Join", color: [0.0, 0.0, 0.0], args: ["N", "O"], visible: false, labeled: true, overhang: 1.065, clip: "inci"},
+    {name: "c", type: "Join", color: [0.0, 0.0, 0.0], args: ["L", "O"], visible: false, labeled: true, overhang: 1.065, clip: "inci"},
+    {name: "d", type: "Join", color: [0.0, 0.0, 0.0], args: ["M", "N"], visible: false, labeled: true, overhang: 1.065, clip: "inci"},
+    {name: "P", type: "Meet", color: [1.0, 0.0, 0.0], args: ["a", "b"], alpha: 0.0, labeled: true, size: 4.0},
+    {name: "Q", type: "Meet", color: [1.0, 0.0, 0.0], args: ["c", "d"], alpha: 0.0, labeled: true, size: 4.0},
+    {name: "e", type: "Join", color: [1.0, 1.0, 1.0], args: ["P", "Q"], textsize: 18.0, size: 3, clip: "inci", printname: "$l_\\infty$",visible:false},
+    {name: "R", type: "Free", pos: [4.0, 4.0, 0.4444444444444444], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "S", type: "Free", pos: [3.272727272727273, -4.0, 0.36363636363636365], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "f", type: "Join", color: [0.0, 0.0, 0.0], args: ["R", "S"]},
+    {name: "T", type: "Free", pos: [4.0, 1.3333333333333333, 0.14814814814814814], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "U", type: "Free", pos: [4.0, -1.6296296296296295, 0.14814814814814814], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "g", type: "Join", color: [0.0, 0.0, 0.0], args: ["T", "U"]},
+    {name: "V", type: "Meet", color: [1.0, 0.0, 0.0], args: ["e", "f"], visible: false, labeled: true},
+    {name: "W", type: "Meet", color: [1.0, 0.0, 0.0], args: ["e", "g"], visible: false, labeled: true},
+    {name: "X", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr0", "A"], alpha: 0.8999999761581421, labeled: true, size: 3.0, printname: "A'"},
+    {name: "Y", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr0", "B"], alpha: 0.8999999761581421, labeled: true, size: 3.0, printname: "B'"},
+    {name: "Z", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr0", "C"], alpha: 0.8999999761581421, labeled: true, size: 3.0, printname: "C'"},
+    {name: "P0", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr0", "D"], alpha: 0.8999999761581421, labeled: true, size: 3.0, printname: "D'"},
+    {name: "P1", type: "TransformP", color: [1.0, 0.0, 0.0], args: ["Tr0", "E"], alpha: 0.8999999761581421, labeled: true, size: 3.0, printname: "E'"},
+    {name: "P2", type: "Mid", color: [1.0, 0.0, 0.0], args: ["V", "W"], labeled: true, textsize: 17.0, size: 0.0, printname: "$l_{\\infty}$"},
+    {name: "C0", type: "ConicBy5", color: [0.0, 0.0, 1.0], args: ["A", "B", "C", "E", "D"], visible: false}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 920,
+    height: 526,
+    transform: [{visibleRect: [-10.14, 10.78, 26.66, -10.26]}],
+    background: "rgb(168,176,192)"
+  }],
+  use:["katex"],
+  cinderella: {build: 1871, version: [2, 9, 1871]}
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>

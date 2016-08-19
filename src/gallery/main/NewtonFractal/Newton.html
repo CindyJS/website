@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    <title>Cindy JS</title>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/CindyGL.js"></script>
+    <link rel="stylesheet" href="../../css/cindy.css">
+  </head>
+    
+	<body style="font-family:Arial;">
+    
+    <h1>CindyJS: Interference</h1>
+
+    
+    <script id="csdraw" type="text/x-cindyscript">
+     zoom=200;
+     if(first, 
+      A.xy=gauss((2)*20);
+      B.xy=gauss(2*exp(i*2*pi/3)*20);
+      C.xy=gauss(2*exp(i*4*pi/3)*20);
+      first=false;
+      );
+      a=complex(A)/zoom;
+      b=complex(B)/zoom;
+      c=complex(C)/zoom;
+
+
+
+      pol(z):=(z-a)*(z-b)*(z-c);
+      dpol(z):=(a*b+a*c+b*c)-2*(a+b+c)*z+3*z^2;
+
+       
+
+
+      step(z):=-pol(z)/dpol(z)+z;
+
+      col(z):=(
+         erg=(0,0,0); 
+         if(|z-a|<|z-b|&|z-a|<|z-c|,erg=(1,0,0));
+         if(|z-b|<|z-a|&|z-b|<|z-c|,erg=(0,1,0));
+         if(|z-c|<|z-a|&|z-c|<|z-b|,erg=(0,0,1));
+         erg;
+      );
+      eps=0.0000001;
+      newton(z) := (
+       i=0; 
+       zo=z;
+       repeat(30,
+          if(|pol(z)|>eps,
+             zo=z;
+             z=step(z);
+             i=i+1;
+             );
+       );
+       frac=re(((log(|pol(z)|)-log(eps))/(log(|pol(z)|)-log(|pol(zo)|))));
+//       frac=re((((|pol(z)|)-(eps))/((|pol(z)|)-(|pol(zo)|))));
+       col(z)*(1-((i+(frac))/30))^2;
+      );     
+      
+      colorplot(newton(complex(#/zoom)));
+      d=complex(D)/zoom;
+      repeat(30,
+        od=d;
+        d=step(d);
+        draw(gauss(od*zoom),gauss(d*zoom),color->(1,1,1));
+        draw(gauss(d*zoom),color->(0,0,0),size->3);
+
+      );
+    
+
+
+    </script>
+               
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+      t0 = seconds();
+      first=true;
+    </script>
+    
+
+    <div  id="CSCanvas"></div>
+    
+    <script type="text/javascript">
+        
+        var gslp=[
+                  {name:"A", kind:"P", type:"Free", pos:[-10,-0,1],color:[1,1,1]},
+                  {name:"B", kind:"P", type:"Free", pos:[10,5,1],color:[1,1,1]},
+                  {name:"C", kind:"P", type:"Free", pos:[-5,10,1],color:[1,1,1]},
+                  {name:"D", kind:"P", type:"Free", pos:[-3,2,1],color:[0,0,0]},
+                  ];
+        CindyJS({canvasname:"CSCanvas",
+                    scripts: "cs*",
+                    geometry:gslp,
+                    animation: {autoplay: false},
+                    ports: [{
+                      id: "CSCanvas",
+                      width: 780,
+                      height: 600,
+                      transform: [ { visibleRect: [-50,-50, 80, 50] } ]
+                    }]
+                  });
+    </script>              
+	</body>
+</html>

@@ -393,7 +393,7 @@ kbd {
   background: #ffffff;
   display: block;
   box-shadow: $shadow;
-  margin: 10px !important; 
+  margin: 10px !important;
   border: 0px !important;
   position:relative !important;
   flex-shrink: 0.1;
@@ -432,14 +432,14 @@ kbd {
   }
 }
 
-
-.gallery {
+.gallery, .showcase {
   display: flex;
   flex-wrap: wrap;
   div {
     width: 300px;
     margin: 10px;
     img {
+      width: 100%;
       box-shadow: $shadow;
       &:hover {
         box-shadow: $hover-shadow;
@@ -451,40 +451,45 @@ kbd {
   }
 }
 
+.showcase div {
+    width: 17%;
+    margin: 1%;
+}
+
 .gallerynav {
   ul {
     overflow: auto;
     list-style-type: none;
   }
-   
+
   li {
     float: left;
     margin-right: 0px;
     border-right: 1px solid #cccccc;
     padding: 0 20px;
   }
-   
+
   li:last-child {
     border-right: none;
   }
-   
+
   li a {
     color: #cccccc;
     transition: all 0.5s ease;
   }
-  
+
   li.highlight a{
     color: #666666;
   }
-   
+
   li a:hover {
     color: #000000;
   }
-   
+
   li.active a {
     font-weight: bold;
     color: #333;
   }
-  
-  
+
+
 }

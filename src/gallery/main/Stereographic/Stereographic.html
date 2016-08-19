@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SphereRot5.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="http://cindyjs.org/dist/latest/CindyJS.css">
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+<script id="csmouseup" type="text/x-cindyscript">
+//apply(allpoints(),#.selected=false);
+rotating=true;
+ball=false;
+
+degg=2.5°;
+deg=20°;
+degs=5°;
+
+;
+</script>
+<script id="csdraw" type="text/x-cindyscript">
+//Skalierungen
+s1=|B,E|*7+0.01;
+s2=(|D,F|/|D,C|/6)+0.01;
+
+//Gitterpunkte schieben
+K.xy=map(mat*(0,0,0));
+L.xy=map(mat*(1,0,0));
+M.xy=map(mat*(0,0,1));
+G.xy=map(mat*(1,0,1));
+sig=-area(K,L,M);
+//Punkte nachruecken
+if(dragging,
+  H.xy=map(mat*aa);
+  N.xy=map(mat*bb);
+);
+
+//Originalpunkte im Raum
+
+aa=(R.y,0,R.x);
+bb=(S.y,0,S.x);
+
+//Randpunkt nachziehen
+if(mover()==N,
+   diff=bb-aa;
+);
+
+if(mover()==H,
+  N.xy=map(mat*(aa+diff));
+//  N.xy=map(mat*(1,0,1));
+  bb=(S.y,0,S.x);
+);
+
+
+
+
+
+//Gitter malen
+
+if(sig>0,
+ drawgrid(4);
+);
+//Pfeil auf Kreismitte
+//arrow((0,0,0),aa,(0,0.66,0));
+
+
+//drawtext(map(mat*bb)*1.1,"A");
+//drawtext(map(mat*aa)*1.03,"m");
+
+
+//Kugel
+
+mid=map(mat*(0,1,0));
+
+drawspherep(0°,180°);
+drawsphereq(0°,180°);
+drawsphere(0°,180°);
+drawsphere1(0°,180°);
+if(Text0.pressed,
+ drawsphere2(0°,180°);
+);
+
+
+
+
+hit=ster(aa);
+
+
+
+
+if(sig<0,
+ drawgrid(4);
+);
+
+
+</script>
+<script id="csmousedown" type="text/x-cindyscript">
+degg=10°;
+deg=20°;
+degs=20°;
+
+startx=mouse().x;
+starty=mouse().y;
+mm=mouse().xy;
+rotating=(   |mm,E|>1 
+           & |mm,F|>1
+           & |mm,N|>1
+           & |mm,H|>1
+);
+
+dragging=(   |mm,N|>1
+           & |mm,H|>1
+);
+
+ball=(|mm-mid|<s1*s2);
+;
+
+
+
+</script>
+<script id="csmousedrag" type="text/x-cindyscript">
+
+
+if(rotating,
+ xx=mouse().x;
+ yy=mouse().y;
+ wy=(startx-xx)*.1;
+ wx=-(starty-yy)*.1;
+
+ mmmx=[
+  [1,0,0],
+  [0,cos(wx),sin(wx)],
+  [0,-sin(wx),cos(wx)]
+ ];
+
+
+ mmmy=[
+  [cos(wy),0,-sin(wy)],
+  [0,1,0],
+  [sin(wy),0,cos(wy)]
+ ];
+
+  if(!ball,
+    mat=mmmx*mmmy*mat,
+    matb=mmmx*mmmy*mmmx*mmmy*matb;
+  );
+
+
+ startx=xx;
+ starty=yy;
+);
+;
+</script>
+
+<script id="csinit" type="text/x-cindyscript">
+R=(1,1,1);
+S=(1,1,1);
+mat=[[1,0,0],[0,1,0],[0,0,1]];
+matb=[[1,0,0],[0,1,0],[0,0,1]];
+a=(0,0,1);
+
+degg=10°;
+deg=20°;
+degs=20°;
+
+degg=2.5°;
+deg=20°;
+degs=5°;
+
+mat=[[0.9127,-0.0635,-0.4036],[-0.0902,0.9322,-0.3506],[0.3985,0.3564,0.8451]];
+
+
+rotating=true;
+ball=false;
+
+embed(p):=(p.x,0,p.y);
+
+map(pp):=(
+  p=s2*pp;
+  o=(p-(p*a)*a)/(1-p*a);
+  (o.x,o.y)*s1;
+);
+
+north=(0,2,0);
+
+
+//Projektionsstrahl
+ster(aa):=(
+   lambda=1/(1+|aa|^2/4);
+   lambda*aa+(1-lambda)*north;
+);
+
+ister(p):=(
+    is=   (north*p.y-p*north.y)/(p.y-north.y);
+//err(is);
+is;
+);
+
+arrow(pa,pb,col):=(
+   draw(map(mat*pa),map(mat*pb),color->col,size->2);
+   n=pb-pa;
+   n=n/|n|;
+
+   p=cross(n,(0,1,0));
+   fillpoly(apply(
+    (pb-n*0.3+p*0.2,
+     pb-n*0.2+p*0.03,
+     pa+p*0.03,
+     pa-p*0.03,
+     pb-n*0.2-p*0.03,
+     pb-n*0.3-p*0.2,
+     pb),map(mat*#)),color->col);
+
+);
+
+arrow2(pa,pb,col):=(
+   draw(map(mat*pa),map(mat*pb),color->col,size->2);
+   n=pb-pa;
+   n=n/|n|;
+
+   p=cross(n,(0,0,1));
+   fillpoly(apply(
+    (pb-n*0.3+p*0.2,
+     pb-n*0.2+p*0.03,
+     pa+p*0.03,
+     pa-p*0.03,
+     pb-n*0.2-p*0.03,
+     pb-n*0.3-p*0.2,
+     pb),map(mat*#)),color->col);
+
+);
+
+
+grid(n,al,siz):=(
+ apply((-siz*n..siz*n)/n,i,
+    p1=(i,0,-siz);
+    p2=(i,0,siz);
+    draw(map(mat*p1),map(mat*p2),alpha->al);
+    p1=(-siz,0,i);
+    p2=(siz,0,i);
+    draw(map(mat*p1),map(mat*p2),alpha->al)
+ )
+);
+
+
+
+drawgrid(siz):=(
+ fillpoly(apply(((siz,0,siz),(siz,0,-siz),(-siz,0,-siz),(-siz,0,siz))
+    ,map(mat*#)),color->(1,1,1)*.8,alpha->0.4);
+ connect(apply(((siz,0,siz),(siz,0,-siz),(-siz,0,-siz),(-siz,0,siz),(siz,0,siz))
+    ,map(mat*#)),color->(0,0,0),alpha->0.8,size->2);
+ linecolor((0,0,0));
+// grid(1,0.4,siz);
+// grid(10,0.1,siz);
+);
+
+err(matb);
+sp(w1,w2):=matb*[cos(w1+90°)*sin(w2),sin(w1+90°),cos(w1+90°)*cos(w2)];
+
+drawsphere(sta,sto):=(
+
+ apply((sta/degs..sto/degs-1)*degs,w1,
+   apply((1..360°/degs)*degs,w2,
+    deg2=degs*.99999;
+    sx1=sp(w1,w2);
+    sx2=sp(w1+deg2,w2);
+    sx3=sp(w1+deg2,w2+deg2);
+    sx4=sp(w1,w2+deg2);
+    pro=apply((sx1,sx2,sx3,sx4,sx1),map(mat*(#+(0,1,0))));
+    n=cross(mat*(sx1-sx2),mat*(sx1-sx3));
+    n=n/|n|; 
+    if(area(pro_1,pro_2,pro_3)>0,
+        fillpoly(pro,color->(0,n*(1,1,1)*.4,n*(1,1,2)*.4),alpha->0.6);
+    //    draw(pro_1,pro_4,alpha->0.8,size->2);
+    )
+  )
+ );
+);
+
+
+
+drawsphere1(sta,sto):=(
+
+ apply((sta/deg+1..sto/deg-1)*deg,w1,
+   apply((1..360°/degs)*degs,w2,
+    deg2=deg*.99999;
+    degs2=degs*.99999;
+    sx1=sp(w1,w2);
+    sx2=sp(w1+deg2,w2);
+    sx3=sp(w1+deg2,w2+degs);
+    sx4=sp(w1,w2+degs);
+    pro=apply((sx1,sx2,sx3,sx4,sx1),map(mat*(#+(0,1,0))));
+    n=cross(mat*(sx1-sx2),mat*(sx1-sx3));
+    n=n/|n|; 
+    if(area(pro_1,pro_2,pro_3)>0,
+        draw(pro_1,pro_4,alpha->0.8,size->2);
+    )
+  )
+ );
+ wwm=map(mat*(matb*(0,1,0)+(0,1,0)));
+ wwm1=map(mat*(matb*(0,1,0.001)+(0,1,0)));
+ wwm2=map(mat*(matb*(0.001,1,0)+(0,1,0)));
+ if(area(wwm,wwm1,wwm2)>0, 
+  draw(wwm,size->2,color->(0,0,0));
+ );
+ wwm=map(mat*(matb*(0,-1,0)+(0,1,0)));
+ wwm1=map(mat*(matb*(0,-1,0.001)+(0,1,0)));
+ wwm2=map(mat*(matb*(0.001,-1,0)+(0,1,0)));
+ if(area(wwm,wwm1,wwm2)<0, 
+  draw(wwm,size->2,color->(0,0,0));
+ );
+);
+
+
+drawsphere2(sta,sto):=(
+
+ apply((sta/degs..sto/degs-1)*degs,w1,
+   apply((1..360°/deg)*deg,w2,
+    deg2=degs*.99999;
+    sx1=sp(w1,w2);
+    sx2=sp(w1+deg2,w2);
+    sx3=sp(w1+deg2,w2+deg);
+    sx4=sp(w1,w2+deg);
+    pro=apply((sx1,sx2,sx3,sx4,sx1),map(mat*(#+(0,1,0))));
+    n=cross(mat*(sx1-sx2),mat*(sx1-sx3));
+    n=n/|n|; 
+    if(area(pro_1,pro_2,pro_3)>0,
+        draw(pro_1,pro_2,alpha->0.8,size->2);
+    )
+  )
+ );
+);
+
+
+
+drawsphereq(sta,sto):=(
+ apply((sta/degg..sto/degg-1)*degg,w1,
+   apply((1..360°/deg)*deg,w2,
+    deg2=degg*.99999;
+    sx1=ister(sp(w1,w2)+(0,1,0));
+    sx2=ister(sp(w1+degg,w2)+(0,1,0));
+    sx3=ister(sp(w1,w2+degg)+(0,1,0));
+    if(|sx1.x|<4&|sx1.z|<4&|sx2.x|<4&|sx2.z|<4,
+        pro=apply((sx1,sx2),map(mat*#));
+        draw(pro_1,pro_2,alpha->0.5,size->2,color->(0,0.5,0));
+    );
+   
+    
+  )
+ );
+);
+
+
+drawspherep(sta,sto):=(
+ apply((sta/deg..sto/deg-1)*deg,w1,
+   apply((1..360°/degg)*degg,w2,
+    deg2=deg*.99999;
+    sx1=ister(sp(w1,w2)+(0,1,0));
+    sx2=ister(sp(w1+deg,w2)+(0,1,0));
+    sx3=ister(sp(w1,w2+degg)+(0,1,0));
+
+    if(|sx1.x|<4&|sx1.z|<4&|sx3.x|<4&|sx3.z|<4,
+        pro=apply((sx1,sx3),map(mat*#));
+        draw(pro_1,pro_2,alpha->0.5,size->2,color->(0.5,0,0));
+    )
+  )
+ );
+);
+
+
+
+
+
+
+aa=(R.y,0,R.x);
+bb=(S.y,0,S.x);
+
+
+   diff=bb-aa;
+
+;
+</script>
+    <script type="text/javascript">
+createCindy({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "A", type: "Free", pos: [4.0, 1.8666666666666667, 0.26666666666666666], color: [0.0, 0.0, 0.0], pinned: true, size: 2.0},
+    {name: "B", type: "Free", pos: [4.0, -0.5333333333333333, 0.26666666666666666], color: [0.0, 0.0, 0.0], pinned: true, size: 2.0},
+    {name: "a", type: "Segment", color: [0.0, 0.0, 1.0], args: ["A", "B"]},
+    {name: "C", type: "Free", pos: [4.0, 1.5555555555555556, 0.2222222222222222], color: [0.0, 0.0, 0.0], pinned: true, size: 2.0},
+    {name: "D", type: "Free", pos: [4.0, -0.4444444444444444, 0.2222222222222222], color: [0.0, 0.0, 0.0], pinned: true, size: 2.0},
+    {name: "b", type: "Segment", color: [0.0, 0.0, 1.0], args: ["C", "D"]},
+    {name: "E", type: "PointOnSegment", pos: [4.0, 1.365333330666667, 0.26666666666666666], color: [1.0, 1.0, 1.0], args: ["a"], labeled: true, size: 4.0, printname: "scale"},
+    {name: "F", type: "PointOnSegment", pos: [4.0, 0.18666675555555579, 0.22222222222222218], color: [1.0, 1.0, 1.0], args: ["b"], labeled: true, size: 4.0, printname: "dist"},
+    {name: "G", type: "Free", pos: [4.0, -3.4633667255941867, 2.3220680688216286], color: [1.0, 0.0, 0.0], alpha: 0.0, labeled: false},
+    {name: "K", type: "Free", pos: [0.0, 0.0, 4.0], color: [0.0, 0.0, 0.0], size: 2.0},
+    {name: "L", type: "Free", pos: [4.0, -0.3953106168511012, 1.36953685574145], color: [1.0, 0.0, 0.0], alpha: 0.0, labeled: false},
+    {name: "M", type: "Free", pos: [4.0, 3.474727452923687, -3.0082774570499056], color: [1.0, 0.0, 0.0], alpha: 0.0, labeled: false},
+    {name: "O", type: "Free", pos: [0.0, -4.0, -4.0], color: [1.0, 0.0, 0.0], alpha: 0.0, labeled: false},
+    {name: "P", type: "Free", pos: [4.0, 4.0, 4.0], color: [1.0, 0.0, 0.0], alpha: 0.0, labeled: false},
+    {name: "Q", type: "Free", pos: [4.0, -0.0, 4.0], color: [1.0, 0.0, 0.0], alpha: 0.0, labeled: false},
+    {name: "Tr0", type: "TrProjection", color: [0.0, 0.0, 1.0], args: ["K", "K", "L", "O", "G", "P", "M", "Q"], dock: {offset: [0.0, -0.0]}},
+    {name: "H", type: "Free", pos: [-2.2424242424242427, -4.0, -0.5050505050505051], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "N", type: "Free", pos: [4.0, 3.0967741935483866, 0.6451612903225806], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "Text0", type: "ToggleButton", color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 0.27272728085517883, text: "Meridians", dock: {corner: "LL", offset: [618.0, 20.0]}}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 835,
+    height: 558,
+    transform: [{visibleRect: [-13.58, 11.22, 19.82, -11.1]}],
+    background: "rgb(255,255,255)"
+  }],
+  cinderella: {build: 1871, version: [2, 9, 1871]}
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>

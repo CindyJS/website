@@ -1,0 +1,1 @@
+Schnitte durch einen Doppelkegel.

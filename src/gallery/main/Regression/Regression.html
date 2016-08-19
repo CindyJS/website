@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+            <title>Cindy JS</title>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+
+
+
+            </head>
+
+	<body style="font-family:Arial;">
+
+        <h1>CindyJS: Regression</h1>
+
+
+        <script id='csmove' type='text/x-cindyscript'>
+            pts=apply(allpoints(),#.xy);
+
+            m=apply(pts,(1,#_1));
+            y=apply(pts,#_2);
+            ma=transpose(m)*m;
+            mb=transpose(m)*y;
+            mainv=inverse(ma);
+            v=mainv*mb;
+            f(x):=v_2*x+v_1;
+
+            sq(x,y1,y2):=(
+                          d=y2-y1;
+                          p=((x,y1),(x,y2),(x+d,y2),(x+d,y1));
+                          fillpoly(p,color->(1,0.5,0.5),alpha->0.4);
+                          drawpoly(p,color->(1,0.5,0.5),alpha->0.9);
+                          );
+
+            forall(pts,sq(#_1,#_2,(f(#_1))));
+
+            draw(join((1,f(1)),(2,f(2))));
+
+            </script>
+
+
+
+        <div  id="CSCanvas" style="width:500px; height:500px; border:2px solid #000000"></div>
+
+        <script type="text/javascript">
+           	var gslp=[
+                      {name:"A", kind:"P", type:"Free", pos:[Math.random()*6-9,Math.random()*6-9,1]},
+                      {name:"B", kind:"P", type:"Free", pos:[Math.random()*6-8,Math.random()*6-8,1]},
+                      {name:"C", kind:"P", type:"Free", pos:[Math.random()*6-7,Math.random()*6-7,1]},
+                      {name:"D", kind:"P", type:"Free", pos:[Math.random()*6-6,Math.random()*6-6,1]},
+                      {name:"E", kind:"P", type:"Free", pos:[Math.random()*6-5,Math.random()*6-5,1]},
+                      {name:"F", kind:"P", type:"Free", pos:[Math.random()*6-4,Math.random()*6-4,1]},
+                      {name:"G", kind:"P", type:"Free", pos:[Math.random()*6-3,Math.random()*6-3,1]},
+                      {name:"H", kind:"P", type:"Free", pos:[Math.random()*6-2,Math.random()*6-2,1]},
+                      {name:"I", kind:"P", type:"Free", pos:[Math.random()*6-1,Math.random()*6-1,1]},
+                      {name:"J", kind:"P", type:"Free", pos:[Math.random()*6-0,Math.random()*6-0,1]},
+                      {name:"K", kind:"P", type:"Free", pos:[Math.random()*6+1,Math.random()*6+1,1]},
+                      {name:"L", kind:"P", type:"Free", pos:[Math.random()*6+2,Math.random()*6+2,1]},
+                      {name:"M", kind:"P", type:"Free", pos:[Math.random()*6+3,Math.random()*6+3,1]},
+                      {name:"N", kind:"P", type:"Free", pos:[Math.random()*6+4,Math.random()*6+4,1]},
+                      ];
+
+            CindyJS({canvasname:"CSCanvas",
+                        defaultAppearance: {pointSize: 4, pointColor: [1,0.7,0]},
+                        movescript:"csmove",
+                        geometry:gslp});
+
+
+
+
+
+            </script>
+
+
+
+	</body>
+</html>
