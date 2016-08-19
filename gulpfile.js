@@ -343,7 +343,7 @@ gulp.task('server', ['rebuild'], function() {
         notify: false,
         ghostMode: false,
         rewriteRules: [{
-            match: /(['"])(\/(dist|soundfont|docs)\/)/g,
+            match: /(['"])(\/(dist|soundfont|extras)\/)/g,
             replace: "$1http://cindyjs.org$2"
         }],
     });
