@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:cc="http://creativecommons.org/ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns="http://www.w3.org/2000/svg"
+     width="16px"
+     height="16px"
+     viewBox="0 0 16 16"
+     version="1.1">
+    <metadata>
+        <rdf:RDF>
+            <cc:Work rdf:about="">
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+                <dc:title>mark-github</dc:title>
+                <cc:license rdf:resource="http://scripts.sil.org/OFL" />
+                <dc:source>https://github.com/primer/octicons/blob/0ea2dee67f9479b9f25a44a8898ba8b84702dedb/lib/svg/mark-github.svg</dc:source>
+                <dc:relation>https://github.com/logos</dc:relation>
+                <dc:subject>
+                    <rdf:Bag>
+                        <rdf:li>github</rdf:li>
+                        <rdf:li>octocat</rdf:li>
+                        <rdf:li>mark</rdf:li>
+                        <rdf:li>icon</rdf:li>
+                    </rdf:Bag>
+                </dc:subject>
+                <dc:rights>
+                    <cc:Agent>
+                        <dc:title>(c) 2012-2016 GitHub, Inc.</dc:title>
+                    </cc:Agent>
+                </dc:rights>
+            </cc:Work>
+            <cc:License rdf:about="http://scripts.sil.org/OFL">
+                <cc:permits rdf:resource="http://scripts.sil.org/pub/OFL/Reproduction" />
+                <cc:permits rdf:resource="http://scripts.sil.org/pub/OFL/Distribution" />
+                <cc:permits rdf:resource="http://scripts.sil.org/pub/OFL/Embedding" />
+                <cc:permits rdf:resource="http://scripts.sil.org/pub/OFL/DerivativeWorks" />
+                <cc:requires rdf:resource="http://scripts.sil.org/pub/OFL/Notice" />
+                <cc:requires rdf:resource="http://scripts.sil.org/pub/OFL/Attribution" />
+                <cc:requires rdf:resource="http://scripts.sil.org/pub/OFL/ShareAlike" />
+                <cc:requires rdf:resource="http://scripts.sil.org/pub/OFL/DerivativeRenaming" />
+                <cc:requires rdf:resource="http://scripts.sil.org/pub/OFL/BundlingWhenSelling" />
+            </cc:License>
+        </rdf:RDF>
+    </metadata>
     <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
     <title>mark-github</title>
     <desc>Created with Sketch.</desc>
