@@ -18,6 +18,7 @@ var cmd = require("./lib/cmd");
 var examples = require("./lib/examples");
 var index = require("./lib/index");
 var licenses = require("./lib/licenses");
+var redirect = require("./lib/redirect");
 var ref = require("./lib/ref");
 var relativize = require("./lib/relativize");
 var toc = require("./lib/toc");
@@ -211,10 +212,16 @@ gulp.task("copygallerydata", [], function() {
     }).pipe(gulp.dest("dist")); //copies everything that is not a html
 });
 
-
-
 gulp.task("asis", [], function() {
     return gulp.src("src/asis/**/*").pipe(gulp.dest("dist"));
+});
+
+gulp.task("redirect", [], function() {
+    return pipeline(
+        gulp.src("src/redirect/*.json"),
+        redirect(),
+        $.concat(".htaccess"),
+        gulp.dest("dist"));
 });
 
 gulp.task("validate", ["pages", "asis"], function() {
@@ -327,7 +334,7 @@ gulp.task('images', function() {
 });
 
 // Build the "dist" folder by running all of the named tasks
-gulp.task('build', ['pages', 'sass', 'javascript', 'images', 'copy', 'asis']);
+gulp.task('build', ['pages', 'sass', 'javascript', 'images', 'copy', 'asis', 'redirect']);
 
 // Clean the "dist" folder before recreating its contents
 gulp.task('rebuild', function(done) {
