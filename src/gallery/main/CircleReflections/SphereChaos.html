@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SphereChaos.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+C0.radius=max(2,C0.radius);
+C1.radius=max(2,C1.radius);
+C2.radius=max(2,C2.radius);
+
+fillcircle(A.xy,C0.radius,color->(0.3,0.1,0));
+fillcircle(B.xy,C1.radius,color->(0.3,0.1,0));
+fillcircle(C.xy,C2.radius,color->(0.3,0.1,0));
+m1=A.xy;
+r1=C0.radius;
+m2=B.xy;
+r2=C1.radius;
+m3=C.xy;
+r3=C2.radius;
+
+o1=["circ",m1,r1];
+o2=["circ",m2,r2];
+o3=["circ",m3,r3];
+
+p=D.xy;
+s=E-D;
+s=s/|s|;
+
+
+
+
+intersect(p,s,o):=(
+  ll=[];
+  if(o_1=="circ", (   
+    m=o_2;
+    r=o_3;
+    q=p-m;
+    scal=s*q;
+    dist=q*q-r^2;   
+
+    a=-scal+sqrt(scal^2-dist);
+    b=-scal-sqrt(scal^2-dist);
+
+    if(|im(a)|<0.00000001 & re(a)>0.00000001,ll=ll++[[o,re(a)]]);   
+    if(|im(b)|<0.00000001 & re(b)>0.00000001,ll=ll++[[o,re(b)]]);
+  );
+  ll;
+  )
+);
+
+reflect(p,s,o,a):=(
+  pp=p+a*s;
+  ss=s;
+  if(o_1=="circ", (  
+       sp=pp-o_2;
+       sp=sp/|sp|;
+       ss=s-2*(s*sp)*sp;
+    ); 
+  );
+  [pp,ss];
+);
+
+stop=false;
+count=0;
+n=500;
+alpha=1;
+dim=0.99;
+while(count<n & !stop,
+  count=count+1; 
+  l=intersect(p,s,o1)++intersect(p,s,o2)++intersect(p,s,o3);
+   
+  l=sort(l,#_2);
+
+  if(length(l)>0,(
+     hit=l_1;
+     erg=reflect(p,s,hit_1,hit_2);
+  //   draw(erg_1);
+     draw(p,erg_1,color->(1,1,1),alpha->alpha,size->2);
+   //  draw(erg_1,erg_1+erg_2*.1,color->(1,0,0),size->2);
+     p=re(erg_1);
+     s=re(erg_2);
+    ),(
+     draw(p,p+100*s,color->(1,1,1),alpha->alpha,size->2);
+     stop=true;
+    )
+  );
+  alpha=alpha*dim;
+);
+
+
+
+
+
+
+
+
+
+
+
+;
+</script>
+<script id="csmousedown" type="text/x-cindyscript">
+
+</script>
+    <script type="text/javascript">
+createCindy({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "A", type: "Free", pos: [1.4857142857142855, -4.0, 0.4081632653061224], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, border: false},
+    {name: "C0", type: "CircleByRadius", pos: {xx: 0.013827127718413306, yy: 0.013827127718413306, zz: 1.0, xy: 0.0, xz: -0.10066148979004887, yz: -0.2710117032809008}, color: [1.0, 1.0, 0.0], fillcolor: [1.0, 0.29, 0.29], fillalpha: 0.20000000298023224, radius: 6.080131577523631, args: ["A"], alpha: 0.8999999761581421, size: 3},
+    {name: "B", type: "Free", pos: [1.2075471698113205, -4.0, -0.9433962264150942], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, border: false},
+    {name: "C1", type: "CircleByRadius", pos: {xx: -0.022980490574643717, yy: -0.022980490574643717, zz: 1.0, xy: 0.0, xz: -0.05883005587108791, yz: -0.19487456007297874}, color: [1.0, 1.0, 0.0], fillcolor: [1.0, 0.29, 0.29], fillalpha: 0.20000000298023224, radius: 7.945512695855441, args: ["B"], alpha: 0.8999999761581421, size: 3},
+    {name: "C", type: "Free", pos: [4.0, 0.7014981141837016, 0.2608315247715554], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, border: false},
+    {name: "C2", type: "CircleByRadius", pos: {xx: 0.005605779151468074, yy: 0.005605779151468074, zz: 1.0, xy: 0.0, xz: -0.1719356325928101, yz: 0.030153130506209515}, color: [1.0, 1.0, 0.0], fillcolor: [1.0, 0.29, 0.29], fillalpha: 0.20000000298023224, radius: 8.001599840031991, args: ["C"], alpha: 0.8999999761581421, size: 3},
+    {name: "D", type: "Free", pos: [4.0, -1.6, 0.2192982456140351], color: [1.0, 0.0, 0.0], alpha: 0.8999999761581421, border: false},
+    {name: "C3", type: "CircleByRadius", pos: {xx: 0.002667588267195288, yy: 0.002667588267195288, zz: 0.9999999999999999, xy: 0.0, xz: -0.09731361998728409, yz: -0.03649260749523154}, color: [0.0, 0.0, 1.0], radius: 2.1477325950872004, args: ["D"], alpha: 0.0, size: 3},
+    {name: "E", type: "PointOnCircle", pos: [4.0, {r: -1.6, i: 3.227277455107585E-17}, {r: 0.24, i: -5.026137436662982E-19}], color: [0.0, 1.0, 0.0], args: ["C3"], size: 3.0, border: false},
+    {name: "", type: "OtherPointOnCircle", pos: [4.0, {r: -1.4609133334771593, i: 1.2460917899011525E-16}, {r: 0.19696003906855244, i: -1.553922088224777E-18}], color: [1.0, 1.0, 1.0], args: ["E"], pinned: true, size: 0.0}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 868,
+    height: 571,
+    transform: [{visibleRect: [-18.748259946520438, 15.032704740790301, 32.39221376082, -18.609242824752773]}],
+    background: "rgb(0,0,0)"
+  }],
+  cinderella: {build: 1871, version: [2, 9, 1871]}
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>

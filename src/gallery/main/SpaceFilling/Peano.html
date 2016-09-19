@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Peano.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+layer(3);
+clrscr();
+p=0;
+ri=i;
+seq=zerovector(14000);
+cc=1;
+seq_cc=p;
+cc=cc+1;
+list(x):=(
+  repeat(length(x),
+     turtle(x_#);
+  );
+);
+
+turtle(x):=(
+  (if(x=="F",foreward)); 
+  (if(x=="R",foreward));
+  (if(x=="L",foreward));
+  (if(x=="+",left));
+  (if(x=="-",right));
+);
+
+foreward:=(
+ p=p+ri;
+ seq_cc=p;
+ cc=cc+1;
+);
+left:=(ri=ri*i);
+right:=(ri=ri/i);
+
+l=0.2;
+angle=90°;
+
+
+n=round(1+|C,D|/|C,B|*5);
+
+l=1/(2^n-1)*10;
+s="X";
+rules:=(
+("Y","-XF+YFY+FX-"),
+("X","+YF-XFX-FY+"),
+);
+repeat(n,s=replace(s,rules));
+list("+++"+s);
+
+
+curve=(apply(1..(cc-1),gauss(seq_#*l)));
+connect(curve,color->red(.6),size->2);
+
+nc=length(curve)-1;
+
+t=(|A,F|/|A,E|)*.9998+.0001;
+f(t):=((t-floor(t))*curve_(ceil(t)+1)+(ceil(t)-t)*curve_(ceil(t)));
+
+draw(f(t*nc),color->(1,1,1));
+
+curx=apply(1..nc+1,(11,5.5)+4*((#-1)/nc,.1*(curve_#)_1));
+cury=apply(1..nc+1,(11,0)+4*((#-1)/nc,.1*(curve_#)_2));
+
+connect(curx);
+connect(cury);
+
+draw((t*4,0)+(11,5.5),(t*4,f(t*nc)_1*.4)+(11,5.5),color->(0,0,0));
+draw((t*4,0)+(11,5.5),color->(1,1,1));
+
+draw((t*4,0)+(11,0),(t*4,f(t*nc)_2*.4)+(11,0),color->(0,0,0));
+draw((t*4,0)+(11,0),color->(1,1,1));
+
+
+;
+</script>
+    <script type="text/javascript">
+createCindy({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "B", type: "Free", pos: [0.6666666666666666, -4.0, -0.6666666666666666], color: [0.0, 0.0, 0.0], pinned: true, size: 3.0},
+    {name: "C", type: "Free", pos: [4.0, -0.0, -4.0], color: [0.0, 0.0, 0.0], pinned: true, size: 3.0},
+    {name: "a", type: "Segment", color: [0.0, 0.0, 0.0], args: ["B", "C"], size: 3},
+    {name: "D", type: "PointOnSegment", pos: [4.0, -1.8541008000000012, -4.0], color: [1.0, 1.0, 1.0], args: ["a"], labeled: true, printname: "n"},
+    {name: "A", type: "Free", pos: [0.0, -4.0, 3.982856720608882], color: [0.0, 0.0, 0.0], pinned: true, size: 3.0},
+    {name: "E", type: "Free", pos: [4.0, -0.4, 0.4], color: [0.0, 0.0, 0.0], pinned: true, size: 3.0},
+    {name: "b", type: "Segment", color: [0.0, 0.0, 0.0], args: ["A", "E"], size: 3},
+    {name: "F", type: "PointOnSegment", pos: [2.5646771849748444, -4.0, 3.983955895047132], color: [1.0, 1.0, 1.0], args: ["b"], labeled: true, printname: "t"},
+    {name: "G", type: "Free", pos: [4.0, 1.8181818181818181, 0.36363636363636365], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "H", type: "Free", pos: [4.0, 3.6814988290398123, 0.3637737988378136], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "c", type: "Segment", color: [0.0, 0.0, 0.0], args: ["G", "H"], arrowshape: "jet", arrowsides: "==>", arrowsize: 1.0, arrowposition: 1.0},
+    {name: "K", type: "Free", pos: [4.0, 2.095238095238095, 0.3809523809523809], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "L", type: "Free", pos: [4.0, 1.4193548387096775, 0.25806451612903225], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "d", type: "Segment", color: [0.0, 0.0, 0.0], args: ["K", "L"], arrowshape: "jet", arrowsides: "==>", arrowsize: 1.0, arrowposition: 1.0},
+    {name: "M", type: "Free", pos: [4.0, -0.18181818181818182, 0.36363636363636365], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "N", type: "Free", pos: [4.0, 1.6363636363636365, 0.36363636363636365], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "e", type: "Segment", color: [0.0, 0.0, 0.0], args: ["M", "N"], arrowshape: "jet", arrowsides: "==>", arrowsize: 1.0, arrowposition: 1.0},
+    {name: "O", type: "Free", pos: [4.0, -0.0, 0.38095238095238093], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "P", type: "Free", pos: [4.0, -0.0, 0.25806451612903225], color: [1.0, 0.0, 0.0], visible: false, labeled: true},
+    {name: "f", type: "Segment", color: [0.0, 0.0, 0.0], args: ["O", "P"], arrowshape: "jet", arrowsides: "==>", arrowsize: 1.0, arrowposition: 1.0},
+    {name: "Text0", type: "Text", color: [0.0, 0.0, 0.0], args: ["G"], pinned: true, text: "x-Komponente", dock: {to: "G", offset: [6.838616714697423, 1.8357348703169976]}},
+    {name: "Text1", type: "Text", color: [0.0, 0.0, 0.0], args: ["M"], pinned: true, text: "y-Komponente", dock: {to: "M", offset: [6.838616714697423, 2.4164265129683145]}}
+  ],
+  behavior: [
+    {type: "Environment", springstrength: 0.2, friction: 0.1},
+    {type: "Motor", speed: 0.02}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 697,
+    height: 497,
+    transform: [{visibleRect: [-1.8669758812615955, 11.291985157699443, 16.081743970315397, -1.506456400742115]}],
+    background: "rgb(255,255,255)"
+  }],
+  cinderella: {build: 1871, version: [2, 9, 1871]}
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>

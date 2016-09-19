@@ -50,11 +50,16 @@ var PATHS = {
 
 //all automatically generated galleries
 var Galleries = [{
-    src: "src/gallery/cindygl/*.html",
+    src: "src/gallery/main/**/*.json",
+    dest: "gallery/main",
+    title: "Showcase",
+    autoindex: false,
+},{
+    src: "src/gallery/cindygl/**/*.json",
     dest: "gallery/cindygl",
     title: "CindyGL-Gallery",
     description: "These examples demonstrate the CindyGL-Plugin",
-    imgpath: "", //local folder
+    autoindex: true,
 }, {
     cwd: "CindyJS",
     base: "CindyJS",
@@ -64,7 +69,7 @@ var Galleries = [{
     description: "This shows the examples <a href='https://github.com/CindyJS/CindyJS'>from the repository</a>, demonstrating individual functions and operations. Most of them demonstrate a single technical feature and are not intended to be examples of what well-designed CindyJS widgets can look like.",
     imgpath: "/assets/img/thumbnail/",
     github: "CindyJS/CindyJS",
-    license: licenses.apache2,
+    autoindex: true,
 }];
 
 
@@ -147,11 +152,12 @@ gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function
                             base: gallery.base || gallery.src.split('/')[0],
                             cwd: gallery.cwd || ".",
                         }),
+                        github(gallery.github || "CindyJS/website"),
                         examples(),
                         addData(gallerynavigation(gallery.dest)),
-                        github(gallery.github || "CindyJS/website"),
-                        index(gallery.dest, "src/layouts/gallery.html", xtend(gallery, gallerynavigation(gallery.dest))),
-                        (gallery.license ||  licenses.ccbysa40)()
+                        $.if(gallery.autoindex, index(gallery.dest, "src/layouts/gallery.html", xtend(gallery, gallerynavigation(gallery.dest)))),
+                        licenses.apache2(),
+			(gallery.license ||  licenses.ccbysa40)()
                     )
                 )
             ),

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SatzVonNapoleon.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="http://cindyjs.org/dist/latest/CindyJS.css">
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+    <script id="csdraw" type="text/x-cindyscript">
+    fillpoly([A,B,C],color->(1,1,1)*.9);
+    fillpoly([A,B,G],color->(1,.9,0));
+    fillpoly([B,C,H],color->(1,.9,0));
+    fillpoly([A,C,K],color->(1,.9,0));
+    fillpoly([L,M,N],color->(0,1,1),alpha->0.7);
+</script>
+    <script type="text/javascript">
+createCindy({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "A", type: "Free", pos: [4.0, 1.5555555555555554, -1.1111111111111112], color: [1.0, 1.0, 1.0], size: 6.0},
+    {name: "B", type: "Free", pos: [-2.2608695652173916, -4.0, -1.0869565217391304], color: [1.0, 1.0, 1.0], size: 6.0},
+    {name: "a", type: "Segment", color: [0.0, 0.0, 0.0], args: ["A", "B"], size: 3},
+    {name: "C", type: "Free", pos: [4.0, -1.4588235294117649, 1.1764705882352942], color: [1.0, 1.0, 1.0], size: 6.0},
+    {name: "b", type: "Segment", color: [0.0, 0.0, 0.0], args: ["B", "C"], size: 3},
+    {name: "d", type: "Segment", color: [0.0, 0.0, 0.0], args: ["A", "B"], size: 3},
+    {name: "D", type: "Mid", color: [0.0, 0.0, 0.0], args: ["A", "B"], size: 3.0,visible:false},
+    {name: "C0", type: "CircleHelperForPolygons", color: [0.0, 0.0, 0.0], args: ["A", "D"], visible: false, size: 3, printname: "$C_{0}$"},
+    {name: "e", type: "Orthogonal", color: [0.0, 0.0, 0.0], args: ["d", "D"], size: 3,visible:false},
+    {name: "Collection__1", type: "IntersectionConicLine", args: ["C0", "e"]},
+    {name: "F", type: "SelectP", pos: [3.2039283331671524, -4.0, -1.4390172732030444], color: [0.0, 0.0, 0.0], args: ["Collection__1"], size: 3.0},
+    {name: "E", type: "SelectP", pos: [2.825878734966601, -1.9986990579941506, 4.0], color: [0.0, 0.0, 0.0], args: ["Collection__1"], size: 3.0},
+    {name: "f", type: "Join", color: [0.0, 0.0, 0.0], args: ["F", "A"], size: 3},
+    {name: "c", type: "Segment", color: [0.0, 0.0, 0.0], args: ["A", "C"], size: 3},
+    {name: "C1", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["B", "C"], visible: false, printname: "$C_{1}$"},
+    {name: "C2", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["C", "B"], visible: false, printname: "$C_{2}$"},
+    {name: "C3", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["B", "A"], visible: false, printname: "$C_{3}$"},
+    {name: "C4", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["A", "B"], visible: false, printname: "$C_{4}$"},
+    {name: "C5", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["A", "C"], visible: false, printname: "$C_{5}$"},
+    {name: "C6", type: "CircleMP", color: [0.0, 0.0, 1.0], args: ["C", "A"], visible: false, printname: "$C_{6}$"},
+    {name: "Collection__2", type: "IntersectionCircleCircle", args: ["C3", "C4"]},
+    {name: "G", type: "SelectP", pos: [3.4060989369285726, -4.0, -0.6601722994070214], color: [0.0, 0.0, 0.0], args: ["Collection__2"], size: 3.0},
+    {name: "", type: "SelectP", pos: [3.852220857631461, -4.0, 1.0584742751944536], color: [0.0, 0.0, 0.0], args: ["Collection__2"], visible: false, size: 3.0},
+    {name: "g", type: "Segment", color: [0.0, 0.0, 0.0], args: ["G", "A"], size: 3},
+    {name: "h", type: "Segment", color: [0.0, 0.0, 0.0], args: ["G", "B"], size: 3},
+    {name: "Collection__3", type: "IntersectionCircleCircle", args: ["C1", "C2"]},
+    {name: "H", type: "SelectP", pos: [4.0, 1.3502104603156346, 0.5713596012545789], color: [0.0, 0.0, 0.0], args: ["Collection__3"], size: 3.0},
+    {name: "k", type: "Segment", color: [0.0, 0.0, 0.0], args: ["B", "H"], size: 3},
+    {name: "l", type: "Segment", color: [0.0, 0.0, 0.0], args: ["H", "C"], size: 3},
+    {name: "Collection__4", type: "IntersectionCircleCircle", args: ["C5", "C6"]},
+    {name: "K", type: "SelectP", pos: [0.020895765727627358, -4.0, 0.541845522285569], color: [0.0, 0.0, 0.0], args: ["Collection__4"], size: 3.0},
+    {name: "m", type: "Segment", color: [0.0, 0.0, 0.0], args: ["C", "K"], size: 3},
+    {name: "n", type: "Segment", color: [0.0, 0.0, 0.0], args: ["K", "A"], size: 3},
+    {name: "o", type: "Orthogonal", color: [0.0, 0.0, 0.0], args: ["h", "A"], visible: false, size: 3},
+    {name: "p", type: "Orthogonal", color: [0.0, 0.0, 0.0], args: ["g", "B"], visible: false, size: 3},
+    {name: "q", type: "Orthogonal", color: [0.0, 0.0, 0.0], args: ["l", "B"], visible: false, size: 3},
+    {name: "r", type: "Orthogonal", color: [0.0, 0.0, 0.0], args: ["k", "C"], visible: false, size: 3},
+    {name: "s", type: "Orthogonal", color: [0.0, 0.0, 0.0], args: ["m", "A"], visible: false, size: 3},
+    {name: "t", type: "Orthogonal", color: [0.0, 0.0, 0.0], args: ["n", "C"], visible: false, size: 3},
+    {name: "L", type: "Meet", color: [0.0, 0.0, 0.0], args: ["o", "p"], size: 3.0},
+    {name: "M", type: "Meet", color: [0.0, 0.0, 0.0], args: ["q", "r"], size: 3.0},
+    {name: "N", type: "Meet", color: [0.0, 0.0, 0.0], args: ["s", "t"], size: 3.0},
+    {name: "Poly0", type: "Poly", color: [0.0, 0.0, 0.0], fillcolor: [1.0, 1.0, 1.0], fillalpha: 1.0, args: ["A", "C", "B"]},
+    {name: "Poly1", type: "Poly", color: [0.0, 0.0, 0.0], fillcolor: [1.0, 0.784, 0.0], fillalpha: 1.0, args: ["G", "B", "A"]},
+    {name: "Poly2", type: "Poly", color: [0.0, 0.0, 0.0], fillcolor: [1.0, 0.784, 0.0], fillalpha: 1.0, args: ["B", "C", "H"]},
+    {name: "Poly3", type: "Poly", color: [0.0, 0.0, 0.0], fillcolor: [1.0, 0.784, 0.0], fillalpha: 1.0, args: ["A", "K", "C"]},
+    {name: "u", type: "Segment", color: [0.0, 0.0, 1.0], args: ["L", "N"], size: 2, dashtype: "dotted"},
+    {name: "v", type: "Segment", color: [0.0, 0.0, 1.0], args: ["N", "M"], size: 2, dashtype: "dotted"},
+    {name: "w", type: "Segment", color: [0.0, 0.0, 1.0], args: ["M", "L"], size: 2, dashtype: "dotted"},
+    {name: "Poly4", type: "Poly", color: [0.0, 0.0, 0.0], fillcolor: [0.0, 1.0, 1.0], fillalpha: 0.6581196581196581, args: ["L", "N", "M"], alpha: 0.07692307692307693}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 500,
+    height: 500,
+    transform: [{visibleRect: [-8, 8, 9, -9]}],
+    background: "rgb(255,255,255)"
+  }],
+  cinderella: {build: 1871, version: [2, 9, 1871]},
+  scripts:"cs*"
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>

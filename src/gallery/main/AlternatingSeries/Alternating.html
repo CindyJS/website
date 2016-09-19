@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Alternating_1002.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+
+a(i):=1/i*(-1)^i;
+
+guessx(x):=(
+xx=1/abs(x);
+
+if(x>0, 
+  "+{1\over"+xx+"}",
+  "-{1\over"+xx+"}"
+  )
+
+);
+
+col1=(0,0.6,0);
+col3=(0.6,0,0);
+col2=(0.3,0.3,0.8);
+draw((0,0),(100,0),size->2,color->(0,0,0));
+draw((0,-100),(0,100),size->2,color->(0,0,0));
+
+
+
+A.x=0;
+if(A.y<1,A.y=1);
+k=A.y;
+B.y=0;
+if(B.x<2,B.x=2);
+m=B.x/10;
+repeat(50,i=#-25;
+  draw((-.1,i*k),(.1,i*k),color->(0,0,0));
+  drawtext((-.3,i*k-.1),i, align->"right",size->10);
+);
+
+
+C.y=0;
+C.x=round(C.x/m)*m;
+D.x=0;
+w=D.y/k;
+
+draw((0,w*k),(100,w*k));
+pi=1;
+mi=2;
+s=0;
+ps=apply(1..1000,i,
+  if(s<w%i==1,
+    new=1/pi;pi=pi+2,
+    new=-1/mi;mi=mi+2);
+  s=s+new;
+  new
+);
+
+hs=ps;
+
+
+rect(a,b,w,h,col):=(
+  fillpoly(((a,b),(a+w,b),(a+w,b+h),(a,b+h)),color->col,alpha->0.6);
+  connect(((a,b),(a+w,b),(a+w,b+h),(a,b+h),(a,b)),color->(0,0,0),alpha->0.5);
+);
+n=1/m*40;
+
+//hs=apply(1..n,a(#));
+s=0;
+ss=apply(1..n-1,s=s+hs_(#);s);
+
+
+s=0;
+
+apply(1..n,i,
+  if(hs_i>0,
+   draw(((i-1)*m,s*k),((i)*m,(s+hs_i)*k),color->col1,size->2);
+   drawtext(color->col1*.8,((i-.4)*m,-6),"$"+(guessx(hs_i))+"$",
+    size->15*sqrt(m),align->"center");
+  );
+  if(hs_i<0,
+   draw(((i-1)*m,s*k),((i)*m,(s+hs_i)*k),color->col3,size->2);
+   drawtext(color->col3*.8,((i-.4)*m,-6),"$"+(guessx(hs_i))+"$",
+   size->15*sqrt(m),align->"center");
+  );
+
+  drawtext((i*m,-.6),"$s_{"+i+"}$",size->14*sqrt(m),align->"center");
+  s=s+hs_i;
+);
+
+s=0;
+mm=min(m,.5);
+apply(1..n,i,
+   fillcircle(((i)*m,(s+hs_i)*k),mm*.3,color->(0,0,0),size->2);
+   draw(((i)*m,(s+hs_i)*k),(i*m,0),color->(0,0,0),size->1,alpha->0.3);
+    s=s+hs_i;
+);
+
+
+
+xy=C.xy;
+i=round(xy.x/m);
+drawtext(xy+(0.5,.5),"$s_"+i+"="+format(ss_i,5)+"$",size->16,color->(1,1,1),align->"left");
+drawtext(D+(0.3,0.3),"w="+w,size->16,color->(1,1,1));
+
+
+
+
+;
+</script>
+    <script type="text/javascript">
+createCindy({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  use:["katex"],
+  geometry: [
+    {name: "A", type: "Free", pos: [0.0, -4.0, -1.134842812934199], color: [1.0, 1.0, 1.0], size: 3.0},
+    {name: "B", type: "Free", pos: [4.0, 0.0, 0.3266971734204511], color: [1.0, 1.0, 1.0], size: 3.0},
+    {name: "C", type: "Free", pos: [4.0, -0.0, 0.46671024774350167], color: [0.0, 1.0, 0.0], size: 3.0},
+    {name: "D", type: "Free", pos: [0.0, -4.0, -0.7700719087767779], color: [0.0, 1.0, 0.0], size: 3.0}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 782,
+    height: 457,
+    transform: [{visibleRect: [-2.110192543682361, 11.756787029087441, 34.1572924927925, -9.43789412394199]}],
+    background: "rgb(168,176,192)"
+  }],
+  cinderella: {build: 1871, version: [2, 9, 1871]}
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>

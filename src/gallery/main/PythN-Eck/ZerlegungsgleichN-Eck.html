@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Perigal_Zerlegungsbeweis.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+l=|O,M|/|M,N|;
+
+int(a):=min(1,max(0,a*1.2-.1));
+
+l1=int(l*4);
+l2=int(l*4-1);
+l3=int(l*4-2);
+l4=int(l*4-3);
+l5=int(l*4-4);
+
+col1=(227/255,114/255, 34/255);
+col2=(162/255,173/255,0);
+col3=(0,51/255,89/255);
+
+
+m=|S,S1|/|S1,S2|;
+m=round(m*4)/4;
+S.xy=S1+(S2-S1)*m;
+n=round(m*4)+3;
+w=180°*(n-2)/n;
+wr=360°/n;
+boundx=((C+D)/2).x-((C-D)/2).x*cos(w);
+boundy=((C+D)/2).y+((C-D)/2).x*sin(w);
+if(B.y<.01,B.xy=old);
+if(B.x>boundx,B.xy=(boundx,boundy));
+old=B.xy;
+pol(a,b):=(
+regional(m,d,pd,r,ph,mid);
+d=b-a;
+pd=perp(d);
+mid=a+d/2-tan(w/2)*pd/2;
+r=complex(a-mid);
+ph=exp(i*wr);
+apply(-1..(n-2),
+  (mid+gauss(r*ph^#));
+);
+);
+pola=pol(B,D);
+polb=pol(C,B);
+polc=pol(D,C);
+
+small(pol):=(
+   regional(m,a,b,p,q,poly,mid,ph);
+   a=pol_1;
+   b=pol_2;
+   m=(a+b)/2;
+   p=perp(join(a,b),m);
+   q=meet(p,join(a,(1,0,0)));
+   poly=[a.xy,m.xy,q.xy];
+   mid=sum(pol)/n;
+   ph=exp(i*wr);
+   apply(0..(n-1),mm,
+     apply(poly,r,
+       (mid+gauss(complex(r-mid)*ph^mm));
+     );
+   );
+);
+
+big(pol):=(
+   regional(m,a,b,p,q,s,poly,mid,ph);
+   a=pol_1;
+   b=pol_2;
+   c=pol_n;
+   m=(a+b)/2;
+   p=perp(join(a,b),m);
+   q=meet(p,join(a,(1,0,0)));
+   s=(c+a)/2;
+   mid=sum(pol)/n;
+   poly=[s.xy,a.xy,q.xy,mid.xy];
+   ph=exp(i*wr);
+   apply(0..(n-1),mm,
+     apply(poly,r,
+       (mid+gauss(complex(r-mid)*ph^mm));
+     );
+   );
+);
+
+
+fillpolygon(pola,color->col1,alpha->if(l3<1,1,.3));
+fillpolygon(polb,color->col2,alpha->(1-l1)*.7+.3);
+fillpolygon(polc,color->col3);
+fillpolygon([B,C,D],color->gray(.7));
+
+drawpolygon(pola,color->(0,0,0),size->3);
+drawpolygon(polb,color->(0,0,0),size->3);
+drawpolygon(polc,color->(0,0,0),size->3);
+
+midb=sum(polb)/n;
+mida=sum(pola)/n;
+midc=sum(polc)/n;
+
+
+sm=small(polb);
+bg=big(polb);
+sms=apply(1..n,
+   diff=(-(polb++polb)_#+(polc++polc)_(#+1));
+   apply(sm_#,p,p+l2*diff);
+);
+bgs=apply(1..n,
+   diff=complex(-(polb++polb)_#+(polc++polc)_(#));
+   r=complex(bg_#_2);
+   apply(bg_#,p,gauss((complex(p)-r)*exp(i*l3*pi)+r+l3*diff));
+
+);
+
+polas=(   
+   diff=complex(midc-mida);
+   r=complex(mida);
+   apply(pola,p,gauss((complex(p)-r)*exp(i*l4*pi)+r+l4*diff));
+);
+if(l2<1,
+ apply(bgs,fillpoly(#,color->col2*.9,alpha->l1));
+ apply(bgs,drawpoly(#,color->(0,0,0),alpha->l1));
+ apply(sms,fillpoly(#,color->col2*.7,alpha->l1));
+ apply(sms,drawpoly(#,color->(0,0,0),alpha->l1));
+ ,
+ apply(sms,fillpoly(#,color->col2*.7,alpha->l1));
+ apply(sms,drawpoly(#,color->(0,0,0),alpha->l1));
+ apply(bgs,fillpoly(#,color->col2*.9,alpha->l1));
+ apply(bgs,drawpoly(#,color->(0,0,0),alpha->l1));
+);
+
+fillpoly(polas,color->col1,alpha->if(l3<1,0,1));
+drawpoly(polas,color->(0,0,0),alpha->if(l3<1,0,1));
+//draw((boundx,boundy));
+
+apply(3..7,n,
+   fillpoly(apply(1..(n),w=360°/n*#+180°/n+180°;(sin(w),cos(w))*.7+(30,n*6-30)),color->(1,1,1)*.7);
+   drawpoly(apply(1..(n),w=360°/n*#+180°/n+180°;(sin(w),cos(w))*.7+(30,n*6-30)),color->(0,0,0));
+);
+
+</script>
+<script id="csinit" type="text/x-cindyscript">
+old=B.xy;
+</script>
+
+    <script type="text/javascript">
+createCindy({ 
+	scripts: "cs*", 
+	defaultAppearance: { fontFamily: "sans-serif", lineSize: 1, pointSize: 5.0 }, 
+	angleUnit: "°", 
+    grid:2,
+	geometry: [ 
+		{ name: "A", type: "Free", pos: [ -1.0, -0.0, 1.0 ], color: [ 1.0, 0.0, 0.0 ], visible: false, pinned: true }, 
+		{ name: "C0", type: "CircleByRadius", pos: { xx: -0.04, yy: -0.04, zz: 1.0, xy: 0.0, xz: 0.0, yz: 0.0 }, color: [ 0.0, 0.0, 1.0 ], radius: 5.0, args: [ "A" ], visible: false, printname: "$C_{0}$" }, 
+		{ name: "B", type: "PointOnCircle", pos: [ 3.316037735849062, -4.0, -1.0391555468855462 ], color: [ 1.0, 1.0, 1.0 ], args: [ "C0" ], textsize: 16.0, printname: "C" ,size:4}, 
+		{ name: "", type: "OtherPointOnCircle", pos: [ 3.316037735849062, -4.0, 1.0391555468855462 ], color: [ 1.0, 1.0, 1.0 ], args: [ "B" ], pinned: true, size: 0.0 }, 
+		{ name: "C", type: "PointOnCircle", pos: [ 4.0, -3.944304526105059E-31, 0.8 ], color: [ 0.0, 0.0, 0.0 ], args: [ "C0" ], pinned: true, textsize: 16.0, printname: "B",size:4 }, 
+		{ name: "D", type: "OtherPointOnCircle", pos: [ 4.0, -3.944304526105059E-31, -0.8 ], color: [ 0.0, 0.0, 0.0 ], args: [ "C" ], pinned: true, textsize: 16.0, printname: "A" ,size:4}, 
+
+		{ name: "M", type: "Free", pos: [ 20,-12 ], color: [ 1.0, 0.0, 0.0 ], visible: false }, 
+		{ name: "N", type: "Free", pos: [ 20,12 ], color: [ 1.0, 0.0, 0.0 ], visible: false }, 
+		{ name: "y", type: "Segment", color: [ 0.0, 0.0, 0.0 ], args: [ "M", "N" ], size: 2 }, 
+		{ name: "O", type: "PointOnSegment", pos: [ 20,-12 ], color: [ 1.0, 1.0, 1.0 ], args: [ "y" ] } ,
+		{ name: "S1", type: "Free", pos: [ 28,-12 ], color: [ 1.0, 0.0, 0.0 ], visible: false }, 
+		{ name: "S2", type: "Free", pos: [ 28,12 ], color: [ 1.0, 0.0, 0.0 ], visible: false }, 
+		{ name: "z", type: "Segment", color: [ 0.0, 0.0, 0.0 ], args: [ "S1", "S2" ], size: 2 }, 
+		{ name: "S", type: "PointOnSegment", pos: [ 28,0 ], color: [ 1.0, 1.0, 1.0 ], args: [ "z" ] } 
+		 ], 
+	ports: [ 
+		{ id: "CSCanvas", width: 751, height: 520, transform: [ { visibleRect: [ -12, 22, 23, -22] } ], background: "rgb(255,255,255)" } ], 
+	cinderella: { build: 1801, version: [ 2, 9, 1801 ] } });
+    </script>
+</head>
+<body>
+    <canvas id="CSCanvas"></canvas>
+</body>
+</html>

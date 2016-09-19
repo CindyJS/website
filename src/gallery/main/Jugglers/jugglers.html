@@ -1,0 +1,95 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Conformal Jugglers in CindyJS</title>
+<meta charset="UTF-8">
+<script type="text/javascript" src="juggler_files/Cindy.js"></script> <!--TODO: have video in master-branch -->
+<script type="text/javascript" src="juggler_files/CindyGL.js"></script>
+<script type="text/javascript" src="juggler_files/inlinevideo.js"></script>
+<style>
+table td, table td * {
+    vertical-align: top;
+}
+</style>
+<script id="csinit" type="text/x-cindyscript">
+//play video("video");
+start():=playvideo("video");
+
+grid=false;
+started=false;
+</script>
+
+<script id="csmousedown" type="text/x-cindyscript">
+start();
+if(started,grid=true;);
+started=true;
+</script>
+<script id="csmouseup" type="text/x-cindyscript">
+grid=false;
+</script>
+
+
+<script id="csdraw" type="text/x-cindyscript">
+fillcircle((0,0),100,color->(0,0,0));
+if(!started,
+  drawimage((-10,-10),(10,-10),"img",alpha->0.5);
+);
+A.xy=round(A);
+p=(A.x,A.y/2);
+  ratio = 1/2;
+
+if (image ready("video")&started,
+  colorplot(
+  imagergb([0,0],[0,2*pi], "video", complex(p)*log(complex(#)/complex(B)), repeat->true));
+);
+if(started&grid&mover()==A,
+  apply(-10..10,
+     draw((-10,#),(10,#),color->(1,1,1)*.8,alpha->.5);
+     draw((#,-10),(#,10),color->(1,1,1)*.8,alpha->.5);
+     draw((-10,0),(10,0),color->(1,1,1)*.8,size->4,alpha->.5);
+     draw((0,-10),(0,10),color->(1,1,1)*.8,size->4,alpha->.5)
+  )
+);
+
+if(started&grid&mover()==B,
+  drawcircle((0,0),|B|,color->(1,1,1)*.8);
+  draw((0,0),B,color->(1,1,1)*.8);
+);
+if(started,
+  drawtext(A+(.2,.2),"geometry",size->12,color->(1,1,1),alpha->.5);
+  drawtext(B+(.2,.2),"scale",size->12,color->(1,1,1),alpha->.5);
+);
+if(!started,
+drawtext((-2,2),"To start the jugglers tap here",align->"center",size->16,color->(1,1,1));
+drawtext((-1,0),"Move the points!!",align->"center",size->16,color->(1,1,1));
+
+)
+</script>
+<script type="text/javascript">
+
+
+
+
+
+var cdy = CindyJS({
+  ports: [{id: "CSCanvas", transform:[{visibleRect:[-10,10,10,-10]}]}],
+  scripts: "cs*",
+  language: "en",
+  autoplay: true,
+  images: {video: "juggler_files/video_sm.mp4",img:"juggler_files/Startscreen.png"},
+  geometry: [
+    {name:"A", type:"Free", pos:[-2,0],color:[1,1,1]},
+    {name:"B", type:"Free", pos:[2,-2],color:[1,1,1]}
+  ],
+  use: ["CindyGL"]
+});
+</script>
+</head>
+
+<body style="font-family:Arial;">
+    <div id="CSCanvas" style="width:650px; height:650px; border:2px solid black"></div>
+</body>
+</html>

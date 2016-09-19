@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+            <title>Cindy JS</title>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+
+            </head>
+
+	<body style="font-family:Arial;">
+
+
+
+        <script id='init' type='text/cindyscript'>
+ drawarrow(a,b,col,alp):=(
+        regional(n);
+           n=b-a;
+           n=n/|n|*1.4;
+           p=(n_2,-n_1);
+           draw(a,b-n*.1,color->col,size->4,alpha->alp);
+           fillpoly([b-n*.17+p*.07,b,b-n*.17-p*.07,b-n*.1],color->col,alpha->alp)
+
+        );
+        drawl(a,b,col,alp):=(
+           draw(a,b,color->col,size->2,alpha->alp);
+
+        );
+
+
+label=false;
+snap=false;
+f(z):=z^2;
+setfunction(t):=(
+  parse("f(z):="+t);
+);
+sc=false;
+sx=false;
+sy=false;
+
+        </script>
+
+        <script id='firstDrawing' type='text/cindyscript'>
+
+         x=S.x;
+          if(x<S1.x,x=S1.x);
+          if(x>S2.x,x=S2.x);
+          S.xy=(x,S1.y);
+        a=(8*(|S,S1|/|S1,S2|))-4;
+
+          x=T.x;
+          if(x<T1.x,x=T1.x);
+          if(x>T2.x,x=T2.x);
+          T.xy=(x,T1.y);
+
+        b=(8*(|T,T1|/|T1,T2|))-4;
+
+          x=U.x;
+          if(x<U1.x,x=U1.x);
+          if(x>U2.x,x=U2.x);
+          U.xy=(x,U1.y);
+          gr=|U,U1|/|U1,U2|*4;
+
+
+
+
+        draw(line((0,1,0)),color->(0,0,0),size->0.5);
+        draw(line((1,0,0)),color->(0,0,0),size->0.5);
+     c=complex(PC);
+   d=complex(PD);
+
+
+        z=complex(B.xy);
+
+        ff=gauss(f(z));
+        zz=gauss(z);
+        res=10;
+
+        sc=.1*gr;
+        apply((-10..10)*sc,j,
+           draw((-10*sc,j)+zz,(10*sc,j)+zz,color->(0.8,0,0),size->1,alpha->.4);
+           draw((j,-10*sc)+zz,(j,10*sc)+zz,color->(0.8,0,0),size->1,alpha->.4);
+           connect(apply((-10*res..10*res)*sc/res,k,gauss(f(z+j+i*k))),size->2);
+           connect(apply((-10*res..10*res)*sc/res,k,gauss(f(z+k+i*j))),size->2);
+        );
+
+         res=1000;
+//        connect(dots,color->(0.7,0,0),size->3);
+
+
+   //     drawarrow((0,0),gauss(z),(0.6,0,0),1);
+        draw(ff,color->(0,1,0),size->3);
+
+
+
+// drawcircle((0,0),1);
+drawtext(gauss(z)*1.2+(-.03,-.03),"z");
+drawtext(ff+(.1,.1),"f(z)");
+drawtext(S+(.1,.1),"a");
+drawtext(T+(.1,.1),"b");
+drawtext(PC+(.1,.1),"c");
+drawtext(PD+(.1,.1),"d");
+drawtext(S1+(.1,.1),"a="+format(a,2),size->12);
+drawtext(T1+(.1,.1),"b="+format(b,2),size->12);
+drawtext(U1+(.1,.1),"grid size",size->12);
+
+        </script>
+
+
+
+        <div style="position:relative">
+        <canvas  id="CSCanvas" width=800 height=500  style="border:2px solid #000000; top:0px; left:0px;"></canvas>
+                   <div style="font-size:18px; position:absolute; top:23px; left:20px; display:inline;z-index:4">
+
+               f(z)= <input id="f" type="text" name="inp" value="z^2"  onkeypress="typ(event, this)" size="30" style="font-size:18px; background-color:#FFEEDD;">
+</div>
+
+
+</div>
+
+        <script type="text/javascript">
+
+            var gslp=[
+                      {name:"O", type:"Free", pos:[0,0],color:[0,0,0],pinned:true,size:3},
+                      {name:"B", type:"Free", pos:[.65,.5],color:[1,.9,0],size:3},
+                      {name:"C", type:"Free", pos:[-3,3],color:[1,0,0],size:0.01},
+                     {name:"PC", type:"Free", pos:[-1,.4],color:[1,0,0],pinned:false,size:3},
+                     {name:"PD", type:"Free", pos:[-2,-2],color:[1,0,0],pinned:false,size:3},
+
+                {name:"S1", type:"Free", pos:[-8,-1],color:[0,0,0],pinned:true,size:2},
+                {name:"S2", type:"Free", pos:[-4,-1],color:[0,0,0],pinned:true,size:2},
+                {name:"S", type:"Free", pos:[-6,-1.5],color:[1,0.5,0.5],pinned:false,size:3},
+                {name:"l", type:"Segment", args:["S1","S2"],color:[0,0,0],pinned:false,size:2},
+
+                {name:"T1", type:"Free", pos:[-8,-2],color:[0,0,0],pinned:true,size:2},
+                {name:"T2", type:"Free", pos:[-4,-2],color:[0,0,0],pinned:true,size:2},
+                {name:"T", type:"Free", pos:[-6,-2],color:[1,0.5,0.5],pinned:false,size:3},
+                {name:"l1", type:"Segment", args:["T1","T2"],color:[0,0,0],pinned:false,size:2},
+
+                {name:"U1", type:"Free", pos:[-8,-3],color:[0,0,0],pinned:true,size:2},
+                {name:"U2", type:"Free", pos:[-4,-3],color:[0,0,0],pinned:true,size:2},
+                {name:"U", type:"Free", pos:[-7,-3],color:[1,0.9,0.0],pinned:false,size:4},
+                {name:"l2", type:"Segment", args:["U1","U2"],color:[0,0,0],pinned:false,size:2},
+
+
+
+
+                    ];
+                     cdy=createCindy({canvasname:"CSCanvas",
+                        movescript:"firstDrawing",
+                        initscript:"init",
+                        geometry:gslp,
+                        grid:1,
+                        snap:true,
+                        transform:[{scale:2},{translate:[4,-1]}],
+}
+                        );
+  setTimeout(function(){document.onkeydown={}}, 1000);
+
+var typ=function(a,b){
+    var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
+    if(chCode==13){
+             //   cindy_cancelmove();
+
+        cdy.evokeCS('setfunction("'+b.value+'");');
+    }
+}
+
+
+
+
+var define=function(a){
+
+    document.getElementById("f").value=a;
+       //  cindy_cancelmove();
+
+    cdy.evokeCS('setfunction("'+a+'");');
+
+}
+
+
+</script>
+
+  <!--      END ADD-->
+
+
+
+<button style="width:100px;" onclick='define("c*z");' type="button" >c*z</button>
+<button style="width:100px;" onclick='define("c*z+d");' type="button" >c*z+d</button>
+<button style="width:100px;" onclick='define("1/z");' type="button" >1/z</button>
+<button style="width:100px;" onclick='define("exp(a*z)");' type="button" >exp(a*z)</button><br>
+<button style="width:100px;" onclick='define("sin(a*z)");' type="button" >sin(a*z)</button>
+<button style="width:100px;" onclick='define("z^a");' type="button" >z^a</button>
+<button style="width:100px;" onclick='define("arctan(z)");' type="button" >arctan(z)</button>
+<button style="width:100px;" onclick='define("sqrt(z)");' type="button" >sqrt(z)</button><br>
+<br>
+<br>
+
+
+
+	</body>
+</html>

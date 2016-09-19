@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ptolemy.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+<script id="csdraw" type="text/x-cindyscript">
+drawtext(A+(A-F)/|A-F|*1.4-(.2,.2),"A",size->20);
+drawtext(B+(B-F)/|B-F|*1.4-(.2,.2),"B",size->20);
+drawtext(C+(C-F)/|C-F|*1.4-(.2,.2),"C",size->20);
+drawtext(D+(D-F)/|D-F|*1.4-(.2,.2),"D",size->20);
+if(mover()==C, 
+  r=C0.radius;
+  d=|F,C|;
+  pro=C*r/d+F*(d-r)/d;
+  if(|pro,C|<0.25,C.xy=pro);
+);
+
+
+f(x):=format(x,2);
+
+aa=|A,B|*|C,D|;
+bb=|A,C|*|B,D|;
+cc=|A,D|*|B,C|;
+
+if(aa>=bb&aa>=cc,pa=6;pb=-1;pc=-8;s=aa-bb-cc);
+if(bb>=aa&bb>=cc,pb=6;pa=-1;pc=-8;s=bb-aa-cc);
+if(cc>=bb&cc>=aa,pc=6;pa=-1;pb=-8;s=cc-aa-bb);
+
+drawrect(x,y,w,h):=(
+ fillpoly([(x,y),(x+w,y),(x+w,y+h),(x,y+h)],color->(.6,.7,.9));
+ connect([(x,y),(x+w,y),(x+w,y+h),(x,y+h),(x,y)],color->(0,0,0),size->2);
+);
+drawrect(-13,-12,50,6);
+
+drawtext((pa,-7),"$|AB|$="+f(|A,B|),color->(0,0,0.7),size->17);
+drawtext((pa,-8),"$|CD|$="+f(|C,D|),color->(0,0,0.7),size->17);
+drawtext((pa,-9),"$|AB||CD|$="+f(|A,B|*|C,D|),color->(0,0,0.7),size->17);
+
+
+drawtext((pb,-7),"$|AC|$="+f(|A,C|),color->(0.6,0,0),size->17);
+drawtext((pb,-8),"$|BD|$="+f(|B,D|),color->(0.6,0,0),size->17);
+drawtext((pb,-9),"$|AC||BD|$="+f(|A,C|*|B,D|),color->(0.6,0,0),size->17);
+
+
+
+drawtext((pc,-7),"$|AD|$="+f(|A,D|),color->(0,0.5,0),size->17);
+drawtext((pc,-8),"$|BC|$="+f(|B,C|),color->(0,0.5,0),size->17);
+drawtext((pc,-9),"$|AD||BC|$="+f(|A,D|*|B,C|),color->(0,0.5,0),size->17);
+drawtext((pc,-10.3),f(cc),color->(0,0.5,0),size->17);
+drawtext((pb,-10.3),f(bb),color->(0.6,0,0),size->17);
+drawtext((pa,-10.3),f(aa),color->(0,0,0.7),size->17);
+drawtext((-4,-10.3),"+",color->(0,0,0),size->17);
+drawtext((3,-10.3),if(s~=0,"=",if(s<0,">","<")),color->(0,0,0),size->17);
+
+
+
+
+;
+</script>
+    <script type="text/javascript">
+createCindy({
+  scripts: "cs*",
+  defaultAppearance: {
+    dimDependent: 0.7,
+    fontFamily: "sans-serif",
+    lineSize: 1,
+    pointSize: 5.0,
+    textsize: 12.0
+  },
+  angleUnit: "°",
+  geometry: [
+    {name: "F", type: "Free", pos: [4.0, 4.0, 4.0], color: [1.0, 0.0, 0.0], visible: false, labeled: true, textsize: 17.0},
+    {name: "C0", type: "CircleByRadius", pos: {xx: -0.043478260869565216, yy: -0.043478260869565216, zz: 1.0, xy: 0.0, xz: 0.08695652173913043, yz: -0.08695652173913043}, color: [0.0, 0.0, 0.0], radius: 5.0, args: ["F"], size: 3},
+    {name: "B", type: "PointOnCircle", pos: [{r: 3.3222973830867404, i: -2.7581621380314922E-17}, -4.0, {r: -1.0551630089759843, i: 4.839864843149169E-18}], color: [1.0, 1.0, 1.0], args: ["C0"], labeled: false, textsize: 17.0},
+    {name: "", type: "OtherPointOnCircle", pos: [4.0, {r: -1.3913528272081075, i: 1.6670142252084705E-17}, {r: 0.7769086359081975, i: -1.765115184466657E-18}], color: [1.0, 1.0, 1.0], args: ["B"], pinned: true, size: 0.0},
+    {name: "A", type: "PointOnCircle", pos: [4.0, {r: -1.5671921742694528, i: 1.4478092334759147E-17}, {r: 0.7962384657505979, i: -1.6493533468856314E-18}], color: [1.0, 1.0, 1.0], args: ["C0"], labeled: false, textsize: 17.0, printname: "A"},
+    {name: "a", type: "Segment", color: [0.0, 0.0, 1.0], args: ["B", "A"], size: 3, overhang: 1.065},
+    {name: "D", type: "PointOnCircle", pos: [{r: -1.4054588030280795, i: -9.085878664016988E-17}, -4.0, {r: 1.1497711636866899, i: 1.1034841346942333E-17}], color: [1.0, 1.0, 1.0], args: ["C0"], labeled: false, textsize: 17.0, printname: "D"},
+    {name: "b", type: "Segment", color: [0.757, 0.0, 0.0], args: ["D", "B"], size: 3, overhang: 1.09},
+    {name: "c", type: "Segment", color: [0.098, 0.62, 0.306], args: ["D", "A"], size: 3, overhang: 1.09},
+    {name: "E", type: "PointOnCircle", pos: [4.0, {r: 2.9544858596193917, i: -1.3948967293482943E-16}, {r: -1.382461685663132, i: 2.4352151918808985E-17}], color: [1.0, 0.0, 0.0], args: ["C0"], visible: false, labeled: true, textsize: 17.0},
+    {name: "C", type: "Free", pos: [4.0, 3.443037974683544, 0.6329113924050632], color: [1.0, 1.0, 1.0], labeled: false, textsize: 17.0},
+    {name: "d", type: "Segment", color: [0.098, 0.62, 0.306], args: ["B", "C"], size: 3, overhang: 1.075},
+    {name: "e", type: "Segment", color: [0.757, 0.0, 0.0], args: ["C", "A"], size: 3, overhang: 1.075},
+    {name: "f", type: "Join", color: [0.0, 0.0, 1.0], args: ["D", "C"], size: 3, overhang: 1.075, clip: "inci"}
+  ],
+  ports: [{
+    id: "CSCanvas",
+    width: 685,
+    height: 474,
+    transform: [{visibleRect: [-12.46, 8.02, 14.94, -10.94]}],
+    grid: 1.0,
+    snap: true,
+    background: "rgb(255,255,255)"
+  }],
+  use:["katex"],
+  cinderella: {build: 1871, version: [2, 9, 1871]}
+});
+    </script>
+</head>
+<body>
+    <div id="CSCanvas"></div>
+</body>
+</html>

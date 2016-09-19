@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ProjGrid3.cdy</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        html{overflow: hidden;}
+
+        #CSConsole {
+            background-color: #FAFAFA;
+            border-top: 1px solid #333333;
+            bottom: 0px;
+            height: 200px;
+            overflow-y: scroll;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+        <script type="text/javascript" src="http://cindyjs.org/dist/v0.7/Cindy.js"></script>
+    
+    
+<script id="csinit" type="text/x-cindyscript">
+// Variables //////////////////////////////////////////////////////////////////////////////////////
+
+mat      = [[1, 0, 0], [0, 0, 1], [0, 1, 0]];
+a        = (0, 0, 1);
+stars    = apply(1..1000, (random(50), random(50), random()));
+rotating = true;
+
+
+
+
+
+
+// Specific functions /////////////////////////////////////////////////////////////////////////////
+
+map(pp) := (
+  p = s2 * pp;
+  o = (p - (p * a) * a) / (1 - p * a);
+  (o.x, o.y) * s1;
+);
+
+grid(n, al) := apply((-2*n..2*n) / n, i,
+    p1 = (i, 0, -2);
+    p2 = (i, 0, 2);
+    draw(map(mat * p1), map(mat * p2), alpha->al);
+    p1 = (-2, 0, i);
+    p2 = (2, 0, i);
+    draw(map(mat * p1), map(mat * p2), alpha->al)
+);
+
+
+
+
+grid2(n,al) := (
+    apply((-2*n..2*n) / n, i,
+        p1 = (i, 0, -2);
+        p2 = (i, 0, 2);
+        draw(join(map(mat * p1), map(mat * p2)), alpha->al);
+        p1 = (-2, 0, i);
+        p2 = (2, 0, i);
+        draw(join(map(mat * p1), map(mat * p2)), alpha->al)
+    );
+
+    apply((-2*n..(2*n)) / n * 2, i,
+        p1 = (0.0001, 0, i);
+        p2 = (-i, 0, 0.0001);
+        draw(join(map(mat * p1), map(mat * p2)), alpha->al);
+        p1 = (0.0001, 0, i);
+        p2 = (i, 0, -0.0001);
+        draw(join(map(mat * p1), map(mat * p2)), alpha->al)
+    )
+);
+
+mydrawtext(pos, txt, txtsize) := (
+    drawtext(pos, txt, color->(1, 1, 1), offset->(0, 1), size->txtsize);
+    drawtext(pos, txt, color->(1, 1, 1), offset->(0, -1), size->txtsize);
+    drawtext(pos, txt, color->(1, 1, 1), offset->(1, 0), size->txtsize);
+    drawtext(pos, txt, color->(1, 1, 1), offset->(-1, 0), size->txtsize);
+    drawtext(pos, txt, size->txtsize, color->(0, 0, 0));
+);
+</script>    
+    
+<script id="csdraw" type="text/x-cindyscript">
+
+E.xy=(E.x,max(B.y+.01,min(E.y,A.y)));
+F.xy=(F.x,max(D.y,min(F.y,C.y)));
+
+s1 = 4 * dist(B, E);
+s2 = (dist(D, F) / dist(D, C) / 3) + 0.01;
+
+
+K.xy = map(mat * (0, 0, 0));
+L.xy = map(mat * (1, 0, 0));
+M.xy = map(mat * (0, 0, 1));
+G.xy = map(mat * (1, 0, 1));
+l    = perp(g, (0, 0));
+k    = meet(g, l);
+
+if(k ~!= (0, 0, 0),
+   kk  = k.xy;
+   kkp = perp(kk);
+   kkp = kkp / |kkp| * 50;
+   kkn = perp(kkp) * 10;
+   fillpoly((kk - kkp, kk + kkp, kk + kkp - kkn, kk - kkn - kkp), color->(0, 0, 0));   
+);
+
+apply(stars, fillcircle((#_1 - 25, #_2 - 25), #_3 * .07, color->(1, 1, 1 - 0.7 * #_3)));
+
+if(k ~!= (0, 0, 0),
+   kk = k.xy,
+   kk = (100,100)
+);
+
+if(|kk| > 100, kk=(100,100));
+
+kkp = perp(kk);
+kkp = kkp / |kkp| * 50;
+kkn = perp(kkp) * 10;
+fillpoly((kk - kkp, kk + kkp, kk + kkp + kkn, kk + kkn - kkp), color->(0.6, 0.6, 0.8), alpha->1); 
+
+fillpoly(apply(((2, 0, 2), (2, 0, -2), (-2, 0, -2), (-2, 0, 2)), map(mat * #)), color->(1, 1, 1), alpha->0.6);
+connect(apply(((2, 0, 2), (2, 0, -2), (-2, 0, -2), (-2, 0, 2), (2,0,2)), map(mat * #)), color->(0, 0, 0), alpha->0.8, size->2);
+linecolor((0,0,0));
+
+grid(1, 0.4);
+grid2(10, 0.2);
+
+mydrawtext(E.xy + (0.5, 0), "scale", 15);
+mydrawtext(F.xy + (0.5, 0), "dist", 15);
+</script>
+    
+<script id="csmousedown" type="text/x-cindyscript">
+startx   = mouse().x;
+starty   = mouse().y;
+mm       = mouse().xy;
+rotating = dist(mm, E) > 1 & dist(mm, F) > 1;
+</script>
+    
+<script id="csmousedrag" type="text/x-cindyscript">
+if(dist(E, A) < 0.05, E.xy = A.xy);
+if(E.y < B.y, E.y = B.y);
+if(F.y > C.y, F.y = C.y);
+if(F.y < D.y, F.y = D.y);
+
+if(rotating,
+    xx = mouse().x;
+    yy = mouse().y;
+    wy =  (startx - xx) * 0.1;
+    wx = -(starty - yy) * 0.1;
+
+    mmmx = [[1, 0, 0],
+            [0, cos(wx), sin(wx)],
+            [0, -sin(wx), cos(wx)]
+    ];
+
+    mmmy = [[cos(wy), 0, -sin(wy)],
+            [0, 1 ,0],
+            [sin(wy), 0, cos(wy)]
+    ];
+
+    mat=mmmx * mmmy * mat;
+
+    startx = xx;
+    starty = yy;
+);
+
+;
+</script>
+    
+<script id="csmouseup" type="text/x-cindyscript">
+rotating = true;
+</script>
+    
+
+    <script type="text/javascript">
+lab = false;
+        
+createCindy({ 
+	scripts: "cs*", 
+	defaultAppearance: {}, 
+	geometry: [ 
+		{ name: "A", type: "Free", pos: [ 4.0, 1.8666666666666667, 0.26666666666666666 ], color: [ 0.3, 0.3, 0.3 ], pinned: true, labeled: lab, size: 3.0 }, 
+		{ name: "B", type: "Free", pos: [ 4.0, -0.5333333333333333, 0.26666666666666666 ], color: [ 0.3, 0.3, 0.3 ], pinned: true, labeled: lab, size: 3.0 }, 
+		{ name: "C", type: "Free", pos: [ 4.0, 1.5555555555555556, 0.2222222222222222 ], color: [ 0.3, 0.3, 0.3 ], pinned: true, labeled: lab, size: 3.0 }, 
+		{ name: "D", type: "Free", pos: [ 4.0, -0.4444444444444444, 0.2222222222222222 ], color: [ 0.3, 0.3, 0.3 ], pinned: true, labeled: lab, size: 3.0 },               { name: "G", type: "Free", pos: [ 4.0, 4.0, 1.2903349961529123 ], color: [ 1.0, 0.0, 0.0 ], alpha: 0.0, labeled: lab }, 
+		{ name: "K", type: "Free", pos: [ 0.0, 0.0, 4.0 ], color: [ 0.0, 0.0, 0.0 ], size: 2.0 , labeled: lab}, 
+		{ name: "L", type: "Free", pos: [ 4.0, 0.0, 1.2903349961529123 ], color: [ 1.0, 0.0, 0.0 ], alpha: 0.0, labeled: lab }, 
+		{ name: "M", type: "Free", pos: [ -0.0, -4.0, -1.2903349961529123 ], color: [ 1.0, 0.0, 0.0 ], alpha: 0.0, labeled: lab }, 
+		{ name: "O", type: "Free", pos: [ 0.0, -4.0, -4.0 ], color: [ 1.0, 0.0, 0.0 ], alpha: 0.0, labeled: lab }, 
+		{ name: "P", type: "Free", pos: [ 4.0, 4.0, 4.0 ], color: [ 1.0, 0.0, 0.0 ], alpha: 0.0, labeled: lab }, 
+		{ name: "Q", type: "Free", pos: [ 4.0, -0.0, 4.0 ], color: [ 1.0, 0.0, 0.0 ], alpha: 0.0, labeled: lab }, 
+		{ name: "c", type: "Join", pos: [ 4.0, 0.0, -0.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "K", "M" ], visible: false, labeled: lab, size: 1 }, 
+		{ name: "d", type: "Join", pos: [ -1.2903349961529123, -0.0, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "G", "L" ], visible: false, labeled: lab, size: 1 }, 
+		{ name: "e", type: "Join", pos: [ -0.0, -1.2903349961529123, 4.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "M", "G" ], visible: false, labeled: lab, size: 1 }, 
+		{ name: "f", type: "Join", pos: [ 0.0, -4.0, 0.0 ], color: [ 0.0, 0.0, 1.0 ], args: [ "K", "L" ], visible: false, labeled: lab, size: 1 }, 
+		{ name: "H", type: "Meet", pos: [ -0.0, -4.0, -0.0 ], color: [ 1.0, 0.0, 0.0 ], args: [ "c", "d" ], visible: false, labeled: lab }, 
+		{ name: "N", type: "Meet", pos: [ 4.0, -0.0, 0.0 ], color: [ 1.0, 0.0, 0.0 ], args: [ "e", "f" ], visible: false, labeled: lab }, 
+		{ name: "g", type: "Join", pos: [ 0.0, -0.0, 4.0 ], color: [ 0.7568628, 0.0, 0.0 ], args: [ "H", "N" ], size: 3 , labeled: lab},
+        { name: "a", type: "Segment", pos: [ -0.26666666666666666, -0.0, 4.0 ], color: [ 0.0, 0.0, 0.5 ], args: [ "A", "B" ], labeled: lab, size: 2 }, 
+        { name: "b", type: "Segment", pos: [ -0.2222222222222222, -0.0, 4.0 ], color: [ 0.0, 0.0, 0.5 ], args: [ "C", "D" ], labeled: lab, size: 2 }, 
+		{ name: "E", type: "PointOnLine", pos: [ 4.0, 0.5759999466666669, 0.2666666666666667 ], color: [ 0.9, 0.9, 1.0 ], args: [ "a" ], labeled: lab, size: 5.0, printname: "scale", narrow: true}, 
+		{ name: "F", type: "PointOnLine", pos: [ 4.0, 0.6133333155555556, 0.22222222222222213 ], color: [ 0.9, 0.9, 1.0 ], args: [ "b" ], labeled: lab, size: 5.0, printname: "dist", narrow: true} ],
+	ports: [ 
+		{ id: "CSCanvas", width: 850, height: 550, transform: [ { visibleRect: [ -12.6, 11.84, 20.8, -10.28 ] } ] } ] });
+    </script>
+</head>
+<body>
+    <canvas id="CSCanvas" style="border:2px solid #000000" ></canvas>
+</body>
+</html>
