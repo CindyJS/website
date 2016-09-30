@@ -27,29 +27,36 @@ for (var x = 0; x < list.length; x++)
           renderimage(address, output, 1000 * n);
         }
     }
-
+if(n==0) phantom.exit();
 
 function renderimage(address, output, delay) {
     cnt = cnt + 1;
     var page = require('webpage').create();
-
+    
+    page.viewportSize = { width: 2000, height: 2000 };
+    page.paperSize = { width: 2000, height: 2000, border: '0px' }
     page.open(address, function(status) {
         if (status !== 'success') {
             console.log('Unable to load the address!');
             phantom.exit(1);
         } else {
-            var ev = document.createEvent("MouseEvent");
-            ev.initMouseEvent(
-                "click",
-                true /* bubble */ , true /* cancelable */ ,
-                window, null,
-                100, 100, 100, 100, /* coordinates */
-                false, false, false, false, /* modifier keys */
-                0 /*left*/ , null
-            );
-
+          page.sendEvent('mousemove', 200, 200);
+          page.sendEvent('mouseclick', 200, 200);
+            
             window.setTimeout(function() {
-                page.clipRect = {
+              page.sendEvent('mousemove', 200, 200);
+              page.sendEvent('mouseclick', 200, 200);
+              var rect = page.evaluate(function() {
+                    var div = document.getElementById('Cindy3D') || document.getElementById('CSCanvas') || document.getElementById('CSCanvas1') || document.getElementById('cindy') || document.getElementById('enCindy');
+                    return div.getBoundingClientRect();
+                  });
+                  
+                page.clipRect =  rect ? {
+                  top: rect.top+2,
+                  left: rect.left+2,
+                  width: rect.width-4,
+                  height: rect.height-4
+                } : {
                     top: 100,
                     left: 100,
                     width: 300,
