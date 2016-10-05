@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd CindyJS
+make
+cd ../src/assets/img/thumbnail
+
+phantomjs cindyscreenshot.js ../../../../CindyJS/examples/**.html
+
+for i in `ls *png`
+do
+  echo "convert" $i
+  convert $i -filter Lanczos -resize 300x300^ -gravity center -extent 300x300 $i
+done
