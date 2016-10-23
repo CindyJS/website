@@ -31,7 +31,7 @@ $default-padding: em-calc(5) em-calc(15);
 $max-width: em-calc(1000);
 
 $small-size: em-calc(480);
-
+$medium-size: em-calc(760);
 
 $index-example-width: 45vw;
 
@@ -40,6 +40,7 @@ $index-example-width: 45vw;
 
 $small: "only screen and (max-width: #{$small-size})";
 $not-small: "not screen and (max-width: #{$small-size})";
+$medium: "only screen and (max-width: #{$medium-size})";
 
 //////////////////////////////////////////////////////////////////////
 // Fonts
@@ -421,7 +422,7 @@ kbd {
   flex-direction: row-reverse;
 }
 
-@media #{$small} {
+@media #{$medium} {
   .examplel, .exampler {
     flex-direction: column;
     >h5 {
@@ -430,6 +431,9 @@ kbd {
     }
     >div>h5 {
       display: none;
+    }
+    .example {
+      align-self: center;
     }
   }
 }
