@@ -161,19 +161,18 @@ footer#bottom-bar {
   background: $footer-background;
   color: $footer-color;
   font-family: $condensed;
-  //display: block;
   flex-shrink: 0;
   box-shadow: $shadow;
 
   &>div {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: flex-start;
   }
 
   .footer-item {
     padding: $default-padding;
     max-width: $max-width;
-    margin: auto;
   }
 
   .footer-sep {
@@ -202,7 +201,9 @@ footer#bottom-bar {
 
 @media #{$small} {
   footer#bottom-bar {
-    display: block;
+    &>div {
+      display: block;
+    }
     .footer-sep {
       display: block;
     }
