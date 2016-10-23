@@ -103,7 +103,7 @@ body {
 //////////////////////////////////////////////////////////////////////
 // Header
 
-header {
+header#top-bar {
   background: $titlebar-background;
   color: $titlebar-color;
   display: block;
@@ -149,7 +149,7 @@ header {
 }
 
 @media #{$small} {
-  header nav ul li {
+  header#top-bar nav ul li a {
     font-size: 1rem;
   }
 }
@@ -157,7 +157,7 @@ header {
 //////////////////////////////////////////////////////////////////////
 // Footer
 
-footer {
+footer#bottom-bar {
   background: $footer-background;
   color: $footer-color;
   font-family: $condensed;
@@ -201,7 +201,7 @@ footer {
 }
 
 @media #{$small} {
-  footer {
+  footer#bottom-bar {
     display: block;
     .footer-sep {
       display: block;
