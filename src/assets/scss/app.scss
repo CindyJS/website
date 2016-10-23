@@ -163,6 +163,7 @@ footer#bottom-bar {
   font-family: $condensed;
   flex-shrink: 0;
   box-shadow: $shadow;
+  margin-top: 2em;
 
   &>div {
     display: flex;
