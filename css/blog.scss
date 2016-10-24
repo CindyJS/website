@@ -1,0 +1,13 @@
+---
+# Some more formatting in addition to what we have in cindyjs.scss
+---
+
+.post-list {
+  post-meta { style: italic; }
+  h2 { font-size: 120%; font-weight: 500; }
+}
+
+#CSCanvas {
+  max-width: calc(100vw - 4rem);
+  max-height: calc(100vw - 4rem);
+}

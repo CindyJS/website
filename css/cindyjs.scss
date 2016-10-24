@@ -1,0 +1,506 @@
+---
+# Taken from the CindyJS website, namely from
+# https://github.com/CindyJS/website/blob/f3af9e648133/src/assets/scss/app.scss
+---
+
+@charset 'utf-8';
+
+//////////////////////////////////////////////////////////////////////
+// Utility functions
+
+@function em-calc($px) {
+  @return $px / 16 * 1em;
+}
+
+//////////////////////////////////////////////////////////////////////
+// Configurable settings
+
+
+$bar-color: #e6e6e4;
+//$bar-color: #e0e0de;
+$page-color: lighten($bar-color, 9%);
+$bar-color-1: $bar-color;
+$titlebar-background: $bar-color;
+$titlebar-color: #000000;
+$footer-background: $bar-color;
+$footer-color: #000000;
+$link-color: #2043a3;
+
+$code-color: #fcfccf;
+
+$shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+$hover-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
+$active-shadow: 0px 0px 20px 0px rgba(255, 100, 10, .4);
+
+$default-padding: em-calc(5) em-calc(15);
+$max-width: em-calc(1000);
+
+$small-size: em-calc(480);
+$medium-size: em-calc(760);
+
+$index-example-width: 45vw;
+
+//////////////////////////////////////////////////////////////////////
+// Media selection
+
+$small: "only screen and (max-width: #{$small-size})";
+$not-small: "not screen and (max-width: #{$small-size})";
+$medium: "only screen and (max-width: #{$medium-size})";
+
+//////////////////////////////////////////////////////////////////////
+// Fonts
+
+@import url(https://fonts.googleapis.com/css?family=Raleway+Mono:400,300italic|Raleway:500,700|Raleway+Condensed:400,700,400italic&subset=latin,greek);
+
+$sans: Raleway, sans-serif;
+$condensed: "Raleway Condensed", Raleway, sans-serif;
+$mono: "Raleway Mono", monospace;
+
+body {
+  font-family: $sans;
+  font-weight: 400;
+  font-style: normal;
+}
+
+code,pre {
+  font-family: $mono;
+  font-weight: 400;
+  font-style: normal;
+}
+
+strong {
+  font-weight: 700;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 0.5em 0em 0.25em 1rem; // top, right, bottom, left
+  padding: 0px;
+  font-family: $sans;
+  font-style: normal;
+  font-weight: 500;
+}
+
+//h2,h4,h6 { font-style: italic; }
+h1,h2,h3,h4 { font-weight: 700; }
+h1 { font-size: 2.80em; }
+h2 { font-size: 2.28em; }
+h3 { font-size: 1.85em; }
+h4 { font-size: 1.51em; }
+h5 { font-size: 1.51em; }
+h6 { font-size: 1.23em; }
+
+//////////////////////////////////////////////////////////////////////
+// Top levels
+
+html,body {
+  transition: all 1s;
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+  background-color: $page-color;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+//////////////////////////////////////////////////////////////////////
+// Header
+
+header#top-bar {
+  background: $titlebar-background;
+  color: $titlebar-color;
+  display: block;
+  box-shadow: $shadow;
+  flex-shrink: 0;
+  &>div {
+    padding: $default-padding;
+    max-width: $max-width;
+    margin: auto;
+    display: flex;
+  }
+  .logo {
+    vertical-align: middle;
+    margin: -1rem 0.5rem;
+  }
+  h1 {
+    margin: 0px;
+    flex: 1;
+    font-size: 1.5rem;
+  }
+  nav ul, nav ul li {
+    display: inline;
+    margin: 0px;
+    padding: 0px;
+  }
+  li a {
+    background: $page-color;
+    font-size: 1.2rem;
+    transition: all 1s;
+    margin: 0.1em 0.25em 0.1em;
+    padding: 0.15em 0.25em;
+    display: inline-block;
+    border-radius: 0.25em;
+    position: relative;
+    box-shadow: $shadow;
+    &:hover {
+      box-shadow: $hover-shadow;
+    }
+    &:active {
+      box-shadow: $active-shadow;
+    }
+  }
+}
+
+@media #{$small} {
+  header#top-bar nav ul li a {
+    font-size: 1rem;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Footer
+
+footer#bottom-bar {
+  background: $footer-background;
+  color: $footer-color;
+  font-family: $condensed;
+  flex-shrink: 0;
+  box-shadow: $shadow;
+  margin-top: 2em;
+
+  &>div {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+
+  .footer-item {
+    padding: $default-padding;
+    max-width: $max-width;
+  }
+
+  .footer-sep {
+    display: none;
+  }
+
+  .footer-label {
+    margin: 0px;
+    font-weight: 700;
+    font-size: em-calc(10);
+  }
+
+  .footer-links {
+    margin: 0px;
+    padding: 0px;
+    padding-left: 1.5em;
+    font-weight: 400;
+    font-size: em-calc(13);
+
+    img {
+      display: inline;
+      vertical-align: text-top;
+    }
+  }
+}
+
+@media #{$small} {
+  footer#bottom-bar {
+    &>div {
+      display: block;
+    }
+    .footer-sep {
+      display: block;
+    }
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Main content area
+
+#between-bars {
+  //flex: 1 0;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
+main {
+  padding: $default-padding;
+  max-width: $max-width;
+  margin: auto;
+}
+
+#between-bars nav {
+  padding: $default-padding;
+  max-width: $max-width;
+  h2 {
+    font-family: Raleway, $sans;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.23em;
+    margin-top: 0em;
+  }
+  margin: 4em auto 2em;
+  border: em-calc(1) solid $bar-color-1;
+  border-radius: 1em;
+  padding: $default-padding;
+}
+
+@media #{$small} {
+  #between-bars nav {
+    display: none;
+  }
+}
+
+
+
+//////////////////////////////////////////////////////////////////////
+// Links
+
+a {
+  transition: all 1s;
+  color: inherit;
+  text-decoration: none;
+}
+
+main a {
+  color: $link-color;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@supports (text-decoration-color: rgba($link-color, 0)) {
+  main a {
+    text-decoration: underline;
+    text-decoration-color: rgba($link-color, 0); // completely transparent
+    transition: text-decoration-color 0.25s;
+    &:hover {
+      text-decoration-color: rgba($link-color, 1); // completely opaque
+    }
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Code formatting
+
+code {
+  background-color: $code-color;
+  box-shadow: em-calc(1) em-calc(1) em-calc(3) rgba(0, 0, 0, 0.75);
+}
+
+pre {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: auto;
+  background-color: $code-color;
+  padding: em-calc(6);
+  border-radius: em-calc(6);
+  border: em-calc(1) solid darken($code-color, 50%);
+  box-shadow: em-calc(2) em-calc(2) em-calc(6) rgba(0, 0, 0, 0.75);
+
+  code {
+    background-color: inherit;
+    box-shadow: none;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////
+// Reference manual (similar to CindyJS/ref/ref.css)
+
+.codeblock {
+  pre {
+    background-color: inherit;
+    box-shadow: none;
+    border-style: none;
+    border-radius: 0em;
+  }
+
+  border: 1px solid #66cc66;
+  padding: 3px;
+  margin: 0ex 3em;
+  background: #ddddff;
+  pre { margin: 0px; padding: 2px; }
+  pre.code { color: #000066; margin-top: 1em; padding: 0px; }
+  pre.code.fst { margin-top: 0px; }
+  pre.result { color: #006600; background: #ddffdd; }
+  pre.regexp { color: #99ccaa; background: #eeffdd; }
+  pre.output { color: #993333; background: #dddddd; }
+  pre.draw2d { color: #aa9999; background: #ddeedd; }
+  pre.pragma { color: #996600; background: #ffffcc; }
+}
+
+table {
+  border-collapse:collapse;
+  td, th {
+    padding: 0.5ex 1em;
+    border: 1px solid black;
+    background: #ffffff;
+  }
+  code {
+    background-color: inherit;
+    box-shadow: none;
+  }
+}
+
+a.hlink {
+  margin-left: 0.5em;
+  opacity: 0.1;
+  color: #003;
+  &:hover {
+    opacity: 0.8;
+  }
+  &::after {
+    content: "¶";
+  }
+}
+
+kbd {
+  display: inline-block;
+  padding: 0.2em 0.3em;
+  margin: 0em 0.1em;
+  color: #555;
+  vertical-align: middle;
+  background-color: #eee;
+  border: solid 1px #bbb;
+  border-bottom-color: #aaa;
+  border-radius: 0.3em;
+  box-shadow: inset 0 -1px 0 #aaa;
+}
+
+//////////////////////////////////////////////////////////////////////
+// List formatting
+
+@media #{$not-small} {
+  ul.inlinelist {
+    display: block;
+    margin: 0em;
+    padding: 0em;
+
+    &>li {
+      display: inline;
+      &::before {
+        content: "● ";
+        margin: 0em 0.5em;
+      }
+      &:first-child::before {
+        content: "";
+        margin: 0em;
+      }
+    }
+  }
+}
+
+////////////////////////
+// CindyJS example
+
+#CSCanvas, #cindy, #Cindy3D, .example {
+  background: #ffffff;
+  display: block;
+  box-shadow: $shadow;
+  margin: 10px !important;
+  border: 0px !important;
+  position:relative !important;
+  flex-shrink: 0.1;
+}
+
+.examplel, .exampler {
+  display: flex;
+  flex-direction: row;
+  div {
+    padding: 0 20px 0 20px;
+    margin: auto;
+  }
+  .example {
+    width: 300px;
+    height: 300px;
+  }
+  >h5 {
+    display: none;
+  }
+}
+
+.exampler {
+  flex-direction: row-reverse;
+}
+
+@media #{$medium} {
+  .examplel, .exampler {
+    flex-direction: column;
+    >h5 {
+      margin-top: 2em;
+      display: block;
+    }
+    >div>h5 {
+      display: none;
+    }
+    .example {
+      align-self: center;
+    }
+  }
+}
+
+.gallery, .showcase {
+  display: flex;
+  flex-wrap: wrap;
+  div {
+    width: 300px;
+    margin: 10px;
+    img {
+      width: 100%;
+      box-shadow: $shadow;
+      &:hover {
+        box-shadow: $hover-shadow;
+      }
+      &:active {
+        box-shadow: $active-shadow;
+      }
+    }
+  }
+}
+
+.showcase div {
+    width: 17%;
+    margin: 1%;
+}
+
+.gallerynav {
+  ul {
+    overflow: auto;
+    list-style-type: none;
+  }
+
+  li {
+    float: left;
+    margin-right: 0px;
+    border-right: 1px solid #cccccc;
+    padding: 0 20px;
+  }
+
+  li:last-child {
+    border-right: none;
+  }
+
+  li a {
+    color: #cccccc;
+    transition: all 0.5s ease;
+  }
+
+  li.highlight a{
+    color: #666666;
+  }
+
+  li a:hover {
+    color: #000000;
+  }
+
+  li.active a {
+    font-weight: bold;
+    color: #333;
+  }
+
+
+}

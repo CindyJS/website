@@ -1,0 +1,85 @@
+---
+# Adapted from the CindyJS website, namely from
+# https://github.com/CindyJS/website/blob/f3af9e648133/src/layouts/main.html
+---
+<!doctype html>
+{% assign custom_url = site.url | append: site.baseurl %}
+{% assign full_base_url = custom_url | default: site.github.url %}
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+    <link rel="icon" href="{{ "/images/logo_small.png" | prepend: full_base_url }}" type="image/png">
+    <link rel="stylesheet" href="{{ "/css/cindyjs.css" | prepend: full_base_url }}">
+    <link rel="stylesheet" href="{{ "/css/blog.css" | prepend: full_base_url }}">
+{% if page.cjs %}
+{% if page.cjs.css %}
+<link rel="stylesheet" href="{{ page.cjs.css | prepend: "/dist/" | prepend: full_base_url }}">
+{% else %}
+<link rel="stylesheet" href="http://cindyjs.org/dist/{{ page.cjs.version }}/CindyJS.css">
+{% endif %}
+{% if page.cjs.js %}
+<script type="text/javascript" src="{{ page.cjs.js | prepend: "/dist/" | prepend: full_base_url }}"></script>
+{% else %}
+<script type="text/javascript" src="http://cindyjs.org/dist/{{ page.cjs.version }}/Cindy.js"></script>
+{% endif %}
+{% endif %}
+  </head>
+  <body class="with-footer">
+
+    <!-- Header -->
+    <header id="top-bar">
+      <div>
+        <h1><a href="//cindyjs.org/"><span style="font-weight:400">Cindy</span><span style="font-weight:700">JS</span><img alt="CindyJS logo" class="logo" src="{{ "/images/logo_small.png" | prepend: full_base_url }}"></a>
+        – <a href="{{ full_base_url }}/">{{ site.subtitle }}</a></h1>
+        <nav>
+          <ul id="topBarLinks">
+            <li><a href="//cindyjs.org/">Official</a></li>
+            <li><a href="https://github.com/CindyJS/CindyJS"><img src="{{ "/images/octoicons-mark-github.svg" | prepend: full_base_url }}" alt="GitHub" title="GitHub project" style="display:inline; position:relative; top:0.2ex; width:1.7ex;"></a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div id="between-bars">
+
+      <!-- Main part -->
+      <main>
+{{ content }}
+      </main>
+    </div>
+
+    <footer id="bottom-bar">
+      <div>
+        <div class="footer-item">
+          <p class="footer-label">Follow:</p>
+          <ul class="footer-links">
+            <li><a href="{{ "/feed.xml" | prepend: site.baseurl }}">RSS</a></li>
+          </ul>
+        </div>
+        <div class="footer-sep"><hr></div>
+        <div class="footer-item">
+          <p class="footer-label">This page:</p>
+          <ul class="footer-links">
+            <li><a href="https://github.com/{{site.gh.repo}}/blob/{{site.gh.branch}}/{{page.path}}">View source</a></li>
+            <li><a href="https://github.com/{{site.gh.repo}}/edit/{{site.gh.branch}}/{{page.path}}">Edit page</a></li>
+{% if page.license %}
+{% assign license = page.license %}
+{% else %}
+{% assign license = site.license %}
+{% endif %}            
+{% if license.name %}            
+            <li><a href="{{license.url}}" rel="license">{{license.name}}
+{% if license.icon %}
+              <br><img src="{{license.icon}}" alt="{{license.name}}">
+{% endif %}
+            </a></li>
+{% endif %}
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
