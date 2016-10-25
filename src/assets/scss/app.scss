@@ -31,7 +31,7 @@ $default-padding: em-calc(5) em-calc(15);
 $max-width: em-calc(1000);
 
 $small-size: em-calc(480);
-
+$medium-size: em-calc(760);
 
 $index-example-width: 45vw;
 
@@ -40,6 +40,7 @@ $index-example-width: 45vw;
 
 $small: "only screen and (max-width: #{$small-size})";
 $not-small: "not screen and (max-width: #{$small-size})";
+$medium: "only screen and (max-width: #{$medium-size})";
 
 //////////////////////////////////////////////////////////////////////
 // Fonts
@@ -103,7 +104,7 @@ body {
 //////////////////////////////////////////////////////////////////////
 // Header
 
-header {
+header#top-bar {
   background: $titlebar-background;
   color: $titlebar-color;
   display: block;
@@ -149,7 +150,7 @@ header {
 }
 
 @media #{$small} {
-  header nav ul li {
+  header#top-bar nav ul li a {
     font-size: 1rem;
   }
 }
@@ -157,23 +158,23 @@ header {
 //////////////////////////////////////////////////////////////////////
 // Footer
 
-footer {
+footer#bottom-bar {
   background: $footer-background;
   color: $footer-color;
   font-family: $condensed;
-  //display: block;
   flex-shrink: 0;
   box-shadow: $shadow;
+  margin-top: 2em;
 
   &>div {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: flex-start;
   }
 
   .footer-item {
     padding: $default-padding;
     max-width: $max-width;
-    margin: auto;
   }
 
   .footer-sep {
@@ -201,8 +202,10 @@ footer {
 }
 
 @media #{$small} {
-  footer {
-    display: block;
+  footer#bottom-bar {
+    &>div {
+      display: block;
+    }
     .footer-sep {
       display: block;
     }
@@ -419,7 +422,7 @@ kbd {
   flex-direction: row-reverse;
 }
 
-@media #{$small} {
+@media #{$medium} {
   .examplel, .exampler {
     flex-direction: column;
     >h5 {
@@ -428,6 +431,9 @@ kbd {
     }
     >div>h5 {
       display: none;
+    }
+    .example {
+      align-self: center;
     }
   }
 }
