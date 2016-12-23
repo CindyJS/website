@@ -6,7 +6,7 @@
   (Mathematically speaking you see conformal transformations of repeated versions of the
   original video).
 
-##### Software: <a href="http://cindyjs.org">CindyJS</a><br>
+##### Software: <a href="https://cindyjs.org">CindyJS</a><br>
   Deformation made possible by connecting CindyJS to
   WebGL and calculating transformations on the GPU.
 
