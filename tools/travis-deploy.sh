@@ -12,4 +12,4 @@ rm travis-ssh
 
 mkdir -p "${HOME}/.ssh"
 cat tools/cindyjs.org.pub >> "${HOME}/.ssh/known_hosts"
-rsync --delete-delay -rci --rsh='ssh -l travis' dist/ cindyjs.org::website/
+rsync --delete-delay -rci --rsh='ssh -l deploy -p 7723' dist/ cindyjs.org::website/
