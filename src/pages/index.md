@@ -306,4 +306,3 @@ colorplot(
   color(f(z))
 );
 </script>
-
