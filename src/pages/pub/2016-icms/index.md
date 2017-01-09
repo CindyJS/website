@@ -14,6 +14,7 @@ The presentations and extended abstracts from this occasion are available here.
 <li>[**Presentation (HTML)**](overview/)</li>
 <li>[Extended Abstract (PDF)](/extras/2016-icms/ICMS_Extended_Abstract.pdf)</li>
 <li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_39)</li>
+<li>[Cite (BibTeX)](overview/cindyjs_icms2016.bib)</li>
 </ul>
 
 Martin von Gagern, Ulrich Kortenkamp, Jürgen Richter-Gebert and Michael Strobel
@@ -31,6 +32,7 @@ Martin von Gagern, Ulrich Kortenkamp, Jürgen Richter-Gebert and Michael Strobel
 <li>[**Presentation (HTML)**](plugins/)</li>
 <li>[Extended Abstract (PDF)](/extras/2016-icms/ICMS_Plugins_Extended_Abstract.pdf)</li>
 <li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_40)</li>
+<li>[Cite (BibTeX)](plugins/cjs_plugins_icms2016.bib)</li>
 </ul>
 
 Martin von Gagern and Jürgen Richter-Gebert
@@ -48,6 +50,7 @@ Martin von Gagern and Jürgen Richter-Gebert
 <li>[**Presentation (HTML)**](cindygl/)</li>
 <li>[Extended Abstract (PDF)](/extras/2016-icms/ICMS_CindyGL_Extended_Abstract.pdf)</li>
 <li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_44)</li>
+<li>[Cite (BibTeX)](cindygl/cindygl_icms2016.bib)</li>
 </ul>
 
 Aaron Montag and Jürgen Richter-Gebert
