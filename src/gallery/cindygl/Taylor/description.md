@@ -9,6 +9,6 @@ You can also select one function of the following list:
   <option value='Input.text = "z^(1/2)";'>square root</option>
   <option value='Input.text = "log(z)";'>logarithm</option>
   <option value='Input.text = "sin(z)";'>sine</option>
-  <option value='Input.text = "sin(z)/cos(z)";'>tangens</option>
+  <option value='Input.text = "sin(z)/cos(z)";'>tangent</option>
   <option value='Input.text = "exp(z)";'>exponential function</option>
 </select>
