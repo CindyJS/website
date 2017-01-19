@@ -18,12 +18,17 @@
 {% if page.cjs.css %}
 <link rel="stylesheet" href="{{ page.cjs.css | prepend: "/dist/" | prepend: full_base_url }}">
 {% else %}
-<link rel="stylesheet" href="http://cindyjs.org/dist/{{ page.cjs.version }}/CindyJS.css">
+<link rel="stylesheet" href="https://cindyjs.org/dist/{{ page.cjs.version }}/CindyJS.css">
 {% endif %}
 {% if page.cjs.js %}
 <script type="text/javascript" src="{{ page.cjs.js | prepend: "/dist/" | prepend: full_base_url }}"></script>
 {% else %}
-<script type="text/javascript" src="http://cindyjs.org/dist/{{ page.cjs.version }}/Cindy.js"></script>
+<script type="text/javascript" src="https://cindyjs.org/dist/{{ page.cjs.version }}/Cindy.js"></script>
+{% endif %}
+{% if page.katex %}
+<link rel="stylesheet" href="https://cindyjs.org/dist/{{ page.cjs.version }}/katex/katex.min.css">
+<script type="text/javascript" src="https://cindyjs.org/dist/{{ page.cjs.version }}/katex/katex.min.js"></script>
+<script type="text/javascript" src="https://cindyjs.org/dist/{{ page.cjs.version }}/webfont.js"></script>
 {% endif %}
 {% endif %}
   </head>
@@ -81,5 +86,27 @@
         </div>
       </div>
     </footer>
+{% if page.katex %}
+    <script type="text/javascript">
+      (function() {
+        "use strict";
+        var scripts = document.body.getElementsByTagName("script");
+        scripts = Array.prototype.slice.call(scripts);
+        scripts.forEach(function(script) {
+          if (!/^text\/(x-)?([lk]a)?tex($|;)/.test(script.type))
+            return;
+          var display = (/;mode=display($|;)/.test(script.type));
+          var elt = document.createElement(display ? "div" : "span");
+          try {
+            katex.render(script.text, elt, {displayMode: display});
+          } catch (err) {
+            console.error(err);
+            elt.textContent = script.text;
+          }
+          script.parentNode.replaceChild(elt, script);
+        });
+      })();
+    </script>
+{% endif %}
   </body>
 </html>
