@@ -65,10 +65,9 @@ but also from various other fields.
 
 ## Examples
 
-Examples on the web can be seen [here](http://science-to-touch.com/CJS/).
+Selected examples can be seen [in our showcase-gallery](/gallery/main/).
 
-There is also [an `examples` directory](/examples/)
-inside the repository, demonstrating individual functions and operations.
+A wider set of examples is available in our [thematically sorted gallery](/gallery/).
 
 ## Getting started
 
