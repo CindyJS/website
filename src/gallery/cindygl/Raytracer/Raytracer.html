@@ -38,13 +38,13 @@
         (0, 1, 0),
         (sin(dx), 0, cos(dx))
     );
-
-
+    
+    
     //the 3 sliders at the left.
     PA.x = 0.55;
     if (PA.y > .4, PA.y = .4);
     if (PA.y < -.4, PA.y = -.4);
-    a = (.4 + PA.y) / .8 * 1.1;
+    a = smootha((.5 + PA.y/.7));
 
     PB.x = 0.6;
     if (PB.y > .4, PB.y = .4);
@@ -94,6 +94,22 @@
     </script>
                
     <script id="csinit" type="text/x-cindyscript">
+    speciala = .5;
+    smootha(x) := if(x<speciala,
+      (-1/(speciala+.01))*(x-speciala)^2+speciala,
+      (1/(1.01-speciala))*(x-speciala)^2+speciala      
+    );
+    
+    seta(na) := (
+      a = na;
+      speciala = na;
+      PA.y = (na-.5)*.7;
+    );
+    
+    setzoom(zoom) := (
+      PC.y = (zoom);
+    );
+    
     //initialize some variables
     mat = [
         [0.3513, -0.4908, -0.7973],
@@ -348,7 +364,7 @@
                     scripts: "cs*",
                     animation: {autoplay: true},
                     use : ["CindyGL","katex"],
-                    geometry: [ { name:"PA", kind:"P", type:"Free", pos: [.5,.3,1], narrow: true, color: [1,1,1], size:8 },
+                    geometry: [ { name:"PA", kind:"P", type:"Free", pos: [.5,.37,1], narrow: true, color: [1,1,1], size:8 },
                                 { name:"PB", kind:"P", type:"Free", pos: [.5,.2,1], narrow: true, color: [1,1,1], size:8 },
                                 { name:"PC", kind:"P", type:"Free", pos: [.5,.1,1], narrow: true, color: [1,1,1], size:8 } ],
                     ports: [{
@@ -359,7 +375,6 @@
                     }]
         });
     </script>
-    
-    <div>
+    <input type="text" id="inp" value="(x^2+y^2+z^2-(0.5+a)^2)^2-(3*((0.5+a)^2)-1)/(3-((0.5+a)^2))*(1-z-sqrt(2)*x)*(1-z+sqrt(2)*x)*(1+z+sqrt(2)*y)*(1+z-sqrt(2)*y)"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { cdy.evokeCS('fun(x,y,z) := (' + this.value + '); init();'); }" size="80" style="font-size:18px">
     </body>
 </html>
