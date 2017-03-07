@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>iOrnament Deformer</title>
+<meta charset="UTF-8">
+<script type="text/javascript" src="/dist/v0.8/Cindy.js"></script>
+<script type="text/javascript" src="/dist/v0.8/CindyGL.js"></script>
+<script id="csinit" type="text/x-cindyscript">
+speed=((Speed.x-4.5));
+rot=((Rot.x-4.5)/3*2*pi);
+
+image = "image";
+
+createimage("internal",1024,1024);
+
+image="image";
+off=(.001,.001);
+
+offtab=apply(1..9,apply(1..9,(0,0)));
+corr=(-.05,.33);
+offtab_6_4=(.75,.2)+corr;
+offtab_6_5=(.2,.57)+corr;
+offtab_6_6=(.5,.9)+corr;
+offtab_6_7=(.6,.1)+corr;
+offtab_6_8=(.6,.5)+corr;
+offtab_7_5=(.5,.3)+corr;
+
+
+moving=false;
+
+slider(name,h,caption):=(
+name.size=5;
+name.pinned=false;
+name.y=h;
+if(name.x<4.5,name.x=4.5);
+if(name.x>7.5,name.x=7.5);
+draw((4.5,h),(7.5,h),color->(1,1,1));
+drawtext((4.5,h-.35),caption,color->(1,1,1),size->12);
+(name.x-4.5)/3;
+);
+
+
+t=seconds();
+
+
+spiralre=1;
+spiralim=1;
+dir=0;
+mor=0;
+esch=0;
+
+
+
+drawspiralUI():=(
+
+SpiralCenter.size=4;
+SpiralCenter.pinned=false;
+spiralre=round((slider(SpiralRe,-10,"Spiral x"))*8)-4;
+spiralim=round((slider(SpiralIm,-20,"Spiral y"))*8)-4;
+//spiralre=spiralre/2;
+//spiralim=spiralim/2;
+speed=(slider(Speed,-3,"zoom")*4);
+dir=(slider(Dir,-9,"Movement")*2*pi);
+mor=(slider(Mor,-5,"grid"));
+esch=(slider(Esch,-4,"image"));
+if(mor>0,A.visible=true,A.visible=false);
+
+);
+
+
+
+
+
+</script>
+
+<script id="csmousedrag" type="text/x-cindyscript">
+if(moving,
+// off=mouse().xy-mou;
+);
+</script>
+
+<script id="csmousedown" type="text/x-cindyscript">
+
+</script>
+
+
+<script id="cstick" type="text/x-cindyscript">
+off=off+(sin(dir),cos(dir))*(t-seconds())*speed/10;
+// off=off+(100,0);
+t=seconds();
+</script>
+
+
+<script id="csdraw" type="text/x-cindyscript">
+
+
+B.xy=round(B*2)/2;
+if(B.x>7.5,B.x=7.5);
+if(B.x<4.5,B.x=4.5);
+if(B.y>1.5,B.y=1.5);
+if(B.y<-1.5,B.y=-1.5);
+
+asp=imagesize(image).x/imagesize(image).y;
+aspgr=imagesize("imagegrid").x/imagesize("imagegrid").y;
+re=spiralre;
+im=spiralim;
+re=(B.x-6)*2;
+im=(B.y-0)*2;
+
+aa=complex(off+offtab_(re+5)_(im+5));
+def(x):=x;
+
+ffSpiral(x):=((re+im*i*asp)*log(x)/(2*pi*asp)-aa);
+ggSpiral(x):=((re+im*i*aspgr)*log(x)/(2*pi*aspgr)-(aa));
+fSpiral(x):=imagergb((0,0), (1,0), image, ffSpiral(complex(x)),repeat->true, mipmap->true, interpolate->true);
+fSpiralX(x):=(col=fSpiral(x);(col_1,col_2,col_3,1));
+goff=(2.0667,.5167);
+gSpiral(x):=imagergb((0,0), (1,0), "imagegrid", ggSpiral(complex(x))-.3*log(complex(goff))-.05*(complex(A.xy)),repeat->true, mipmap->true, interpolate->true);
+gSpiralX(x):=(col=gSpiral(x);(col_1,col_2,col_3,.3));
+g(x):=(
+esch*fSpiral(x-SpiralCenter.xy)*((1-mor)+
+|gSpiral(x-SpiralCenter.xy)|/sqrt(3)*mor)
++(1,0,0)*(1-|gSpiral(x-SpiralCenter.xy)|/sqrt(3))*mor;
+;
+
+
+);
+
+colorplot(g(#),(-8,-6),(8,6));
+fillpoly([[4,-6],[4,6],[8,6],[8,-6]],color->(0,0,0),alpha->.8);
+drawspiralUI();
+
+
+apply((-3..3),i,
+draw((-3,i)*.5+(6,0),(3,i)*.5+(6,0),color->(1,1,1)*.7,size->if(i==0,3,1));
+draw((i,-3)*.5+(6,0),(i,3)*.5+(6,0),color->(1,1,1)*.7,size->if(i==0,3,1));
+);
+drawtext((4.5,-1.8),"geometry: "+re+","+im,size->12,color->(1,1,1));
+// drawtext((-5,5),A.xy+(-1,0),color->(0,0,1));
+
+</script>
+
+<script type="text/javascript">
+
+var cdy = createCindy({
+ports: [{id: "CSCanvas", transform: [{visibleRect: [-8, -6, 8, 6]}]}],
+scripts: "cs*",
+language: "en",
+autoplay:true,
+images: {
+image:"Own2.png",
+imagegrid:"logGrid.png",
+},
+defaultAppearance: {
+},
+geometry: [
+
+
+{ name: "SpiralCenter", type: "Free", pos: [-2,0 ], color: [ 1.0, 1.0, 1.0 ], pinned: false, size: 5.0,narrow:true,visible:false },
+{ name: "A", type: "Free", pos: [0,0 ], color: [ 1.0, 0.0, 0.0 ], pinned: false, size: 5.0,narrow:true ,visible:true},
+{ name: "B", type: "Free", pos: [6.5,-.5 ], color: [ 1.0, 1.0, 1.0 ], pinned: false, size: 5.0,narrow:true ,visible:true},
+{ name: "SpiralRe", type: "Free", pos: [6.5,2 ], color: [ 1.0, 1.0, 1.0 ], pinned: false, size: 5.0,narrow:true },
+{ name: "SpiralIm", type: "Free", pos: [5.5,1 ], color: [ 1.0, 1.0, 1.0 ], pinned: false, size: 5.0,narrow:true } ,
+
+
+{ name: "Speed", type: "Free", pos: [4.5,-1 ], color: [ 1.0, 1.0, 1.0 ], pinned: false, size: 5.0,narrow:true },
+
+{ name: "Dir", type: "Free", pos: [6.75,-2 ], color: [ 1.0, 1.0, 1.0 ], pinned: false, size: 5.0,narrow:true } ,
+{ name: "Mor", type: "Free", pos: [4.5,-2 ], color: [ 1.0, 1.0, 1.0 ], pinned: false, size: 5.0,narrow:true },
+{ name: "Esch", type: "Free", pos: [7.5,-2 ], color: [ 1.0, 1.0, 1.0 ], pinned: false, size: 5.0,narrow:true }
+
+],
+use: ["CindyGL"]
+});
+
+</script>
+</head>
+
+<body>
+<canvas id="CSCanvas" width="970" height="720"
+style="border:2px solid black"></canvas>
+
+</body>
+</html>
