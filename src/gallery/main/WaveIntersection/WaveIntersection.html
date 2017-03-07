@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
     <title>Cindy JS</title>
-        <script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
-        <script type="text/javascript" src="/dist/v0.7/CindyGL.js"></script>
+    <script type="text/javascript" src="/dist/v0.8/Cindy.js"></script>
+    <script type="text/javascript" src="/dist/v0.8/CindyGL.js"></script>
 
     <link rel="stylesheet" href="../../css/cindy.css">
   </head>
     
-	<body style="font-family:Arial;">
+  <body style="font-family:Arial;">
     
     <h1>CindyJS: Interference</h1>
     
@@ -31,23 +31,11 @@
       k=if(mod(n,2)==0,1,2);
 
       waves(z) := (
-        /* repeat(5,
-           erg=erg+(sin(re(z*exp(i/#*2*pi))+t)+1)*.5/n; 
-         ); */
-         erg=0;
-       //  n=9;
-         z=z;
-       //  erg=erg+sin(t+re(z));
-         if(n>0,erg=erg+sin(t+re(z*exp(1*k*pi*i/n))));
-         if(n>1,erg=erg+sin(t+re(z*exp(2*k*pi*i/n))));
-         if(n>2,erg=erg+sin(t+re(z*exp(3*k*pi*i/n))));
-         if(n>3,erg=erg+sin(t+re(z*exp(4*k*pi*i/n))));
-         if(n>4,erg=erg+sin(t+re(z*exp(5*k*pi*i/n))));
-         if(n>5,erg=erg+sin(t+re(z*exp(6*k*pi*i/n))));
-         if(n>6,erg=erg+sin(t+re(z*exp(7*k*pi*i/n))));
-         if(n>7,erg=erg+sin(t+re(z*exp(8*k*pi*i/n))));
-         if(n>8,erg=erg+sin(t+re(z*exp(9*k*pi*i/n))));
-         (erg*amp)/2+.5;
+        sum(
+           apply(1..n, l,
+             sin(t+re(z*exp(l*k*pi*i/n)))
+           );
+        )*amp/2 +.5;
       );
       
       colorplot(col(waves(complex(#*zoom))));
@@ -56,9 +44,6 @@
       draw((65,-40),(65,40),color->(1,1,1),size->2);
       draw((75,-40),(75,40),color->(1,1,1),size->2);
       drawtext((54,45),n,color->(1,1,1));
-    
-
-
     </script>
                
     <script id="csinit" type="text/x-cindyscript">
@@ -90,5 +75,5 @@
                     }]
                   });
     </script>              
-	</body>
+  </body>
 </html>
