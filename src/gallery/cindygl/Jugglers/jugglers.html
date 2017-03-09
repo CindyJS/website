@@ -1,14 +1,11 @@
-
-
 <!DOCTYPE html>
 <html>
 
 <head>
 <title>Conformal Jugglers in CindyJS</title>
 <meta charset="UTF-8">
-<script type="text/javascript" src="juggler_files/Cindy.js"></script> <!--TODO: have video in master-branch -->
-<script type="text/javascript" src="juggler_files/CindyGL.js"></script>
-<script type="text/javascript" src="juggler_files/inlinevideo.js"></script>
+<script type="text/javascript" src="/dist/v0.8/Cindy.js"></script>
+<script type="text/javascript" src="/dist/v0.8/CindyGL.js"></script>
 <style>
 table td, table td * {
     vertical-align: top;
@@ -69,17 +66,13 @@ drawtext((-1,0),"Move the points!!",align->"center",size->16,color->(1,1,1));
 )
 </script>
 <script type="text/javascript">
-
-
-
-
-
 var cdy = CindyJS({
   ports: [{id: "CSCanvas", transform:[{visibleRect:[-10,10,10,-10]}]}],
   scripts: "cs*",
   language: "en",
   autoplay: true,
-  images: {video: "juggler_files/video_sm.mp4",img:"juggler_files/Startscreen.png"},
+  images: {img:"Startscreen.png"},
+  videos: {video:"video_sm.mp4"},
   geometry: [
     {name:"A", type:"Free", pos:[-2,0],color:[1,1,1]},
     {name:"B", type:"Free", pos:[2,-2],color:[1,1,1]}

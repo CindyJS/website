@@ -4,10 +4,8 @@ cd CindyJS
 make
 cd ../src/assets/img/thumbnail
 
-phantomjs cindyscreenshot.js ../../../../CindyJS/examples/**.html
-
-for i in `ls *png`
+phantomjs cindyscreenshot.js ../../../../CindyJS/examples/
+for i in `find ../../../../CindyJS/examples/ -type d`
 do
-  echo "convert" $i
-  convert $i -filter Lanczos -resize 300x300^ -gravity center -extent 300x300 $i
+  phantomjs cindyscreenshot.js $i/*.html
 done

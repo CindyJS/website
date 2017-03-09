@@ -2,6 +2,7 @@
 
 var system = require('system');
 var fs = require('fs');
+var exec = require('child_process').exec;
 
 if (system.args.length < 2) {
     console.log('Usage: phantomjs gallery.js FILE[s]');
@@ -71,6 +72,9 @@ function renderimage(address, output) {
                 
                 console.log("rendering " + output);
                 page.render(output);
+                
+                console.log("converting " + output);
+                exec("convert " + output + " -filter Lanczos -resize 300x300^ -gravity center -extent 300x300 " + output)
                 
                 emptyqueue();
             }, 1000);
