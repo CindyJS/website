@@ -200,7 +200,7 @@ gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function
 });
 
 gulp.task("copyexampleimages", [], function() {
-    return gulp.src(["examples/**/*.png", "examples/**/*.jpg"], {
+    return gulp.src(["examples/**/*.png", "examples/**/*.jpg", "examples/**/*.mp4"], {
         cwd: "CindyJS",
         base: "CindyJS"
     }).pipe(gulp.dest("dist"));
