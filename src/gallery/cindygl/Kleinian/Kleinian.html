@@ -19,6 +19,12 @@
         createimage(#, 1000, 1000);
         colorplot(#, 0.1); //initialize with some fog
       );
+			
+			clear():=(
+				forall(["a", "b", "c", "A", "B", "C"],
+          colorplot(#, 0.1); //initialize with some fog
+        );
+			);
 
       createimage("0", 1, 1);
       colorplot("0", 0); //black dummy picture
@@ -52,9 +58,7 @@
   <script id="cskeydown" type="text/x-cindyscript">
       print("pressed key" + keycode());
       if(keycode()==32,
-        forall(["a", "b", "c", "A", "B", "C"],
-          colorplot(#, 0.1); //initialize with some fog
-        );
+        clear();
       );
  </script>
 
@@ -105,6 +109,8 @@
         gray(sum)+
         s0*hue(0/6)+s1*hue(1/6)+s2*hue(2/6)+s3*hue(3/6)+s4*hue(4/6)+s5*hue(5/6)
       );
+			
+			if(|imagergb([0,0],[1,0],"a",[.01,.01])|>1, TA.xy = (2,2); TB.xy = (2,2); clear());
 
       colorplot([-2, -2],[2, -2], "output",
         imagergb([-pi, -pi], [pi, -pi], "conjugatedoutput", log(complex(#)))
