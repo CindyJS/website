@@ -25,7 +25,7 @@ $code-color: #fcfccf;
 
 $shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 $hover-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
-$active-shadow: 0px 0px 20px 0px rgba(255, 100, 10, .4);
+$active-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
 
 $default-padding: em-calc(5) em-calc(15);
 $max-width: em-calc(1000);
@@ -398,8 +398,13 @@ kbd {
   box-shadow: $shadow;
   margin: 10px !important;
   border: 0px !important;
+  
   position:relative !important;
   flex-shrink: 0.1;
+  
+  @media #{$medium} {
+    max-width: 100%;
+  }
 }
 
 .examplel, .exampler {
@@ -453,6 +458,9 @@ kbd {
       &:active {
         box-shadow: $active-shadow;
       }
+    }
+    @media #{$medium} {
+      font-size: 0.5em;
     }
   }
 }

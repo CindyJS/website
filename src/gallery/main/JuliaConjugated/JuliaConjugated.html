@@ -28,8 +28,8 @@
     </script>
 
     <script id="csdraw" type="text/x-cindyscript">
-      c = complex(mouse());
-      if(re(c)>1.5, c = c - 3);
+      c = sin(1.5*mouse().x)/1.5 + i*sin(1.5*mouse().y)/1.5;
+      
       d = fp(c);
 
       //min(continious escape time, 1)
@@ -47,7 +47,7 @@
       color(z) := (
 		z = exp(z)+d;
         r = log(f(z, c) - d);
-        if(abs(z)<4, if(re(r) > L.x+.01, imagergb(L, R, "juliaconj", r) + cesc(z)/255*(1,2,3), (1,.7,0)), (0,0,0));
+        if(abs(z)<4, if(re(r) > L.x+.01, imagergb(L, R, "juliaconj", r) + cesc(z)/120*(1,2,3), (1,.7,0)), (0,0,0));
       );
 
       colorplot(L, R, "juliaconj", (color(complex(#))));
