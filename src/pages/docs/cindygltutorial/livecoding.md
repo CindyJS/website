@@ -5,8 +5,9 @@ title: CindyGL Tutorial - Live Coding
 <script src="https://codemirror.net/mode/clike/clike.js"></script>
 <script src="https://codemirror.net/addon/edit/matchbrackets.js"></script>
 <script src="https://codemirror.net/addon/edit/closebrackets.js"></script>
-<link rel="stylesheet" href="https://codemirror.net/lib/codemirror.css">
-<link rel="stylesheet" href="https://codemirror.net/theme/zenburn.css">
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://codemirror.net/lib/codemirror.css">
+<link rel="stylesheet" property="stylesheet" type="text/css" href="https://codemirror.net/theme/zenburn.css">
+<link rel="stylesheet" property="stylesheet" type="text/css" href="livecoding.css">
 <script type="text/javascript" async  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 <script type="text/x-mathjax-config">
@@ -15,55 +16,6 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 });
 </script>
 <script type="text/javascript" src="/dist/snapshot/Cindy.js"></script>
-<style type="text/css">
-  #code {position: absolute;
-    left: 10px;
-    top: 10px;
-    right:10px;
-    z-index: 100;
-  }
-  
-  #fs {
-    position: absolute;
-    right: 20px;
-    bottom: 10px;
-    z-index: 100;
-  }
-  
-  #appletcontainer{
-    position: fixed;
-    top: 70px;
-    right: 10px;
-    height: 450px;
-    width: 450px;
-    min-width:400px;
-  }
-  
-  #applet {
-    width: 100%;
-    height: 100%;
-  }
-  
-  #CSCanvas {
-    width: 100%;
-    height: 100%;
-    margin: 0px !important;
-  }
-  
-  .CodeMirror {
-    background: rgba(0,0,0,0.8) !important;
-    height: auto;
-  }
-  
-  pre:hover code {
-    font-weight: 400;
-    background-color: white;
-  }
-  
-  main {
-    margin-right: 460px;
-  }
-</style>
 <script id="csinit" type="text/x-cindyscript">
 drawcmd() := (
   colorplot([0.7,0.3,0]);

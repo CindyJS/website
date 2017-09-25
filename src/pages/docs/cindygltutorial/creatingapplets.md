@@ -31,9 +31,11 @@ In this tutorial, we will demonstrate how a minimal HTML file can be generated t
 
  You can either copy and paste the following Code in your favourite text editor and save it as `boilerplate.html` (or any file-name ending with `.html` you like):
 ```
+<!DOCTYPE html>
 <html>
   <head>
     <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <title>A CindyJS-Applet</title>
   </head>
 
   <body>
@@ -52,7 +54,7 @@ In this tutorial, we will demonstrate how a minimal HTML file can be generated t
         width: 500,
         height: 500,
         transform: [{
-          visibleRect: [0, 0, 1, 1]
+          visibleRect: [0, 1, 1, 0]
         }]
       }]
     });
@@ -60,17 +62,16 @@ In this tutorial, we will demonstrate how a minimal HTML file can be generated t
   </body>
 </html>
 
+
 ```
 You can open [the file `boilerplate.html`](boilerplate.html) with your browser. And hurray! You should see a fancy colored rectangle as below:
 <iframe src="boilerplate.html" width="530" height="530"></iframe>
 
 Let me walk through the file and shortly the significant parts this file.
 
-At the very top we have:
+At the top we have:
 ```
-<head>
   <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
-</head>
 ```
 It loads the most recently released version of CindyJS. That means, whenever a new version of CindyJS is released, then the referred .js-file might change. If you want to keep the version fixed, then open [https://cindyjs.org/dist/latest/Cindy.js](https://cindyjs.org/dist/latest/Cindy.js) and the URL will automatically convert to its current version. At the state of writing, this is [https://cindyjs.org/dist/v0.8.5/Cindy.js](https://cindyjs.org/dist/v0.8.5/Cindy.js). You can include this file instead by replacing the address behind `src="`. Or you even can download a local copy of this file and refer to this local file instead.
 
@@ -175,9 +176,11 @@ If you opened this file in a browser now, everything would be black. The reason 
 
 Altogether, we have the following source:
 ```
+<!DOCTYPE html>
 <html>
   <head>
     <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <title>Interference of two circular waves</title>
   </head>
 
   <body>
