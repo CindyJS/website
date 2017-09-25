@@ -45,7 +45,7 @@ $medium: "only screen and (max-width: #{$medium-size})";
 //////////////////////////////////////////////////////////////////////
 // Fonts
 
-@import url(https://fonts.googleapis.com/css?family=Raleway+Mono:400,300italic|Raleway:500,700|Raleway+Condensed:400,700,400italic&subset=latin,greek);
+@import url(https://fonts.googleapis.com/css?family=Raleway+Mono:400,300,italic|Raleway:500,700|Raleway+Condensed:400,700,400italic&subset=latin,greek);
 
 $sans: Raleway, sans-serif;
 $condensed: "Raleway Condensed", Raleway, sans-serif;
@@ -284,7 +284,7 @@ main a {
 
 code {
   background-color: $code-color;
-  box-shadow: em-calc(1) em-calc(1) em-calc(3) rgba(0, 0, 0, 0.75);
+  box-shadow: em-calc(1) em-calc(1) em-calc(3) rgba(0, 0, 0, 0.3);
 }
 
 pre {
@@ -295,7 +295,7 @@ pre {
   padding: em-calc(6);
   border-radius: em-calc(6);
   border: em-calc(1) solid darken($code-color, 50%);
-  box-shadow: em-calc(2) em-calc(2) em-calc(6) rgba(0, 0, 0, 0.75);
+  box-shadow: em-calc(2) em-calc(2) em-calc(6) rgba(0, 0, 0, 0.1);
 
   code {
     background-color: inherit;
@@ -506,4 +506,10 @@ kbd {
   }
 
 
+}
+
+iframe {
+  border: 0px;
+  display: block;
+  margin: auto;
 }
