@@ -277,11 +277,9 @@ colorize(z) := (
   z = log(z)/(2*pi);
   zfract = n*z - floor(n*z); //n*z in C mod Z[i]
   factor = (.6+.4*re(sqrt(im(zfract)*re(zfract))));
-  hue(im(z))*factor; //make hue a bit darker wrt factor
+  hue(im(z))*factor; //darken hue wrt factor
 );
-colorplot(
-  colorize(f(complex(#)))
-);
+colorplot( colorize(f(complex(#))) );
 ```
 The trick in designing `colorize` is to note that the imaginary part of the logarithm of a complex number corresponds to the argument of the complex number, while the real part of the logarithm equals to the logarithm of the modulus of the complex number. By adding a grid over the values obtained by taking the logarithm, a grid that has iso-lines on phases and moduli is obtained. You might have wondered why there is a `re` in `re(sqrt(...))` in the code above? The problem is that CindyGL needs to be able to prove the types of all occurring variables and a colorplot should return a real color vector. If one takes the square-root of a real number, then the result, in general, is complex. To guarantee CindyGL that `factor`will always be real, we take the real part of the square-root.
 
@@ -295,17 +293,18 @@ A simple algorithm for plotting the Mandelbrot set is known as the "escape time"
 
 
 ```cindyscript
+N = 30; // maximal number of iterations
 colorplot(
-  c = complex(#)-.5; //center -0.5+0*i
+  c = complex(#)-0.75; //center -0.75+0*i
   z = 0;
   n = 0;
-  repeat(30, k,
+  repeat(N, k,
     if(|z| <= 2,
-       z=z^2+c;
+       z=z*z+c;
        n = k;
     );
   );
-  grey(n/30); //the last line is the return-value!
+  grey(n/N); // the last line is the return-value!
 );
 ```
 
