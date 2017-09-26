@@ -9,11 +9,11 @@
     <div id="CSCanvas"></div>
     
     <script id="csinit" type="text/x-cindyscript">
+      W(x, t, p) := sin(5*|x-p|-t); //helper function
       resetclock();
     </script>
-    <script id="csdraw" type="text/x-cindyscript">
-      W(x, t, p) := sin(5*|x-p|-t); //helper function
-      
+    
+    <script id="csdraw" type="text/x-cindyscript">      
       colorplot(
         u = W(#, seconds(), A) + W(#, seconds(), B);
         gray(1/2+u/4) //the last line is the return value!

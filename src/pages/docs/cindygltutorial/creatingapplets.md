@@ -1,5 +1,5 @@
 ---
-title: Creating CindyGL-applets
+title: CindyGL Tutorial - Creating CindyGL-applets
 ---
 <script type="text/javascript" async  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
@@ -15,12 +15,12 @@ In this tutorial, we will demonstrate, how a basic CindyGL-applet can be built a
 
 We assume that you already have seen some CindyScript and the core functionality of the colorplot-command, for example in [the CindyGL live coding tutorial](livecoding.html). 
 
-Some basic knowledge in *HTML* or *JavaScript* is favourable to create applets, but not essential.
+Basic knowledge in *HTML* or *JavaScript* is favourable to create applets, but not essential.
 
 ## Generating Applets with Cinderella
 If you have [a recent version of Cinderella](https://cinderella.de) installed, you can create an applet there and export them as CindyJS file via File->Export to CindyJS. In Cinderella, scripts can be added via Scripting->Edit Scripts. In most cases, the `draw` script is the most suitable place for a `colorplot` command.
 
-However, if you have a `colorplot` within Cinderella, it might run comparingly slow there, because, in contrast to CindyJS, Cinderella calculates the colorplot on the CPU instead of the GPU. Also, it is not guaranteed whether the exported `colorplot` will work, because CindyJS only supports a limited subset of CindyScript Code, see [the CindyJS reference manual for a list of supported operations](ref/Function_Plotting.html#colorplots).
+However, if you have a `colorplot` within Cinderella, it might run comparingly slow there, because, in contrast to CindyJS, Cinderella calculates the colorplot on the CPU instead of the GPU. Also, it is not guaranteed whether the exported `colorplot` will work, because CindyJS only supports a limited subset of CindyScript code, see [the CindyJS reference manual for a list of supported operations](/ref/Function_Plotting.html#colorplots).
 
 Nevertheless, if you have a complicated geometric construction involved, Cinderella is the best choice to generate Boilerplate-HTML via its CindyJS-Export. Then the exported HTML file can be enhanced by manual editing.
 
@@ -92,7 +92,7 @@ Similiar to javaScript-scripts, also CindyScript can be embedded in the html:
   colorplot( [#.x, #.y, (1+sin(seconds()))/2 ] );
 </script>
 ```
-All the code between the two `<script>`-tags is CindyScript code that will be evaluated for every frame that is drawn. It is possible to have also other scripts for other events within a CindyJS-applet. [In the reference manual](ref/createCindy.html#scripts), all of them are described. [Later](#interaction-with-geometry) we will use a `init`-script for CindyScript code that is executed once at the initialization.
+All the code between these two `<script>`-tags is CindyScript code that will be evaluated for every frame that is drawn (which is indicated through `id="csdraw"`). It is possible to have also other scripts for other events within a CindyJS-applet. [Later](#interaction-with-geometry) we will use a `init`-script for CindyScript code that is executed once at the initialization. [In the reference manual](/ref/createCindy.html#scripts), all possible kinds of scripts are described.
 
 Here it is a colorplot, that colorizes each pixel according to its pixel coordinate `#` and the current time.
 
@@ -165,14 +165,10 @@ If you opened this file in a browser now, everything would be black. The reason 
 
 ```
 <script id="csinit" type="text/x-cindyscript">
-  W(x, t, p) := sin(5*|x-p|-t); //helper function
-  
-  colorplot(
-    u = W(#, seconds(), A) + W(#, seconds(), B);
-    gray(1/2+u/4) //the last line is the return value!
-  );
+  resetclock();
 </script>
 ```
+The definition of the function `W(x, t, p)` can also be moved from the `draw`-script to the `init`-script. This makes semantically more sense, because it suffices to define a function only once at the initialization, instead of overwriting it for every rendered frame. Nevertheless, whether you move or not move the function, the result does not change, because CindyJS automatically detects whether the function has changed, when `:=` is evaluated.
 
 Altogether, we have the following source:
 ```
@@ -187,11 +183,11 @@ Altogether, we have the following source:
     <div id="CSCanvas"></div>
     
     <script id="csinit" type="text/x-cindyscript">
+      W(x, t, p) := sin(5*|x-p|-t); //helper function
       resetclock();
     </script>
-    <script id="csdraw" type="text/x-cindyscript">
-      W(x, t, p) := sin(5*|x-p|-t); //helper function
-      
+    
+    <script id="csdraw" type="text/x-cindyscript">      
       colorplot(
         u = W(#, seconds(), A) + W(#, seconds(), B);
         gray(1/2+u/4) //the last line is the return value!
@@ -217,4 +213,4 @@ Altogether, we have the following source:
   </body>
 </html>
 ```
-If you copy and paste it in a html-file, you will get an page that only displayes [this applet](interference.html).
+If you copy and paste it in a html-file, you will get a [page that only displays the interference-applet](interference.html).

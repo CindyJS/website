@@ -4,7 +4,7 @@ title: CindyGL Tutorial
 
 You want to learn how to program applets as in [our CindyGL-gallery](/gallery/cindygl/)? We will introduce how such applets can be created from scratch.
 
-# Starting with live-Coding
+# Starting with Live-Coding
 
 We recommend to start to get accainted with basic CindyScript and the `colorplot` command by following [our live coding tutorial](livecoding.html).
 
@@ -12,17 +12,19 @@ We recommend to start to get accainted with basic CindyScript and the `colorplot
 
 Once you know some CindyScript and understood the colorplot command, [you are ready to create your own HTML applets](creatingapplets.html).
 
-# Feedbackloops
+# Reading and Writing Textures
 
--- to be done --
+[In the third part of the tutorial](textures.html) you will learn how to read from textures, or the webcam, how write to textures and you will generate applications that use feedback loops.
+
+*-- to be done --*
 
 # GPGPU computations
 
--- to be done --
+*-- to be done --*
 
 # Stereographic projections
 
--- to be done --
+*-- to be done --*
 
 # Example-Gallery
 

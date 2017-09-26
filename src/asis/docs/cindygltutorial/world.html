@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/snapshot/Cindy.js"></script>
+    <title>A spinning world</title>
+  </head>
+
+  <body>
+    <div id="CSCanvas"></div>
+    <script id="csdraw" type="text/x-cindyscript">
+      R = [
+        [sin(seconds()), -cos(seconds()), 0],
+        [cos(seconds()), sin(seconds()), 0],
+        [0,0,1]
+      ];
+           
+      colorplot(
+        if(|#|<1,
+          s = (re(sqrt(1-#*#)), #.x, #.y); //point on S^1 "behind" pixel
+          rs = R*s;
+          lon = arctan2([rs.x, rs.y]);
+          lat = re(arcsin(rs.z));
+          light = (max(0.3, s*[1,.3,0.1]));
+          light*imagergb((-pi, (-pi/2)), (pi, (-pi/2)), "world", (lon, lat));
+          ,
+          [0,0,0]
+        );
+      )
+    </script>
+
+    <script type="text/javascript">
+    CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: 500,
+        height: 500,
+        transform: [{
+          visibleRect: [-1.1, 1.1, 1.1, -1.1]
+        }]
+      }],
+      images: {"world": "world.jpg"}
+    });
+    </script>
+  </body>
+</html>
