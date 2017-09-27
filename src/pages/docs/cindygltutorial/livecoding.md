@@ -86,17 +86,17 @@ window.onload = function() {
 
 For the very beginning, we propose that you start learning some CindyScript via live-coding. This tutorial does not require any prerequisites. However, some background in programming is always helpful.
 
-Live coding means that you can type some CindyScript in the code-window on the right. If the code is valid, the applet on the right will instantaneously use. You can also click on the big yellow code snippets within this tutorial to load the code is automatically to the live coding applet.
+Live coding means that you can type some CindyScript in the code-window on the right. If the code is valid, the applet will instantaneously process the input. You can also click on the big yellow code snippets within this tutorial to load the code to the live coding applet.
 
-If you are already familiar with CindyScript, you can directly proceed to [section "The colorplot-command"](#the-colorplot-command) to start with learning about CindyGL.
+If you are already familiar with CindyScript, you can directly proceed to the section ["The colorplot-command"](#the-colorplot-command) to start with learning about CindyGL.
 
 ## Drawing points and lines
 
-To start, you can enter the following code (or click on the code).
+We will start out with the basic drawing command `draw`
 ```cindyscript
 draw( (0,0) )
 ```
-Then a green point will be drawn in the center of the applet on the right side. `(0,0)` is a 2-component vector representing the origin of the applet. In CindyScript, one can equivalently write `[0,0]` instead. You can try to draw the point at another position. Here, the applet here covers all coordinates between -2 and +2.
+will evoke the display of a green point in the center of the applet. `(0,0)` is a 2-component vector representing the origin of the applet. In CindyScript, one can equivalently write `[0,0]` instead. You can try to draw the point at another position. Here, the applet here covers all coordinates between -2 and +2.
 
 In CindyScript, multiple commands can be concatenated with `;`.
 You can draw an additional point on another position if you extend to code to
@@ -105,7 +105,7 @@ draw( (0,0) );
 draw( (1,-0.5) );
 ```
 The `;` ending the first line seperates the two `draw`-commands.
-Actually, the `;` in ending the second line is not demanded, because there is no further command. However, it is a good style to always finish commands with `;`, because then one can easily append more commands without causing an error.
+Actually, the `;` in ending the second line is not demanded, because there is no further command. However, it is a good style to always finish commands with `;`, since then one can easily append more commands without causing an error.
 
 Moreover, you can connect the two points by a segment by calling the `draw` command with the two coordinates as arguments:
 ```cindyscript
@@ -114,8 +114,10 @@ draw( (1,-0.5) );
 draw( (0,0), (1,-0.5) );  //comment: Draw a segment!
 ```
 
+As you can see, comments in CindyScript are triggered with the `//`, CindyJS will ignore the rest of the line.
+
 Let us add some exciting movement to a visualization!
-For example, if you want to see a point moving, you can use the `seconds()` function. `seconds()` returns the absolute time as a real number (Actually `seconds()` returns the time that passed since the last time the `resetclock()` command was executed. In this live coding applet `resetclock()` is run once when the page is loaded). Let us use trigonometric functions to move a single point on a circular orbit:
+For example, if you want to see a point moving, you have hand over time dependent coordinates, for example you can use the `seconds()` function. `seconds()` returns the absolute time as a real number (Actually `seconds()` returns the time that passed since the last time the `resetclock()` command was executed. In this live coding applet `resetclock()` is run once when the page is loaded). Let us use trigonometric functions to move a single point on a circular orbit:
 ```cindyscript
 draw( [cos(seconds()), sin(seconds())] );
 ```
@@ -141,7 +143,7 @@ draw((0,0), color->gray(0.5) + blue(1), size->10);
 
 The function `hue(value)` will take a color from color wheel with a given hue. `hue` of every integer equals to red. Any fractional value in between will describe a bright, fully-saturated color along the color wheel. For instance, if $k$ is an integer, then `hue(k)` is red, `hue(k+1/6)` is yellow, `hue(k+1/3)` is green, `hue(k+1/2)` is cyan, `hue(k+2/3)` is blue.
 
-What `hue` does can be seen best from the following micro-program:
+What `hue` does can be seen best from the following command:
 ```cindyscript
 draw((0,0), color->hue(seconds()/4), size->10);
 ```
@@ -158,7 +160,7 @@ repeat(100, i, //repeat 100 times
 
 In this example, the duplicate term `i*2*pi/100` might have looked a bit cumbersome to you. It could be computed only once and saved as a variable, which is to be accessed whenever it is needed. Variables can be assigned with `=`. Usually, the domain of a variable is global in CindyScript (using `regional(varname)` a variable can be made regional).
 
-For instance, the following code produces a sunflower and uses some auxiliary variables to increase the readability.
+For example, the following code produces a sunflower and uses some auxiliary variables to increase the readability.
 
 ```cindyscript
 repeat(500, i,
@@ -203,7 +205,7 @@ Now, let us try to visualize the color wheel, [we have seen above](#basic-contro
 
 So what do we need? First, we want to draw something within an annulus. Given a pixel coordinate `#`, we can check whether it lies within an annulus for example with `1<|#| & |#|<1.1`. By using some branching with `if` we can compute different colors when we are inside our outside the annulus.
 
-If we are inside the annulus, we want, given `#`, calculate its angle to the origin and color the pixel according to this angle. The angle can be obtained by using `arctan2(#)`. `arctan2` is a convenient function, that [is also available in various other computer languages](https://en.wikipedia.org/wiki/Atan2), and returns the angle of a vector; Using something like `arctan(#.y/#.x)` instead would forget an important information on `#` because the sign sometimes cancels in the division. For example, $\frac{-1}{-1}=\frac{1}{1}$ and therefore the vectors `(1,1)` and `(-1,-1)` would yield the same value for `arctan(#.y/#.x)`.
+If we are inside the annulus, we want, given `#`, calculate its angle to the origin and color the pixel according to this angle. The angle can be obtained by using `arctan2(#)`. `arctan2` is a convenient function, that [is also available in various other computer languages](https://en.wikipedia.org/wiki/Atan2), and returns the angle of a vector; Using something like `arctan(#.y/#.x)` instead would omit an important information on `#` because the sign sometimes cancels in the division. For example, $\frac{-1}{-1}=\frac{1}{1}$ and therefore the vectors `(1,1)` and `(-1,-1)` would yield the same value for `arctan(#.y/#.x)`.
 
 To feed the computed angle, which lies between $0$ and $2\cdot \pi$, to the `hue`-function, we have to rescale it to fit the whole color-domain by diving it by `2*pi`.
 
@@ -247,7 +249,7 @@ A way to visualize complex functions $f:\mathbb{C}\to\mathbb{C}$ is the use of p
 
 ![phase portrait for z](phaseportrait.png "phase portrait for the function $f(z)=z$")
 
-[In their book *Visual Complex Functions*](http://www.springer.com/de/book/9783034801799) Wegert and Elias phase portraits as an access to the theory of complex functions. For instance, roots and poles of a complex function $f:\mathbb{C}\to\mathbb{C}$ can be easily spotted at the points where all colors meet.
+[In his book *Visual Complex Functions*](http://www.springer.com/de/book/9783034801799) Elias Wegert employs phase portraits as an access to the theory of complex functions. For instance, roots and poles of a complex function $f:\mathbb{C}\to\mathbb{C}$ can be easily spotted at the points where all colors meet.
 
 Generating phase portraits can be easily done on the GPU with `colorplot`: First let us define a complex function $f:\mathbb{C}\to\mathbb{C}$. A interesting function could be $f(z)=z^5-1$, which should have the five roots $\exp({k \tfrac{2 \pi i}{5}})$ for $k\in\\{0,1,2,3,4\\}$. We define $f$ in CindySript with `f(z):=z^5-1`.
 
@@ -281,9 +283,9 @@ colorize(z) := (
 );
 colorplot( colorize(f(complex(#))) );
 ```
-The trick in designing `colorize` is to note that the imaginary part of the logarithm of a complex number corresponds to the argument of the complex number, while the real part of the logarithm equals to the logarithm of the modulus of the complex number. By adding a grid over the values obtained by taking the logarithm, a grid that has iso-lines on phases and moduli is obtained. You might have wondered why there is a `re` in `re(sqrt(...))` in the code above? The problem is that CindyGL needs to be able to prove the types of all occurring variables and a colorplot should return a real color vector. If one takes the square-root of a real number, then the result, in general, is complex. To guarantee CindyGL that `factor`will always be real, we take the real part of the square-root.
+The trick in designing `colorize` is to notice that the imaginary part of the logarithm of a complex number corresponds to the argument of the complex number, while the real part of the logarithm equals to the logarithm of the modulus of the complex number. By adding a grid over the values obtained by taking the logarithm, a grid that has iso-lines on phases and moduli is obtained. You might have wondered why there is a `re` in `re(sqrt(...))` in the code above? The problem is that CindyGL needs to be able to prove the types of all occurring variables and a colorplot should return a real color vector. If one takes the square-root of a real number, then the result, in general, is complex. To guarantee CindyGL that `factor`will always be real, we take the real part of the square-root.
 
-Now is maybe a nice time to play around with other complex functions. For example, what havens for `f(z):=(z+1)/(z-1)`, `f(z):=sin(z)`, `f(z):=z^(complex(mouse()))`...?
+Now is maybe a nice time to play around with other complex functions. For example, what happens for `f(z):=(z+1)/(z-1)`, `f(z):=sin(z)`, `f(z):=z^(complex(mouse()))`...?
 
 ### Plotting the Mandelbrot set
 
@@ -310,10 +312,10 @@ colorplot(
 
 Can you create a 15-second movie that zooms to the point `(-0.7436439 + 0.1318259*i)` of the applet? You might use `mod(seconds(),15)` to obtain the needed "time-coordinate".
 
-For a given $c\in\mathbb{C}$ (for instance, `c=-0.4+0.6*i` or the mouse-coordinate), can you color-plot the filled Julia set/Fatou set of the function $z^2+c$? That is the set of all points $z\in \mathbb{C}$ such that the orbit $z_{n+1} = z_n^2+c$ starting with $z_0 = z$ is bounded.
+For a given $c\in\mathbb{C}$ (for instance, `c=-0.4+0.6*i` or the mouse-coordinate), can you color-plot the filled Julia and Fatou set of the function $z^2+c$? That is the set of all points $z\in \mathbb{C}$ such that the orbit $z_{n+1} = z_n^2+c$ starting with $z_0 = z$ is bounded.
 
 ## Wrapping Up
 
-CindyGL basically supports a colorplot command that colorizes each pixel within an apllet. `colorplot` takes an CindyScript-program that and will be transcompiled to the GPU. The pixel coordinate within `colorplot` can be accessed through `#`.
+CindyGL basically supports a colorplot command that colorizes each pixel within an applet. `colorplot` takes an CindyScript-program that and will be transcompiled to the GPU. The pixel coordinate within `colorplot` can be accessed through `#`.
 
 [You can continue our tutorial by learning how to build real applets here.](creatingapplets.html)
