@@ -185,7 +185,7 @@ colorplot(
 Our aim is to map this map of the earth onto a sphere:
 <iframe src="earth.html" width="530" height="530"></iframe>
 
-How can such a three-dimensional image of the earth obtained via a `colorplot`? You can consider this as a primer in ray-marching with `colorplot`. Let us imagine that behind each pixel with pixel-coordinate `#` is a ray. This ray will or will not intersect the sphere. If the ray eventually intersects the sphere, we compute the first intersection point between ray and sphere. Then, we apply a time-dependent rotation to the intersection point on the sphere and calculate the sphere-coordinate of the rotated point. We can determine which piece of earth lays at that sphere-coordinate by looking it up in the texture [earth.jpg]("earth.jpg") we will display the corresponding color at position `#`.
+How can such a three-dimensional image of the earth obtained via a `colorplot`? You can consider this as a primer in ray-marching with `colorplot`. Let us imagine that behind each pixel with pixel-coordinate `#` is a ray. This ray will or will not intersect the sphere. If the ray eventually intersects the sphere, we compute the first intersection point between ray and sphere. Then, we apply a time-dependent rotation to the intersection point on the sphere and calculate the sphere-coordinate of the rotated point. We can determine which piece of earth lays at that sphere-coordinate by looking it up in the texture [earth.jpg](earth.jpg) we will display the corresponding color at position `#`.
 
 For mathematical simplicity, we will think of the earth as a the unit sphere, which is the set of all points
 $$S^2 = \\{ s \in \mathbb{R}^2 \mid s_1^2 + s_2^2 + s_3^2=1 \\}.$$
