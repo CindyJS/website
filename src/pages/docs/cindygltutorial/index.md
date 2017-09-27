@@ -14,7 +14,7 @@ Once you know some CindyScript and understood the colorplot command, [you are re
 
 # Reading and Writing Textures
 
-[In the third part of the tutorial](textures.html) you will learn how to read from textures, or the webcam, how write to textures and you will generate applications that use feedback loops.
+[In the third part of the tutorial](textures.html) you will learn how to read from textures, or the webcam, how write to textures and you will generate applications that use feedback loops. The tutorial includes some live-coding.
 
 *-- to be done --*
 

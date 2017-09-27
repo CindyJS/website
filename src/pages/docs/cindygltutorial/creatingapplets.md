@@ -61,8 +61,6 @@ In this tutorial, we will demonstrate how a minimal HTML file can be generated t
     </script>
   </body>
 </html>
-
-
 ```
 You can open [the file `boilerplate.html`](boilerplate.html) with your browser. And hurray! You should see a fancy colored rectangle as below:
 <iframe src="boilerplate.html" width="530" height="530"></iframe>
@@ -214,3 +212,10 @@ Altogether, we have the following source:
 </html>
 ```
 If you copy and paste it in a html-file, you will get a [page that only displays the interference-applet](interference.html).
+
+## Wrapping Up
+
+Two ways of creating HTML applets were presented: Either by exporting from Cinderella or by starting with a minimal boilerplate file such as [boilerplate.html](boilerplate.html) and modifing the scripts and the options of the `CindJS`-initialization command. One can access geometric elements within a `colorplot` command to create more interactivity.
+
+
+You can continue the CindyGL-tutorial [here](textures.html).
