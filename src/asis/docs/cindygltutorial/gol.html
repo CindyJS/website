@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+    <title>Conway's Game of Life in CindyGL</title>
+  </head>
+
+  <body>
+    <div id="CSCanvas"></div>
+    
+    <script id="csinit" type="text/x-cindyscript">
+      createimage("gol", 128, 128);
+      colorplot("gol", if(random()>.6,1,0)); //random stuff as starting image
+      
+      get(x, y) :=  imagergb("gol", (x,y), interpolate->false, repeat->true).r; //Tourus world
+      
+      nbhds = [(-1,-1), (-1,0), (-1,+1), (0,-1),  (0,+1), (+1,-1), (+1,0), (+1,+1)];
+      countneighbors(x, y) := sum( apply(nbhds, delta, get(delta.x + x, delta.y + y)));
+      
+      newstate(x, y) := (
+        number = countneighbors(x, y); //number of living neighbors
+        if(get(x, y) == 1,
+        
+          //if the cell lives then it will die if it has less than 2 neighbours or more than 3 neighbours
+          if((number < 2) % (number > 3), 0, 1),
+          
+          //if cell was dead then 3 are required to be born
+          if(number == 3, 1, 0)
+        )
+      );
+    </script>
+    
+    <script id="csdraw" type="text/x-cindyscript">
+      colorplot("gol", newstate(#.x, #.y)); //overwrite texture "gol"
+      colorplot( get(#.x, #.y) );
+    </script>
+
+    <script type="text/javascript">
+    CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: 512,
+        height: 512,
+        transform: [{
+          visibleRect: [0, 128, 128, 0]
+        }]
+      }]
+    });
+    </script>
+  </body>
+</html>
