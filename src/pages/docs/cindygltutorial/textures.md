@@ -199,8 +199,8 @@ Beside playing with the input coordinates, you can also operate on the colorspac
 ```cindyscript
 colorplot(
   rgb = imagergb((-1,-1), (1,-1), "earth", #);
-  alpha = rgb*[0.3, 0.6, 0.1]; // scalar product
-  alpha*[1.2,1,0.8]
+  brightness = rgb*[0.3, 0.6, 0.1]; // dot product
+  brightness*[1.2,1,0.8] //scalar times vector
 );
 ```
 
@@ -420,4 +420,4 @@ The feedback loop computes the escape time for the sequence $z_{n+1} = z_n^2+c$ 
 
 A more sophisticated version of this applet can be found [in our gallery](/gallery/main/JuliaConjugated/). Also, Limit sets of [IFS](/gallery/main/Barnsley/) and [Kleinian Groups](/gallery/cindygl/Kleinian/index.html) can be rendered in CindyGL utilizing this technique.
 
-You can extend the tutorial on [GPGPU computations through CindyGL](gpgpu.html).
+You can continue the tutorial on [GPGPU computations through CindyGL](gpgpu.html).

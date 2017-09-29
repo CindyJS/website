@@ -8,6 +8,7 @@ title: CindyGL Tutorial - Live Coding
 <link rel="stylesheet" property="stylesheet" type="text/css" href="https://codemirror.net/lib/codemirror.css">
 <link rel="stylesheet" property="stylesheet" type="text/css" href="https://codemirror.net/theme/zenburn.css">
 <link rel="stylesheet" property="stylesheet" type="text/css" href="livecoding.css">
+<link rel="stylesheet" property="stylesheet" type="text/css" href="centerimg.css">
 <script type="text/javascript" async  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 <script type="text/x-mathjax-config">
@@ -16,6 +17,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 });
 </script>
 <script type="text/javascript" src="/dist/snapshot/Cindy.js"></script>
+<script type="text/javascript" src="/dist/snapshot/CindyGL.js"></script>
 <script id="csinit" type="text/x-cindyscript">
 drawcmd() := (
   colorplot([0.7,0.3,0]);
