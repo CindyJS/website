@@ -119,13 +119,13 @@ draw( (0,0), (1,-0.5) );  //comment: Draw a segment!
 As you can see, comments in CindyScript are triggered with the `//`, CindyJS will ignore the rest of the line.
 
 Let us add some exciting movement to a visualization!
-For example, if you want to see a point moving, you have hand over time dependent coordinates, for example you can use the `seconds()` function. `seconds()` returns the absolute time as a real number (Actually `seconds()` returns the time that passed since the last time the `resetclock()` command was executed. In this live coding applet `resetclock()` is run once when the page is loaded). Let us use trigonometric functions to move a single point on a circular orbit:
+For example, if you want to see a point moving, you have to give time dependent coordinates as argument for `draw`, for example you can use the `seconds()` function. `seconds()` returns the absolute time as a real number (Actually `seconds()` returns the time that passed since the last time the `resetclock()` command was executed. In this live coding applet `resetclock()` is run once when the page is loaded). Let us use trigonometric functions to move a single point on a circular orbit:
 ```cindyscript
 draw( [cos(seconds()), sin(seconds())] );
 ```
 When running this code, you should see a single point spinning around counterclockwise (taking exactly 2*pi seconds for a whole rotation). Technically, the program is executed for every rendered frame. Later, these program snippets will be part of the `draw`-script.
 
-Could you build a simple applet that shows a clock with several clock-hands?
+Could you build a simple animated applet that shows a clock with several clock-hands?
 
 ### Colors
 
@@ -227,6 +227,14 @@ Next, let us build a visualization of the interference of two waves. We assume t
 
 We assume for the visualization that the equation for the *amplitude* of a sinusoidal wave with point source $p$ at position $x$ and time $t$ to be $\sin(20 \cdot|x-p|-t)$. $20$ is only a scaling parameter that the visualization looks nice on the screen. Let us define a helper-function with `W(x, t, p) := sin(20*|x-p|-t);`. The operator `:=` always indicates the definition of a new function. The return value of a function that is defined by a sequence of commands separated by `;` is the value of the last expression.
 
+To test this function, let us visualize a single wave with source `(0,0)`:
+```cindyscript
+W(x, t, p) := sin(20*|x-p|-t); //helper function
+colorplot(
+  gray(1/2+1/2*W(#, seconds(), (0,0)))
+);
+```
+
 We want two waves to superpose. To compute the superposition of two waves with different sources, the amplitude-values of two such `W` functions are added to a variable `u`. Based on this number, which lies between -2 and +2, a color is assigned for each pixel coordinate `#`:
 ```cindyscript
 W(x, t, p) := sin(20*|x-p|-t); //helper function
@@ -263,7 +271,7 @@ drawtext((0,0), f(i));
 
 Now we want to build a colorplot that interprets each pixel coordinate `#` as a complex number `z`, evaluates `f(z)` and colorizes the complex number `f(z)` according to the image above.
 
-In order to interpret `#` has complex numer `z` one can either write `z=#.x + i*#.y` or use the equivalent function `z=complex(#)`, which converts 2-component vectors of real numbers to a single complex number. The we evaluate $f(z)$ and save it to the variable `fz` with `fz=f(z)`. Now, in oder to colorize it, we will [again use the `arctan2` function](#the-colorplot-command), which can also applied to complex numbers, to obtain the angle/phase of `fz` and plug the rescaled angle in the `hue` function:
+In order to interpret `#` has complex numer `z` one can either write `z=#.x + i*#.y` or use the equivalent function `z=complex(#)`, which converts 2-component vectors of real numbers to a single complex number. Then we evaluate $f(z)$ and save it to the variable `fz` with `fz=f(z)`. Now, in oder to colorize it, we will [again use the `arctan2` function](#the-colorplot-command), which can also applied to complex numbers, to obtain the angle/phase of `fz` and plug the rescaled angle in the `hue` function:
 ```cindyscript
 f(z) := z^5-1; //a complex function
 colorplot(
@@ -273,7 +281,7 @@ colorplot(
 );
 
 ```
-The colors in the result do look not exactly as the colors above. The visualization can be enhanced if lines of the same phase and modulus are highlighted. To generate the image above, I used the following more complicated helper function `colorize` that gives colors to complex numbers:
+The colors in the result do look not exactly as the colors above. The visualization can be enhanced if lines of the same phase and modulus are highlighted. To generate the image above, The following more complicated helper function `colorize` can be used that gives colors to complex numbers:
 ```cindyscript
 f(z) := z; //a complex function
 colorize(z) := (
@@ -293,7 +301,7 @@ Now is maybe a nice time to play around with other complex functions. For exampl
 
 An application that is almost tailored to the `colorplot`-command is the visualization of the Mandelbrot set. The Mandelbrot set contains all those points $c\in\mathbb{C}$ such that the iteration $z_{n+1} = z_n^2+c$ starting with $z_0 = 0$ is bounded.
 
-A simple algorithm for plotting the Mandelbrot set is known as the "escape time" algorithm. It is based on the observation that whenever there is a term in the sequence having an absolute value larger than 2, [the sequence $z_n$ will be unbounded](http://mrob.com/pub/muency/escaperadius.html). So we will compute the sequence $z_n$ for every pixel having the complex coordinate $c$  for a while and check whether it will leave the circle of radius 2. The number `n` of steps that the orbit remains within the circle of radius 2 is a possible ingredient for a visualization.
+A simple algorithm for plotting the Mandelbrot set is known as the "escape time" algorithm. It is based on the observation that whenever there is a term in the sequence having an absolute value larger than 2, [the sequence $z_n$ can be proven to be unbounded](http://mrob.com/pub/muency/escaperadius.html). So we will compute the sequence $z_n$ for every pixel having the complex coordinate $c$  for a while and check whether it will leave the circle of radius 2. The number `n` of steps that the orbit remains within the circle of radius 2 is a possible ingredient for a visualization.
 
 
 ```cindyscript
@@ -303,14 +311,15 @@ colorplot(
   z = 0;
   n = 0;
   repeat(N, k,
-    if(|z| <= 2,
-       z=z*z+c;
-       n = k;
+    if(|z| <= 2,  // if we are inside circle,
+       z=z*z+c; // then iterate and
+       n = k;   // increase n
     );
   );
   grey(n/N); // the last line is the return-value!
 );
 ```
+The earlier we leave the circle of radius two, the smaller is `n` and the darker is `grey(n/N)`
 
 Can you create a 15-second movie that zooms to the point `(-0.7436439 + 0.1318259*i)` of the applet? You might use `mod(seconds(),15)` to obtain the needed "time-coordinate".
 
