@@ -178,7 +178,7 @@ We start with [gol.html](gol.html) and adopt the code until we have [reactdiff.h
 However, we need a higher resolution than we had for the Game of Life. To increase the resolution from 128 to 512 you can search and replace every 128 with a 512. Furthermore, we like to call our texture `"state"` instead of `"gol"`, so let us perform another search&replace.
 
 We want to simulate two chemicals and their interaction on the plane.
-Chemical one is steadily poured into the system while chemical two is removed from it (the feed-parameter `f` and kill-parameter `k` will regulate this behavious). The chemicals diffuse, where the first chemical spreads twice as fast than the second one. Furthermore, one "portion" of the first and two portion the second chemical react to three portions of the second chemical.
+Chemical one is steadily poured into the system while chemical two is removed from it (the feed-parameter `f` and kill-parameter `k` will regulate this behaviour). The chemicals diffuse, where the first chemical spreads twice as fast than the second one. Furthermore, one "portion" of the first and two portion the second chemical react to three portions of the second chemical.
 
 Let us call the local densities of the two chemicals $q_1$ and $q_2$. More formally, there are two space and time dependent functions $q_1(x,y,t), q_2(x,y,t) \in [0,1]$ that give the density of chemicals. The described behaviour can be modelled through the following equation:
 
