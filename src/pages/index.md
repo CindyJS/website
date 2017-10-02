@@ -58,6 +58,7 @@ but also from various other fields.
       <option value="repeat(11, z = z - (z^3-1)/(3*z^2));">Newton</option>
     </select></p>
   <p>For more WebGL-related content, visit our <a href="/gallery/cindygl/">CindyGL-Gallery</a>.</p>
+  <p>If you want to learn how to program your CindyGL applications you can check out <a href="/docs/cindygltutorial/">our CindyGL-tutorial</a>.</p>
 </div></div>
 
 

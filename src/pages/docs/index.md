@@ -49,7 +49,9 @@ There are three relevant parts to most CindyJS widgets:
 
 ### Tutorials
 
-At this point there are no official tutorials for CindyJS.
+There is a [CindyGL-Tutorial](/docs/cindygltutorial/), that is also suitable for starting with CindyJS.
+
+At this point there are no further official tutorials for CindyJS.
 If you want to write one, please contact the development team.
 If you follow the route of exporting content from Cinderella, one of
 [Cinderella's tutorials](http://doc.cinderella.de/tiki-index.php?page=Introduction+to+the+Tutorials)
