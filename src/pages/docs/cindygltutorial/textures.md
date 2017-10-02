@@ -150,9 +150,9 @@ drawimage((-1,sin(seconds())), (1,cos(seconds())), "earth");
 
 Instead of accessing the whole picture via `drawimage`, its colors at a given pixel-coordinate can be read of with [the `imagergb`-function](/ref/Image_Manipulation_and_Rendering.html#imagergb$4).
 
-If one talks about a certain pixel-coordinate, one needs to specify a coordinate system. The function `imagergb(‹pos›,‹pos›,‹imagename›,‹pos›)` returns the color of the at the coordinate given as the fourth argument while assuming that the lower left and right corner coincide with the first two arguments respectively. The result is encoded as a 3-component vector with each entry ranging from 0 to 1, representing the RGB-value. You can think of pinning the given image on the drawing canvas and accessing the color from that pinned image the the given canvas coordinates.
+If one talks about a certain pixel-coordinate, one needs to specify a coordinate system. The function `imagergb(‹pos›,‹pos›,‹imagename›,‹pos›)` returns the color of the at the coordinate given as the fourth argument while assuming that the lower left and right corner coincide with the first two arguments respectively. The result is encoded as a 3-component vector with each entry ranging from 0 to 1, representing the RGB-value. You can think of pinning the given image on the drawing canvas and accessing the color from that pinned image the given canvas coordinates.
 
-The following code reads the color beyound the mouse position:
+The following code reads the color underneath the mouse position:
 ```cindyscript
 drawimage((-1,-1), (1,-1), "earth");
 rgb = imagergb((-1,-1), (1,-1), "earth", mouse());
@@ -166,14 +166,14 @@ Also if one wants to access images within `colorplot`, there is no way avoiding 
 A `colorplot` that reads the colors pixel by pixel from the image can emulate a `drawimage` command:
 ```cindyscript
 colorplot(
-  imagergb((-1,-1), (1,-1), "earth", #)
+  imagergb((-1,-1), (1,-1), "earth", #) // '#' iterates over all possible pixel values
 );
 ```
-Okay, honestly it looks a bit different than
+This it looks a bit different than
 ```cindyscript
 drawimage((-1,-1), (1,-1), "earth");
 ```
-because `imagergb` returns the color black (`[0,0,0]`) whenever a coordinate outside the image is accessed. If the program within `colorplot` evaluates to a four component vector, then the fourth component is interpeted as an alpha-value between $0$ and $1$ where $0$ means invisible and $1$ opaque. CindyJS provides the function `imagergba`, which will read a four-component vector including its alpha-value. Pixels outside the image will have alpha value $0$. Hence the following script produces the same image as `drawimage`:
+because `imagergb` returns the color black (`[0,0,0]`) whenever a coordinate outside the image is accessed. If the program within `colorplot` evaluates to a four component vector, then the fourth component is interpreted as an alpha-value between $0$ and $1$ where $0$ means invisible and $1$ opaque. CindyJS provides the function `imagergba`, which will read a four-component vector including its alpha-value. Pixels outside the image will have alpha value $0$. Hence the following script produces the same image as `drawimage`:
 ```cindyscript
 colorplot(
   imagergba((-1,-1), (1,-1), "earth", #)
@@ -195,7 +195,7 @@ colorplot(
 )
 ```
 
-Beside playing with the input coordinates, you can also operate on the colorspace. For example, you can apply a sepia-filter on the image to make it look old:
+Beside playing with the input coordinates, you can also operate on the color space. For example, you can apply a sepia-filter on the image to make it look vintage:
 ```cindyscript
 colorplot(
   rgb = imagergb((-1,-1), (1,-1), "earth", #);
@@ -212,8 +212,8 @@ Our aim is to map this map of the earth onto a sphere:
 
 How can such a three-dimensional image of the earth obtained via a `colorplot`? You can consider this as a primer in ray-marching with `colorplot`. Let us imagine that behind each pixel with coordinate `#` is a ray. This ray will or will not intersect the sphere. If the ray eventually intersects the sphere, we compute the first intersection point between ray and sphere. Then, we apply a time-dependent rotation to the intersection point on the sphere and calculate the sphere-coordinate of the rotated point. We can determine which piece of earth lays at that sphere-coordinate by looking it up in the texture [earth.jpg](earth.jpg) we will display the corresponding color at position `#`.
 
-For mathematical simplicity, we will think of the earth as a the unit sphere, which is the set of all points
-$$S^2 = \\{ s \in \mathbb{R}^2 \mid s_1^2 + s_2^2 + s_3^2=1 \\}.$$
+For mathematical simplicity, we will think of the earth as a unit sphere, which is the set of all points
+$$S^2 = \\{ s \in \mathbb{R}^3 \mid s_1^2 + s_2^2 + s_3^2=1 \\}.$$
 
 Furthermore, let us agree on the convention that in three-dimensional space the $x$- and $y$-axes lie flat, while the $z$-axis points to the top. The $z$-axis will intersect both the north- and south-pole of our earth.
 
@@ -221,7 +221,7 @@ To make things easy, we will use the [ortographic projection](https://en.wikiped
 $$r_{\text{#}}(t) = (\text{#}.x, t, \text{#}.y)$$
 lays behind a pixel with coordinates `#`.
 
-Where does this ray $r_{\text{#}}$ intersect the unit sphere $S^2$ first? It is clear that it will intersect the unit-sphere iff $|\text{#}|<1$. Any intersection point `s` must fulfill $s_1^2 + s_2^2 + s_3^2=1$. The solution is `s = (#.x, -re(sqrt(1-#*#)), #.y)`. The product `#*#` is an abbreviation for the dot-product of $\text{#}$ with itself and is equivalent to $x^2+y^2$ if $\text{#}=(x,y)$. The given `s` lays on the sphere because it fullfills
+Where does this ray $r_{\text{#}}$ intersect the unit sphere $S^2$ first? It is clear that it will intersect the unit-sphere if and only if $|\text{#}|<1$. Any intersection point `s` must fulfill $s_1^2 + s_2^2 + s_3^2=1$. The solution is `s = (#.x, -re(sqrt(1-#*#)), #.y)`. The product `#*#` is an abbreviation for the dot-product of $\text{#}$ with itself and is equivalent to $x^2+y^2$ if $\text{#}=(x,y)$. The given `s` lays on the sphere because it fulfills
 $$s_1^2+s_2^2+s_3^2 = x^2 + (1-(x^2+y^2)) + y^2 = 1.$$
 We took the negative sign in the second component `-re(sqrt(1-#*#))` to obtain the first intersection of the ray with the sphere. Let us start with the following toy-code:
 ```cindyscript
@@ -250,9 +250,9 @@ colorplot(
 );
 ```
 
-Now let us make the applet look a bit nicer than this! Obviously, this red background is terrible. Do we want to have a black background? This can be done by replacing `red(1)` with `red(0)` or `[0,0,0]`.
+Now let us make the applet look a bit nicer than this! Obviously, this red background is unaesthetic. Do we rather want to have a black background? This can be done by replacing `red(1)` with `red(0)` or `[0,0,0]`.
 
-To make everything more interesting and simulate the sunlight, we also compute a light-factor `light = (max(0.1, s*[-.3,-1,0.1]));` based on the dot product between the normal-vector `s` and the randomly choosen sun-direction `[-.3,-1,0.1]`. If we multiply our color output with this factor, we get some shading:
+To make everything more interesting and simulate the sunlight, we also compute a light-factor `light = (max(0.1, s*[-.3,-1,0.1]));` based on the dot product between the normal-vector `s` and the randomly chosen sun-direction `[-.3,-1,0.1]`. If we multiply our color output with this factor, we get some shading:
 
 ```cindyscript
 colorplot( if(|#|<1,
@@ -265,7 +265,7 @@ colorplot( if(|#|<1,
 ));
 ```
 
-We are missing animation! Let us rotate `s` around the z-axis to obtain another point on the sphere, which later will determine the color. The rotation around the z-axis can be done with a [rotation matrix](https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations). Matrices are natively supported within CindyJS:
+What about some animation? Let us rotate `s` around the z-axis to obtain another point on the sphere, which later will determine the colors of the pixels. The rotation around the z-axis can be done with a [rotation matrix](https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations). Matrices are natively supported within CindyJS:
 ```cindyscript
 colorplot( if(|#|<1,
   s = (#.x, -re(sqrt(1-#*#)), #.y);
@@ -279,7 +279,7 @@ colorplot( if(|#|<1,
   , [0,0,0]
 ));
 ```
-The direction of the rotation was chosen such that the "sun" will rise in "the east". 
+The direction of the rotation was chosen such that the sun will rise in the east. 
 
 
 Altogether, if you would like to create this spinning earth [as an HTML-Applet](earth.html) you could have the following source:
@@ -336,9 +336,9 @@ Altogether, if you would like to create this spinning earth [as an HTML-Applet](
 
 ### Accessing the Webcam
 
-If you want to use the camera, you have to evoke `video = cameravideo();` once. Usually, this is done in the `init`-script. If you have a webcam, and you want to play around with it in live-coding, please **click** <a href="#accessing-the-webcam" onclick="cdy.evokeCS('video = cameravideo();')">here to evoke `video = cameravideo();`</a> in the live-coding app and accept to access your webcam, **otherwise the code snippets in this section will not work**. Several browsers indicate that the webcam is active in their address bar.
+If you want to use a camera, you have to evoke `video = cameravideo();` once. Usually, this is done in the `init`-script. If you have a webcam, and you want to play around with it in live-coding, please **click** <a href="#accessing-the-webcam" onclick="cdy.evokeCS('video = cameravideo();')">here to evoke `video = cameravideo();`</a> in the live-coding app and accept to access your webcam, **otherwise the code snippets in this section will not work**. Several browsers indicate that the webcam is active in their address bar.
 
-Now if you use the code
+Now if you apply the code
 ```cindyscript
 drawimage((-1,0), (1,-1), video);
 ```
@@ -351,7 +351,7 @@ colorplot(
 );
 ```
 
-Or you can operate on the colorspace and show yourself in inverted colors:
+Or you can operate on the color space and show yourself in inverted colors:
 ```cindyscript
 colorplot(
     [1,1,1]-imagergb((-1,0),(1,0), video, #, repeat->true);
@@ -364,11 +364,11 @@ It is also possible to load videos to a CindyJS applet by adding an option `vide
 ## Writing to Textures
 `colorplot` can, instead of drawing to the whole drawing screen, plot to a texture. 
 
-One can create a texture with `createimage(‹imagename›,‹int›,‹int›)` as described in [the reference](/ref/Image_Manipulation_and_Rendering.html#createimage$3).
+One can create a texture with `createimage(‹imagename›,‹int›,‹int›)` as described in [the reference manual of CindyScript](/ref/Image_Manipulation_and_Rendering.html#createimage$3).
 
-Then one can plot to a texture via [`colorplot(‹pos›,‹pos›,‹imagename›,‹expr›)`](/ref/Function_Plotting.html#colorplot$3) where the two first arguments specify the coordinates of the lower left and lower right point again. `‹imagename›` is the target texture, and `‹expr›` is the program that is executed for each pixel of the target texture depending on the pixel coordinate `#`.
+Then the texture is accessible via [`colorplot(‹pos›,‹pos›,‹imagename›,‹expr›)`](/ref/Function_Plotting.html#colorplot$3) where the two first arguments specify the coordinates of the lower left and lower right point again. `‹imagename›` is the target texture, and `‹expr›` is the program that is executed for each pixel of the target texture depending on the pixel coordinate `#`.
 
-In this live coding applet, a texture has automatically created in the init script via `createimage("plot", 800, 800)`.
+In this live coding applet, a texture has automatically created in the initialization ('init') script via `createimage("plot", 800, 800)`.
 
 We can write something on this texture and output it as follows:
 ```cindyscript
@@ -385,7 +385,7 @@ Both the commands `colorplot` and `imagergb` can be used with only a texture as 
 
 
 ### Feedback-loops
-If one reads and write to the same texture with some deformations in between, we can simulate a [video feedback loop](https://en.wikipedia.org/wiki/Video_feedback), where one points a camera to a screen that displays the image that the camera records:
+If one reads and writes to the same texture with some deformations in between, we can simulate a [video feedback loop](https://en.wikipedia.org/wiki/Video_feedback), where one points a camera to a screen that displays the image that the camera records:
 ```cindyscript
 offset = 0.02*(cos(seconds()), sin(seconds()));
 factor = 0.9+.05*sin(seconds());
