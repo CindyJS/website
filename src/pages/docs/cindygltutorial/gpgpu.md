@@ -1,5 +1,5 @@
 ---
-title: CindyGL Tutorial - GPGPU through colorplots
+title: CindyGL Tutorial - GPGPU through color plots
 ---
 <link rel="stylesheet" property="stylesheet" type="text/css" href="centerimg.css">
 <script type="text/javascript" async  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -10,7 +10,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 });
 </script>
 
-In this tutorial, we want to build an applet that simulates the reaction-diffusion equation on the GPU. As a primer, we will first simulate [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) on the GPU.
+In this tutorial, we want to build an applet that simulates a reaction-diffusion equation on the GPU. As a primer, we will first simulate [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) on the GPU.
 The trick in all these applications is to store the data on textures. Using `colorplot`, one can write to a texture; And by using `imagergb`, one can read from a texture.
 
 ## Prerequisites
@@ -19,22 +19,21 @@ We assume that you already have seen [how one can create texture-feedback loops 
 
 ## Conway's Game of Life
 
-[Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) is an example of a [celluar automaton](https://en.wikipedia.org/wiki/Cellular_automaton). Think of a large grid/square lattice of cells that are either living or dead. In this grid, each cell has [eight neighbors](https://en.wikipedia.org/wiki/Moore_neighborhood) that determine its new state. If a living cell
-* has fewer than two living neighbors it dies because of underpopulation.
-* has two or three living neighbors it will continue to live
+[Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) is an example of a [cellular automaton](https://en.wikipedia.org/wiki/Cellular_automaton). Think of a large grid/square lattice of cells that are either living or dead. In this grid, each cell has [eight neighbors](https://en.wikipedia.org/wiki/Moore_neighborhood) that determine its new state. If a living cell
+* has fewer than two living neighbors it dies because of underpopulation,
+* has two or three living neighbors it will continue to live,
 * has more than three living neighbors it dies because of overpopulation.
 
-A dead cell can become a living cell if it has exactly three live neighbors (We witness a birth with a mother, a father and a delivery nurse).
-
+A dead cell can become a living one if it has exactly three live neighbors. 
 All these transitions take place at the same time. We will build an applet [gol.html](gol.html), which simulates the cellular automaton on the GPU:
 <iframe src="gol.html" width="530" height="530"></iframe>
-(if this applet got stuck in an uninteresting short period, then reload the page to restart the simulation)
+(if this applet got stuck in an uninteresting pattern, then reload the page to restart the simulation)
 
 We want to simulate this automaton via `colorplot` on the GPU. It is reasonable that we can use a texture that represents the state of the cells through the colors of each pixel (which conveniently also lay in such a grid).
 
 If you want to program along, you can start with [boilerplate.html](boilerplate.html) and modify it while reading this tutorial.
 
-Suppose, we want to "play" the game of life on a 128x128 texture (Powers of two are always good because textures with this dimensions fix nicely in the texture-buffer; However other dimensions should work as well.). So let us create in the `init`-script a 128x128 texture via
+Suppose, we want to "play" the game of life on a 128x128 texture (powers of two are always good because textures with this dimensions fix nicely in the texture-buffer; However other dimensions should work as well). So let us create in the `init`-script a 128x128 texture via
 ```
 createimage("gol", 128, 128);
 ```
@@ -43,9 +42,7 @@ Now, if we want to access the cell, which is in column `x` and row `y` (from the
 
 ![pixel coordinates](pixels.png "pixel coordinates")
 
-With `interpolate->false` the function `imagergb` returns the color of the pixel that is closest to the given coordinate. To solve the issue one could offset everything with $(0.5,0.5)$. But it is more convenient to use `interpolate->false` which rounds any coordinate down to the closest pixel center. So our call `imagergb((0,0), (128,0), "gol", (x,y), interpolate->false)` remains readable and gives the desired answers.
-
-Another advantage of `interpolate->false` is that it makes `imagergb` and the whole program a bit faster.
+With `interpolate->false` the function `imagergb` returns the color of the pixel that is closest to the given coordinate. To solve the issue one could offset everything with $(0.5,0.5)$. But it is more convenient to use `interpolate->false` which rounds any coordinate down to the closest pixel center. So our call `imagergb((0,0), (128,0), "gol", (x,y), interpolate->false)` remains readable and gives the desired answers and en passant also increases the performance of the simulation.
 
 The code `imagergb((0,0), (128,0), "gol", (x,y), interpolate->false)` can be simplified to `imagergb("gol", (x,y), interpolate->false)` if we specify that the global drawing domain just has the same domain. This can be done by adding the option
 ```
@@ -63,10 +60,10 @@ that returns only the red-value of the corresponding pixel. This number, which w
 
 In order to initialize the texture `"gol"`, we will initialize it some random states via
 ```
-colorplot("gol", if(random()>.6,1,0)); //random stuff as starting image
+colorplot("gol", if(random()>.6,1,0)); //random values as starting image
 ```
 
-`random()` is a function that returns, independently for every pixel, a random value between $0$ and $1$. So with $60\%$- probability a pixel gets color $1$, otherwise $0$. Color $1$? You should wonder because $1$ is a number, but not a 3-component RGB color vector! CindyGL will interpret a number `number` as output-variable automatically as `gray(number)=[number, number, number]`.
+`random()` is a function that returns, independently for every pixel, a random value between $0$ and $1$. So with $60\%$- probability a pixel gets color $1$, otherwise $0$. Color $1$? You may wonder that $1$ is a number, and not a 3-component RGB color vector. CindyGL will interpret a number `number` as output-variable automatically as `gray(number)=[number, number, number]`.
 
 
 Now let us proceed with to the `draw`-script:
@@ -86,7 +83,7 @@ newstate(x, y) := (
     //if the cell lives then it will die if it has less than 2 neighbours or more than 3 neighbours
     if((number < 2) % (number > 3), 0, 1),
     
-    //if cell was dead then 3 are required to be born
+    //if cell was dead then 3 living neighbours are required to be born
     if(number == 3, 1, 0)
   )
 );
@@ -94,7 +91,7 @@ newstate(x, y) := (
 
 That essentially implements the rules from above where `1` stands for living and `0` for dead.
 
-Only the funciotn `countneighbors` is missing. It should go through all 8 [(Moore)-neighbour](https://en.wikipedia.org/wiki/Moore_neighborhood)-cells of `(x, y)` and count those neighbours `(nx, ny)` that have `get(nx, ny)==1`. One could write here the sum of 8 terms or one could use two nested `repeat`, loops. CindyJS also has list-operations that (maybe) simplify this:
+Only the function `countneighbors` is missing. It should go through all 8 [(Moore)-neighbour](https://en.wikipedia.org/wiki/Moore_neighborhood)-cells of `(x, y)` and count those neighbours `(nx, ny)` that have `get(nx, ny)==1`. One could write here the sum of 8 terms or one could use two nested `repeat`, loops. CindyJS also has list-operations that (maybe) simplify this:
 ```
 deltas = [(-1,-1), (-1,0), (-1,+1), (0,-1),  (0,+1), (+1,-1), (+1,0), (+1,+1)];
 countneighbors(x, y) := sum( apply(deltas, delta, get(delta.x + x, delta.y + y)
@@ -126,7 +123,7 @@ Altogether we have the following source:
     
     <script id="csinit" type="text/x-cindyscript">
       createimage("gol", 128, 128);
-      colorplot("gol", if(random()>.6,1,0)); //random stuff as starting image
+      colorplot("gol", if(random()>.6,1,0)); //random values as starting image
       
       get(x, y) :=  imagergb("gol", (x,y), interpolate->false, repeat->true).r; //Tourus world
       
@@ -181,7 +178,7 @@ We start with [gol.html](gol.html) and adopt the code until we have [reactdiff.h
 However, we need a higher resolution than we had for the Game of Life. To increase the resolution from 128 to 512 you can search and replace every 128 with a 512. Furthermore, we like to call our texture `"state"` instead of `"gol"`, so let us perform another search&replace.
 
 We want to simulate two chemicals and their interaction on the plane.
-Chemical one is steadily poured into the system while chemical two is removed from it (the feed-parameter `f` and kill-parameter `k` will regulate this). The chemicals diffuse, where the first chemical spreads twice as fast than the second one. Furthermore, one "portion" of the first and two portion the second chemical react to three portions of the second chemical.
+Chemical one is steadily poured into the system while chemical two is removed from it (the feed-parameter `f` and kill-parameter `k` will regulate this behaviour). The chemicals diffuse, where the first chemical spreads twice as fast than the second one. Furthermore, one "portion" of the first and two portion the second chemical react to three portions of the second chemical.
 
 Let us call the local densities of the two chemicals $q_1$ and $q_2$. More formally, there are two space and time dependent functions $q_1(x,y,t), q_2(x,y,t) \in [0,1]$ that give the density of chemicals. The described behaviour can be modelled through the following equation:
 
@@ -193,7 +190,7 @@ $$\partial q_2= \tfrac{1}{2} \nabla^{2} q_2 + q_1 q_2^2 + (k+f)\cdot q_2$$
 
 Karl Sims gives a good explanation for the Gray-Scott model [on his website](http://www.karlsims.com/rd.html).
 
-We will discretize this differential equation and simulate it on the GPU. There are two discretizations: First, space is represented through tiny cells and the time will also be discretized. Second, we will have discrete time steps. Similar to the cellular automaton we have seen before, we will compute the new state out of the old state for each time step.
+We will discretize this differential equation and simulate it on the GPU. There are two discretizations: in time and in space space. Firstly, space will be discretized to a grid and secondly time canonically to equally spaced time steps. Similar to the cellular automaton we have seen before, we will compute the new state out of the old state for each time step.
 
 For this system, we need to store two parameters (instead of one dead/living-state) in the texture `"state"`. Let us utilize the first two components of the RGB-color information (i.e. red and green) for that purpose! So let us rewrite the `get`-function (which, so far, only has read the red component) to
 ```
@@ -210,7 +207,7 @@ store(q) := (q_1, q_2, 0);
 
 To initialize the state `q` for each pixel we will run the following function in the `init`-script:
 ```
-initialimage(x) := store((0.2+.3*random(), .2+.2*random())); //random stuff as starting image
+initialimage(x) := store((0.2+.3*random(), .2+.2*random())); //random values as starting image
 colorplot("state", initialimage(#)); 
 ```
 
@@ -220,8 +217,8 @@ newstate(x, y) := (
   q = get(x,y);
   laplacian = computelaplacian(x, y);
   
-  f = 0.02+0.06*y/512; //feed rate
-  k = 0.059+0.007*x/512; //kill rate
+  f = 0.02+0.06*y/512;   // feed rate - appropriately chosen
+  k = 0.059+0.007*x/512; // kill rate - appropriately chosen
 
   deltaq = [laplacian_1 - q_1*q_2*q_2 + f * (1-q_1),
       0.5 * laplacian_2 + q_1*q_2*q_2 - (k+f) * q_2];
@@ -246,7 +243,7 @@ computelaplacian(x, y) := (
     ))
 );
 ```
-The specific kernel was choosen, because it makes also the discrete Laplacian operator is rotation invariant.
+The specific kernel was chosen, since it makes also the discrete Laplacian operator is rotation invariant.
 
 We like that the states in `"state"` are updated through `newstate` in every `draw`-step. The `draw`-script is maximum evaluated 60 times in the second. That might be a bit too slow for us to see some fascinating movement. Therefore let us have ten updates for every `draw step`:
 ```
@@ -298,7 +295,7 @@ The applet [reactdiff.html](reactdiff.html) has the following source:
       
       store(q) := (q_1, q_2, 0);
       
-      initialimage(x) := store((0.2+.3*random(), .2+.2*random())); //random stuff as starting image
+      initialimage(x) := store((0.2+.3*random(), .2+.2*random())); //random values as starting image
       colorplot("state", initialimage(#)); 
       
       kernel = [[0.05, 0.2, 0.05],
