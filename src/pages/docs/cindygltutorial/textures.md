@@ -217,7 +217,7 @@ $$S^2 = \\{ s \in \mathbb{R}^3 \mid s_1^2 + s_2^2 + s_3^2=1 \\}.$$
 
 Furthermore, let us agree on the convention that in three-dimensional space the $x$- and $y$-axes lie flat, while the $z$-axis points to the top. The $z$-axis will intersect both the north- and south-pole of our earth.
 
-To make things easy, we will use the [ortographic projection](https://en.wikipedia.org/wiki/Orthographic_projection). So by the definition of our axes, we imagine that the ray 
+To make things easy, we will use the [orthographic projection](https://en.wikipedia.org/wiki/Orthographic_projection). So by the definition of our axes, we imagine that the ray 
 $$r_{\text{#}}(t) = (\text{#}.x, t, \text{#}.y)$$
 lays behind a pixel with coordinates `#`.
 
