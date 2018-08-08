@@ -60,5 +60,8 @@
     "url": "https://github.com/CindyJS/website/issues"
   },
   "homepage": "https://github.com/CindyJS/website#readme",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "gulp-replace": "^1.0.0"
+  }
 }
