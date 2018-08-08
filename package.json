@@ -8,7 +8,7 @@
     "build": "gulp dist --production"
   },
   "devDependencies": {
-    "browser-sync": "^2.13.0",
+    "browser-sync": "^2.24.6",
     "chalk": "^1.1.1",
     "download": "^4.4.3",
     "express": "^4.13.3",
@@ -40,7 +40,7 @@
     "merge-stream": "^1.0.0",
     "open": "0.0.5",
     "q": "^1.4.1",
-    "q-io": "^1.13.1",
+    "q-io": "^1.13.6",
     "rimraf": "^2.4.4",
     "run-sequence": "^1.1.0",
     "through2": "^2.0.0",
