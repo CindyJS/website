@@ -1,0 +1,618 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    <title>Cindy JS</title>
+		<script type="text/javascript" src="/dist/snapshot/Cindy.js"></script>
+		<script type="text/javascript" src="/dist/snapshot/CindyGL.js"></script>
+    <link rel="stylesheet" href="../../css/cindy.css">	
+  </head>
+    
+	<body style="font-family:Arial;">     
+<script id="wattdraw" type="text/x-cindyscript">
+crossop(l):=((0,l_3,-l_2),
+             (-l_3,0,l_1),
+             (l_2,-l_1,0));
+
+circlepp(mid,pt):=(
+  mm=mid;
+  pp=(pt_1, pt_2, 1);
+  mat1=((1,0,-mm.x),(0,1,-mm.y),(-mm.x,-mm.y,mm.x^2+mm.y^2));
+  mati2=((0,0,0),(0,0,0),(0,0,1));
+  mat1*(pp*mati2*pp)-mati2*(pp*mat1*pp)
+);
+
+circlepr(mid,r):=(
+   circlepp(mid,mid+(0,r)); 
+);
+
+
+intersectcircir(c1,c2):=(
+   ln=c2_1_1*c1_3-c1_1_1*c2_3;
+   ln=(ln_1,ln_2,.5*ln_3);
+   intersectcl(c1,ln);
+);
+
+
+intersectcl(c,l):=(
+    l1 = crossop(l);
+    l2 = transpose(l1);
+    s = l2*c*l1;
+    b = l_3;
+  	D = -det(((s_1_1,s_1_2),(s_2_1,s_2_2)));
+  	alp = re(sqrt(D))/b;
+  
+    erg=s+alp*l1;
+    [erg_1, transpose(erg)_1];
+);
+
+f(E) := (
+  Circ = circlepr(E, C2.radius/2);
+  intersection = intersectcircir(C1.matrix, Circ);
+  opposite = apply(intersection, I, E-(I.xy-E));
+  (|opposite_1-A|-C0.radius)*(|opposite_2-A|-C0.radius)
+);
+
+tinyhexagon = apply(1..6, gauss(exp(i*#/6*2*pi)))*.01;
+colorplot(
+	l = apply(tinyhexagon, delta, f(#+delta));
+  if(min(l)<0 & 0 < max(l),
+    [1,0,0,1],
+    [0,0,0,0]
+  )
+);
+      </script>
+			
+			<script id="conchoiddraw" type="text/x-cindyscript">
+f(P) := (
+l = join(C, P);
+M = meet(l, a);
+|P.xy-M.xy|-C0.radius
+);
+
+tinyhexagon = apply(1..6, gauss(exp(i*#/6*2*pi)))*.02;
+
+colorplot(
+list = apply(tinyhexagon, delta, f(#+delta));
+if(min(list)<0 & 0 < max(list),
+[1,0,0,1],
+[0,0,0,0]
+)
+);
+</script>
+		<h3>Conchoid of Nicomedes</h3>
+		<div  id="ConchoidCanvas"></div>
+		<h3>Watt's curve</h3>
+    <div  id="WattCanvas"></div>
+    <script type="text/javascript">
+          var conchoidcdy = CindyJS({
+  "scripts": "conchoid*",
+  "angleUnit": "°",
+  "exclusive": "true",
+  "geometry": [
+    {
+      "alpha": 1,
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "labeled": true,
+      "name": "A",
+      "pinned": false,
+      "size": 5,
+      "type": "Free",
+      "pos": [
+        0.9999999999999999,
+        -0.140625,
+        -0.3571875
+      ]
+    },
+    {
+      "alpha": 1,
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "labeled": true,
+      "name": "B",
+      "pinned": false,
+      "size": 5,
+      "type": "Free",
+      "pos": [
+        0.9999999999999999,
+        -0.2732558139534883,
+        -0.6645348837209302
+      ]
+    },
+    {
+      "alpha": 1,
+      "args": [
+        "A",
+        "B"
+      ],
+      "clip": "none",
+      "color": [
+        0,
+        0,
+        1
+      ],
+      "labeled": true,
+      "name": "a",
+      "overhang": 1,
+      "pinned": false,
+      "size": 1,
+      "type": "Join"
+    },
+    {
+      "alpha": 1,
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "labeled": true,
+      "name": "C",
+      "pinned": false,
+      "size": 5,
+      "type": "Free",
+      "pos": [
+        -0.6218244043701462,
+        1,
+        0.9629064104251681
+      ]
+    },
+    {
+      "alpha": 1,
+      "args": [
+        "a"
+      ],
+      "color": [
+        1,
+        0.4875,
+        0.5172
+      ],
+      "labeled": true,
+      "name": "M",
+      "pinned": false,
+      "size": 5,
+      "type": "PointOnLine",
+      "pos": [
+        1,
+        0.3353566218878505,
+        0.7458118847265255
+      ]
+    },
+    {
+      "alpha": 1,
+      "args": [
+        "M"
+      ],
+      "clip": "none",
+      "color": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "labeled": true,
+      "name": "C0",
+      "overhang": 1,
+      "pinned": false,
+      "radius": 1.4492388066023998,
+      "size": 1,
+      "type": "CircleMr",
+      "pos": {
+        "xx": -0.7458118847265255,
+        "yy": -0.7458118847265255,
+        "zz": 0.07480874433402787,
+        "xy": 0,
+        "xz": 2.0000000000000004,
+        "yz": 0.670713243775701
+      }
+    },
+    {
+      "alpha": 1,
+      "args": [
+        "M",
+        "C"
+      ],
+      "clip": "none",
+      "color": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "labeled": true,
+      "name": "b",
+      "overhang": 1,
+      "pinned": false,
+      "size": 1,
+      "type": "Join"
+    },
+    {
+      "args": [
+        "b",
+        "C0"
+      ],
+      "labeled": true,
+      "name": "Ps0",
+      "pinned": false,
+      "type": "IntersectLC"
+    },
+    {
+      "alpha": 1,
+      "args": [
+        "Ps0"
+      ],
+      "color": [
+        1.4285714285714286,
+        0.6964285714285714,
+        0.7388571428571429
+      ],
+      "labeled": true,
+      "name": "P",
+      "pinned": false,
+      "size": 5,
+      "type": "SelectP",
+      "pos": [
+        -0.048659607041545413,
+        0.8615240022438281,
+        0.9999999999999999
+      ]
+    },
+    {
+      "alpha": 1,
+      "args": [
+        "P",
+        "M"
+      ],
+      "clip": "end",
+      "color": [
+        0,
+        0,
+        0.2024
+      ],
+      "alpha": .5,
+      "labeled": false,
+      "name": "s",
+      "overhang": 1,
+      "pinned": false,
+      "size": 4.89,
+      "type": "Segment"
+    },
+  ],
+  "ports": [
+    {
+      "id": "ConchoidCanvas",
+      "transform": [
+        {
+          "visibleRect": [
+            -5,
+            -2.5,
+            5,
+            2.5
+          ]
+        }
+      ],
+      "background": "rgb(168,176,192)",
+      "width": "650",
+      "height": "325"
+    }
+  ],
+  "csconsole": false,
+  "use": [
+    "CindyGL"
+  ],
+  "autoplay": true,
+  "behavior": []
+});
+
+</script>
+<script type="text/javascript">
+		var wattcdy = CindyJS({
+	  "scripts": "watt*",
+	  "angleUnit": "°",
+	  "geometry": [
+	    {
+	      "alpha": 1,
+	      "color": [
+	        1,
+	        0,
+	        0
+	      ],
+	      "labeled": true,
+	      "name": "A",
+	      "pinned": false,
+	      "size": 5,
+	      "type": "Free",
+	      "pos": [
+	        -2,-0.3
+	      ]
+	    },
+	    {
+	      "alpha": 1,
+	      "args": [
+	        "A"
+	      ],
+	      "clip": "none",
+	      "color": [
+	        0,
+	        0,
+	        1
+	      ],
+	      "labeled": true,
+	      "name": "C0",
+	      "overhang": 1,
+	      "pinned": false,
+	      "radius": .9,
+	      "size": 1,
+	      "type": "CircleMr",
+	      "pos": {
+	        "xx": 0.26962542144386276,
+	        "yy": 0.26962542144386276,
+	        "zz": 1,
+	        "xy": 0,
+	        "xz": 1.4605802661159797,
+	        "yz": -0.01923179080437908
+	      }
+	    },
+	    {
+	      "alpha": 1,
+	      "color": [
+	        1,
+	        0,
+	        0
+	      ],
+	      "labeled": true,
+	      "name": "B",
+	      "pinned": false,
+	      "size": 5,
+	      "type": "Free",
+	      "pos": [
+	        -0.12358306040727851,
+	        0.25538142620827364,
+	        1
+	      ]
+	    },
+	    {
+	      "alpha": 1,
+	      "args": [
+	        "B"
+	      ],
+	      "clip": "none",
+	      "color": [
+	        0,
+	        0,
+	        1
+	      ],
+	      "labeled": true,
+	      "name": "C1",
+	      "overhang": 1,
+	      "pinned": false,
+	      "radius": 0.8,
+	      "size": 1,
+	      "type": "CircleMr",
+	      "pos": {
+	        "xx": 1,
+	        "yy": 1,
+	        "zz": -0.8399851744215654,
+	        "xy": 0,
+	        "xz": 0.24716612081455702,
+	        "yz": -0.5107628524165473
+	      }
+	    },
+	    {
+	      "alpha": 1,
+	      "args": [
+	        "C0"
+	      ],
+	      "color": [
+	        1,
+	        0,
+	        0
+	      ],
+	      "labeled": true,
+	      "name": "C",
+	      "pinned": false,
+	      "size": 5,
+	      "type": "PointOnCircle",
+	      "pos": [
+	        -0.8493413646248336,
+	        -0.37904710104812805,
+	        1
+	      ]
+	    },
+	    {
+	      "alpha": 1,
+	      "args": [
+	        "C"
+	      ],
+	      "clip": "none",
+	      "color": [
+	        0.3,
+	        0.3,
+	        0.3
+	      ],
+	      "labeled": true,
+	      "name": "C2",
+	      "overhang": 1,
+	      "pinned": false,
+	      "radius": .7,
+	      "size": 1,
+	      "type": "CircleMr",
+	      "pos": {
+	        "xx": 1,
+	        "yy": 1,
+	        "zz": -0.7402792877483406,
+	        "xy": 0,
+	        "xz": 1.6986827292496671,
+	        "yz": 0.7580942020962561
+	      }
+	    },
+	    {
+	      "args": [
+	        "C1",
+	        "C2"
+	      ],
+	      "labeled": true,
+	      "name": "Ps0",
+	      "pinned": false,
+	      "type": "IntersectCirCir"
+	    },
+	    {
+	      "alpha": 1,
+	      "args": [
+	        "Ps0"
+	      ],
+	      "color": [
+	        1,
+	        0,
+	        0
+	      ],
+	      "labeled": true,
+	      "name": "D",
+	      "pinned": false,
+	      "size": 5,
+	      "type": "SelectP",
+	      "pos": [
+	        0.40688850550886363,
+	        -0.5440418270486241,
+	        1
+	      ]
+	    },
+	    {
+	      "alpha": 1,
+	      "args": [
+	        "D",
+	        "C"
+	      ],
+	      "color": [
+	        1,
+	        0,
+	        0
+	      ],
+	      "labeled": true,
+	      "name": "E",
+	      "pinned": false,
+	      "size": 5,
+	      "type": "Mid"
+	    },
+	    {
+	      "alpha": 1,
+	      "args": [
+	        "C",
+	        "D"
+	      ],
+	      "clip": "end",
+	      "color": [
+	        0,
+	        0,
+	        0.2024
+	      ],
+	      "labeled": false,
+	      "name": "a",
+	      "overhang": 1,
+	      "pinned": false,
+	      "size": 4.89,
+	      "type": "Segment",
+	      "alpha": .5
+	    },
+	    {
+	      "alpha": 0,
+	      "color": [
+	        1,
+	        1,
+	        1
+	      ],
+	      "labeled": false,
+	      "name": "F",
+	      "size": 5,
+	      "type": "Free",
+	      "pos": [
+	        1,
+	        -0.4495180365916235,
+	        -0.2130873612741438
+	      ]
+	    },
+	    {
+	      "alpha": 0,
+	      "color": [
+	        1,
+	        1,
+	        1
+	      ],
+	      "labeled": false,
+	      "name": "G",
+	      "size": 5,
+	      "type": "Free",
+	      "pos": [
+	        0.4595242501382175,
+	        1,
+	        0.47403517529537675
+	      ]
+	    },
+	    {
+	      "alpha": 0,
+	      "color": [
+	        1,
+	        1,
+	        1
+	      ],
+	      "labeled": false,
+	      "name": "H",
+	      "size": 5,
+	      "type": "Free",
+	      "pos": [
+	        1,
+	        0.44665777932613265,
+	        -0.21308736127414377
+	      ]
+	    },
+	    {
+	      "alpha": 0,
+	      "color": [
+	        1,
+	        1,
+	        1
+	      ],
+	      "labeled": false,
+	      "name": "K",
+	      "size": 5,
+	      "type": "Free",
+	      "pos": [
+	        -0.4624669002743238,
+	        1,
+	        -0.4770707488754056
+	      ]
+	    }
+	  ],
+	  "ports": [
+	    {
+	      "id": "WattCanvas",
+	      "transform": [
+	        {
+	          "visibleRect": [
+	            -3,
+	            -1,
+	            1,
+	            1
+	          ]
+	        }
+	      ],
+	      "background": "rgb(168,176,192)",
+	      "width": "650",
+	      "height": "325"
+	    }
+	  ],
+	  "csconsole": false,
+	  "use": [
+	    "CindyGL"
+	  ],
+	  "autoplay": true,
+	  "behavior": []
+	});
+    </script>              
+	</body>
+</html>
