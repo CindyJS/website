@@ -10,11 +10,11 @@
   "devDependencies": {
     "browser-sync": "^2.26.3",
     "chalk": "^1.1.1",
-    "download": "^4.4.3",
+    "download": "^7.1.0",
     "express": "^4.13.3",
     "glob": "^6.0.1",
-    "grunt-cli": "^0.1.13",
-    "gulp": "^3.9.0",
+    "grunt-cli": "^1.3.1",
+    "gulp": "^4.0.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-collect": "^0.1.0",
     "gulp-concat": "^2.5.2",
@@ -24,7 +24,7 @@
     "gulp-gzip": "^1.2.0",
     "gulp-hbs": "^0.2.0",
     "gulp-if": "^2.0.0",
-    "gulp-imagemin": "^2.2.1",
+    "gulp-imagemin": "^4.1.0",
     "gulp-load-plugins": "^1.1.0",
     "gulp-markdown": "^1.2.0",
     "gulp-minify-css": "^1.2.1",
@@ -62,6 +62,7 @@
   "homepage": "https://github.com/CindyJS/website#readme",
   "private": true,
   "dependencies": {
+    "fs": "0.0.1-security",
     "gulp-replace": "^1.0.0",
     "node-sass": "^4.9.4"
   }
