@@ -12,6 +12,7 @@ var path = require("path");
 var rimraf = require("rimraf");
 var sequence = require("run-sequence");
 var xtend = require("xtend");
+var replace = require('gulp-replace');
 
 var addData = require("./lib/add-data");
 var cmd = require("./lib/cmd");
@@ -24,6 +25,7 @@ var relativize = require("./lib/relativize");
 var toc = require("./lib/toc");
 var validator = require("./lib/validator-nu");
 var galleryindex = require("./lib/galleryindex");
+
 
 
 
@@ -135,7 +137,7 @@ function gallerynavigation(currentdir) {
     };
 }
 
-gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata"], function() {
+gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata", "editor"], function() {
     return pipeline(
         merge(
             pipeline(
@@ -210,6 +212,13 @@ gulp.task("copygallerydata", [], function() {
     return gulp.src(['src/gallery/**/*', '!src/gallery/**/*.html'], {
         base: "src"
     }).pipe(gulp.dest("dist")); //copies everything that is not a html
+});
+
+gulp.task("editor", [], function() {
+    return gulp.src('CindyJS/editor/**/*').pipe(replace(
+      /(\.\.\/)+build\/js\//g,
+      "/dist/snapshot/"
+    )).pipe(gulp.dest("dist/editor"));
 });
 
 gulp.task("asis", [], function() {
