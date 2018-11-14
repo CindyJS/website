@@ -20,6 +20,10 @@ Once you have learned CindyScript basics and are familiar with the `colorplot` c
 
 Since CindyGL accelerates code on the GPU, it can also be used for browser-based GPGPU computations. In [the fourth part of the tutorial](gpgpu.html) we will use texture feedback loops to compute the Game of Life and simulate a reaction diffusion system on the GPU.
 
+### [Rendering 3D Scenes](rendering3d.html)
+
+[Here](rendering3d.html) we will render a simple interactive three-dimensional scene using the `colorplot`. The tutorial includes some live-coding.
+
 ### [Example-Gallery](/gallery/cindygl/)
 
 You want to learn more? You can look at the source code of several applets in the [CindyGL-gallery](/gallery/cindygl/) or in the [CindyGL-examples included in the repository](/examples/cindygl/).

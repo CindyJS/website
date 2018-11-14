@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        
+        <title>Exported from https://cindyjs.org/editor/: A simple three-dimensional scene</title>
+        <style type="text/css">
+            body {
+                margin: 0px;
+                padding: 0px;
+            }
+            
+            #CSCanvas {
+                width: 100vw; height: 100vh;
+            }
+        </style>
+        <link rel="stylesheet" href="https://cindyjs.org/dist/latest/CindyJS.css">
+        <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+        <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+        
+        
+      <script id="csinit" type="text/x-cindyscript">
+        resetclock();
+        phi = 0.3;
+        lambda = 0.1;
+      </script>
+      <script id="csdraw" type="text/x-cindyscript">
+        light = [cos(seconds())+2,2, sin(seconds())];
+
+        ray(t) := origin+t*dir;
+
+        updatehit(t, normal, color) := (
+          if(t>0 & t < hitt,
+             //the hit is the closest hit so far.
+             hitt = t;
+             hitpos = ray(t);
+             hitnormal = normal;
+             hitcolor = color;
+            );
+        );
+
+        target = [0,0,0];
+        origin = [cos(lambda)*cos(phi),
+                  sin(phi),
+                  sin(lambda)*cos(phi)
+                ]*2;
+        mdir = (target-origin)/|(target-origin)|;
+        v = cross([0,1,0], mdir);
+        w = cross(mdir, v);
+        v = v/|v|;
+        w = w/|w|;
+
+        colorplot(
+          dir = mdir + #.x*v + #.y*w;
+          //default values (if no hit)
+          hitt = 1e8;
+          hitpos = [0,0,0];
+          hitnormal = [1,1,1];
+          hitcolor = [.7,.7,1];
+
+          //intersect with floor: ray(t).y=0 <=> origin.y+t*dir.y=0
+          updatehit((-origin.y)/dir.y, [0,1,0],[1,1,1]);
+
+          //intersect with wall at z=4: ray(t).z=4 <=> origin.z+t*dir.z=4
+          updatehit((4-origin.z)/dir.z, [0,0,-1],[1,1,0.6]);
+          //other walls
+          updatehit((-3-origin.z)/dir.z, [0,0,1],[0,1,1]);
+          updatehit((3-origin.x)/dir.x, [-1,0,0],[1,1,0]);
+          updatehit((-3-origin.x)/dir.x, [1,0,0],[1,0,1]);
+
+          //intersect with sphere with radius 1 and center (0,0,0)
+          //||ray(t)||=1 <=> t^2*(dit*dir) + t*2*(origin*dir) + (origin*origin)-1 = 0 <=>
+          //a*t^2 + b*t + c = 0
+          a = (dir*dir);
+          b = 2*(origin*dir);
+          c = origin*origin-1;
+          D = b^2-4*a*c; //discriminant of polynomial a t^2 + b t + c
+
+          if(D>0,
+             spheret = (-b-re(sqrt(D)))/(2*a);
+             s = ray(spheret);
+             updatehit(spheret, s, [1,0,0]);
+            );
+
+          //compute the color
+          lightdir = (light-hitpos)/|light-hitpos|;
+          max(0,lightdir*hitnormal)^2*hitcolor;
+        );
+      </script>
+      <script id="csmousedown" type="text/x-cindyscript">
+        lastmouse = mouse();
+      </script>
+      <script id="csmousedrag" type="text/x-cindyscript">
+        d = mouse()-lastmouse;
+        lambda = lambda-d.x;
+        phi = phi-d.y;
+        lastmouse = mouse();
+      </script>
+    
+        <script type="text/javascript">
+          var cdy = CindyJS({
+            scripts: "cs*",
+            angleUnit: "°",
+            exclusive: "true",
+            geometry: [
+
+            ],
+            ports: [
+              {id: "CSCanvas", transform: [{visibleRect: [-1.5, -1.5, 1.5, 1.5]}], background: "rgb(168,176,192)"}
+            ],
+            csconsole: false,
+            use: [
+              "CindyGL"
+            ],
+            autoplay: true,
+          });
+        </script>
+    </head>
+    <body>
+        <div id="CSCanvas"></div>
+    </body>
+    </html>
+  

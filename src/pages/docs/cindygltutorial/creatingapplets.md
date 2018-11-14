@@ -11,6 +11,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 
 In this tutorial, we will demonstrate, how a basic CindyGL-applet can be built and how it can interact with CindyJS-geometry.
 
+**Modern Alternative:** Many of the operations introduced in this tutorial can be also performed in the [CindyJS editor](https://cindyjs.org/editor/), which is still in an experimental stage of development.
+
 ## Prerequisites
 
 We assume that you already have seen some CindyScript and the core functionality of the colorplot-command, for example in [the CindyGL live coding tutorial](livecoding.html). 
@@ -218,4 +220,4 @@ If you copy and paste it in a html-file, you will get a [page that only displays
 Two ways of creating HTML applets were presented: Either by exporting from Cinderella or by starting with a minimal boilerplate file such as [boilerplate.html](boilerplate.html) and modifing the scripts and the options of the `CindJS`-initialization command. One can access geometric elements within a `colorplot` command to create more interactivity.
 
 
-You can continue the CindyGL-tutorial [here](textures.html).
+You can continue the CindyGL-tutorial either [with texture operations](textures.html) or [rendering three-dimensional scenes](rendering3d.html).
