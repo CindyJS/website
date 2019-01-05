@@ -6,9 +6,7 @@
 Complex functions $ f:\mathbb{C}\to\mathbb{C} $ can be visualized by plotting the function $\tilde f: \mathbb{R^2} \to \mathbb{R}$ with $\tilde f(x,y) = \|f(x + i y)\|$ in 3D. The color of a patch $(x, y, \|f(x + i y)\|)$ indicates [the phase](../ComplexExplorer) of the complex number $f(x + i y)$.
 
 You can enter your own function $f$ or select one function of the following list:
-<div>
-  <select id="sel" size="6" style="width:10em;">
-  <option data-a="1">z</option>
+<select id="sel" size="6" style="width:10em;"><option data-a="1">z</option>
   <option data-zoom=".15">z^2</option>
   <option data-a="1" data-zoom="0.1">1/z</option>
   <option data-zoom="0.1">z^7+z+2</option>
@@ -29,7 +27,7 @@ You can enter your own function $f$ or select one function of the following list
   <option data-a="1" data-zoom="0.1">1/sin((z+1)/(z-1))</option>
   <option data-a="1" data-zoom="-.2">z^z</option>
   <option data-a="1" data-zoom="-.2">log(z^z)/z</option>
-</select></div>
+</select>
 <script type="text/javascript">
 var select = document.getElementById("sel");
 select.addEventListener('change', function(event) {
