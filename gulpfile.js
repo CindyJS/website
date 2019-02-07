@@ -159,8 +159,7 @@ gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata", "editor"]
                         examples(),
                         addData(gallerynavigation(gallery.dest)),
                         $.if(gallery.autoindex, index(gallery.dest, "src/layouts/gallery.html", xtend(gallery, gallerynavigation(gallery.dest)))),
-                        licenses.apache2(),
-			(gallery.license ||  licenses.ccbysa40)()
+                        licenses.ccbysa40()
                     )
                 )
             ),
