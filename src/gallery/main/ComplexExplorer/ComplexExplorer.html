@@ -108,7 +108,15 @@ if (webcam & imageready(camvideo), (
   color(z) := ( //what color should be given to a complex number z?
     z = if(linear, z/5, log(z));
     z = z * (grid+1);
-    c = imagergb([-.2,0],[1.2,0],camvideo, mod(z/2/pi + .5+0.5*i, 1+1*i));
+    
+    //
+    r = (imagesize(camvideo).y/imagesize(camvideo).x);
+    // w1 = 1;
+    // w2 = i*r; //image is w1 and w2 periodic
+    c = imagergb((0,0),(1,0),camvideo, (z)/(2*pi)-complex((1,r/2))+time*speed, repeat->true);
+
+     
+    //c = imagergb([-.2,0],[1.2,0],camvideo, mod(z/2/pi + .5+0.5*i, 1+1*i));
     b = c*[1,1,1]/3;
     sat*c + (1-sat)*[b,b,b]
   );
@@ -194,13 +202,20 @@ var typ=function(e, b){
   if(chCode==13){
     console.log("*************");
     console.log(b.value);
-    cdy.evokeCS('f(z, a, b, c, d, e, A, B, C, D) := (' + b.value + '); forcerecompile();');
+    cdy.evokeCS('f(z, a, b, c, d, e, A, B, C, D) := (' + b.value + ');');
   }
 }
 
 var sel=function(e, b){
   document.getElementById("inp").value = b.value;
-  cdy.evokeCS('f(z, a, b, c, d, e, A, B, C, D) := (' + b.value + '); forcerecompile();');
+  cdy.evokeCS('f(z, a, b, c, d, e, A, B, C, D) := (' + b.value + ');');
+  var script = b.options[b.selectedIndex].getAttribute("data-cdy");
+  console.log(b);
+  console.log(script);
+  if(script) {
+    cdy.evokeCS(script);
+  }
+  script = false;
 }
 
 var check1=function(){
@@ -224,9 +239,12 @@ var check2=function(){
 var check3=function(){
        if(document.getElementById("ch3").checked){
           cdy.evokeCS('linear=true;');
+          document.getElementById("t1").innerHTML = "real";
+          document.getElementById("t2").innerHTML = "imag";
        } else {
            cdy.evokeCS('linear=false;');
-
+           document.getElementById("t1").innerHTML = "phase";
+           document.getElementById("t2").innerHTML = "norm";
        }
 }
 
@@ -258,14 +276,14 @@ var check3=function(){
 
 <body style="font-family:Arial;">
   
-  <div id="CSCanvas" style="border:2px solid black"></div>
-<div>
-  <input id="ch1" onclick="check1()" checked type="checkbox" >angles&nbsp;&nbsp;&nbsp;
-  <input id="ch2" onclick="check2()" checked type="checkbox" >radii&nbsp;&nbsp;&nbsp;
-  <input id="ch3" onclick="check3()" type="checkbox" >linear diagram&nbsp;&nbsp;&nbsp;
-  <input id="ch4" onclick="check4()" type="checkbox" >black/white&nbsp;&nbsp;&nbsp;
-  <input id="ch5" onclick="check5()" type="checkbox" >webcam<br>
-  </div>
+  <div id="CSCanvas"></div>
+<div style="display: flex; justify-content: space-between; width: 820px;">
+  <div><input id="ch1" onclick="check1()" checked type="checkbox"><span id="t1">argument</span></div>
+  <div><input id="ch2" onclick="check2()" checked type="checkbox"><span id="t2">norm</span></div>
+  <div><input id="ch3" onclick="check3()" type="checkbox" >linear diagram</div>
+  <div><input id="ch4" onclick="check4()" type="checkbox" >black/white</div>
+  <div><input id="ch5" onclick="check5()" type="checkbox" >webcam</div>
+</div>
 <div>
 <input type="text" id="inp" value="(1-a)*(1+a)"  onkeypress="typ(event, this)" size="60" style="font-size:18px">
 <select id="sel" onchange="sel(event, this)" style="width:20em;">
@@ -279,6 +297,7 @@ var check3=function(){
   <option value="z = a/3;(1-z^(20*e))/(1-z)">Convergence of Geometric series</option>
   <option value="repeat(5, z = z - (z^3-A)/(3*z^2));">Newton</option>
   <option value="z=a; repeat(11, z = z - (z^3-b*c*d)/(3*z^2));">Newton-like</option>
+  <option value="U=re(B);C=5*im(C);T=(e+1)/2;center=D;a=|A-D|;z1=(z-sqrt(z^2-4))/2;z2=(z+sqrt(z^2-4))/2;z=(1-T)*z+T*if(|z1-center|>|z2-center|,z1,z2);z=z-center;if(|z|<|a|,-1,(U*z+(U*a^2)/z-(i*C)/(2*pi)*log(z)+i*pi))/10" data-cdy="D.xy=(-0.0493, 0.0712); A.xy=(0.218, 0.0868); E.x=100; S.x=1.2595; linear=true;">Joukowsky airfoil</a>
 </select>
 </div>
 </body>
