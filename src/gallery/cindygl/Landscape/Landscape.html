@@ -396,21 +396,20 @@
         var updatef = function(fun){
           let p = fun;
           let q = "1";
-          console.log("i am here");
           if(Algebrite) {
             let rat = Algebrite.run(`rationalize(${fun})`);
             p = Algebrite.run(`numerator(${rat})`);
             q = Algebrite.run(`denominator(${rat})`);
           }
           
-          document.getElementById('inpp').innerHTML = p;
-          document.getElementById('inpq').innerHTML = q;
+          //document.getElementById('inpp').innerHTML = p;
+          //document.getElementById('inpq').innerHTML = q;
 
           cdy.evokeCS('p(z) := (' + p + '); q(z) := (' + q + '); init();');
         };
     </script>
     <div>
-      <span style="font-size:18px"> f(z) = </span><input type="text" id="inp" value="(z-1)/(z^3+1-i)"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { updatef(this.value); }" size="50" style="font-size:18px"></p>
+      <span style="font-size:18px"> f(z) = </span><input type="text" id="inp" value="(z-1)/(z^3+1-i)"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { updatef(this.value); }" size="50" style="font-size:18px">
     </div>
 </body>
 </html>
