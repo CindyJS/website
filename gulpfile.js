@@ -10,7 +10,6 @@ var merge = require("merge-stream");
 var open = require("open");
 var path = require("path");
 var rimraf = require("rimraf");
-var sequence = require("run-sequence");
 var xtend = require("xtend");
 var replace = require('gulp-replace');
 
@@ -25,6 +24,7 @@ var relativize = require("./lib/relativize");
 var toc = require("./lib/toc");
 var validator = require("./lib/validator-nu");
 var galleryindex = require("./lib/galleryindex");
+const sequence = require('gulp4-run-sequence');
 
 
 
@@ -99,18 +99,18 @@ function github(repo, branch) {
 }
 
 handlebars.registerHelper("json", function(data) {
-    return new handlebars.SafeString(
-        JSON.stringify(data, null, "  ")
+    return new handlebars.safestring(
+        json.stringify(data, null, "  ")
         .replace(/-(?=-)/g, "\\x2d")
         .replace(/</g, "\\x3c")
     );
 });
 
-gulp.task("cjsmod", function() {
+gulp.task("cjsmod",gulp.series([], function() {
     return cmd.unlessExists("CindyJS", ["git", "submodule", "update", "--init", "CindyJS"]);
-});
+}));
 
-gulp.task("cjsdeps", ["cjsmod"], function() {
+gulp.task("cjsdeps", gulp.series(["cjsmod"], function() {
     return cmd.unlessExists(
         "CindyJS/node_modules", ["npm", "install"], {
             cwd: "CindyJS",
@@ -118,7 +118,7 @@ gulp.task("cjsdeps", ["cjsmod"], function() {
                 CINDYJS_SKIP_PREPUBLISH: "true"
             }
         });
-});
+}));
 
 
 function gallerynavigation(currentdir) {
@@ -137,7 +137,27 @@ function gallerynavigation(currentdir) {
     };
 }
 
-gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata", "editor"], function() {
+gulp.task('copyexampleimages', gulp.series([], function() {
+    return gulp.src(["examples/**/*.png", "examples/**/*.jpg", "examples/**/*.mp4"], {
+        cwd: "CindyJS",
+        base: "CindyJS"
+    }).pipe(gulp.dest("dist"));
+}));
+
+gulp.task("copygallerydata", gulp.series([], function() {
+    return gulp.src(['src/gallery/**/*', '!src/gallery/**/*.html'], {
+        base: "src"
+    }).pipe(gulp.dest("dist")); //copies everything that is not a html
+}));
+
+gulp.task("editor", gulp.series([], function() {
+    return gulp.src('CindyJS/editor/**/*').pipe(replace(
+      /(\.\.\/)+build\/js\//g,
+      "/dist/snapshot/"
+    )).pipe(gulp.dest("dist/editor"));
+}));
+
+gulp.task("pages", gulp.series(["cjsdeps", "copyexampleimages", "copygallerydata", "editor"], function() {
     return pipeline(
         merge(
             pipeline(
@@ -198,86 +218,23 @@ gulp.task("pages", ["cjsdeps", "copyexampleimages", "copygallerydata", "editor"]
             compile: handlebars.compile,
         }),
         gulp.dest("dist"));
-});
+}));
 
-gulp.task("copyexampleimages", [], function() {
-    return gulp.src(["examples/**/*.png", "examples/**/*.jpg", "examples/**/*.mp4"], {
-        cwd: "CindyJS",
-        base: "CindyJS"
-    }).pipe(gulp.dest("dist"));
-});
 
-gulp.task("copygallerydata", [], function() {
-    return gulp.src(['src/gallery/**/*', '!src/gallery/**/*.html'], {
-        base: "src"
-    }).pipe(gulp.dest("dist")); //copies everything that is not a html
-});
 
-gulp.task("editor", [], function() {
-    return gulp.src('CindyJS/editor/**/*').pipe(replace(
-      /(\.\.\/)+build\/js\//g,
-      "/dist/snapshot/"
-    )).pipe(gulp.dest("dist/editor"));
-});
-
-gulp.task("asis", [], function() {
+gulp.task("asis", gulp.series([], function() {
     return gulp.src("src/asis/**/*").pipe(gulp.dest("dist"));
-});
+}));
 
-gulp.task("redirect", [], function() {
-    return pipeline(
-        gulp.src("src/redirect/*.json"),
-        redirect(),
-        $.concat(".htaccess"),
-        gulp.dest("dist"));
-});
-
-gulp.task("validate", ["pages", "asis"], function() {
+gulp.task("validate", gulp.series(["pages", "asis"], function() {
     return pipeline(
         gulp.src("dist/**/*.html"),
         validator());
-});
-
-gulp.task("compress", ["build"], function() {
-    return pipeline(
-        gulp.src("dist/**/*.{html,js,css}"),
-        $.gzip(),
-        gulp.dest("dist"));
-});
-
-gulp.task("validate-examples", ["cjsmod"], function() {
-    return pipeline(
-        gulp.src("CindyJS/examples/**/*.html"),
-        validator());
-});
-
-gulp.task("relative", ["build"], function() {
-    return pipeline(
-        gulp.src("dist/**"),
-        $.if(function(file) {
-                return file.path.endsWith(".html")
-            },
-            relativize()),
-        gulp.dest("relative"));
-});
-
-// Delete the "dist" folder
-// This happens every time a build starts
-gulp.task('clean', function(done) {
-    rimraf('dist', done);
-});
-
-// Copy files out of the assets folder
-// This task skips over the "img", "js", and "scss" folders, which are parsed separately
-gulp.task('copy', function() {
-    return pipeline(
-        gulp.src(PATHS.assets),
-        gulp.dest('dist/assets'));
-});
+}));
 
 // Compile Sass into CSS
 // In production, the CSS is compressed
-gulp.task('sass', function() {
+gulp.task('sass', gulp.series([],function() {
     var uncss = $.if(isProduction, $.uncss({
         html: ['src/**/*.html'],
         ignore: [
@@ -301,11 +258,11 @@ gulp.task('sass', function() {
         minifycss,
         $.if(!isProduction, $.sourcemaps.write()),
         gulp.dest('dist/assets/css'));
-});
+}));
 
 // Combine JavaScript into one file
 // In production, the file is minified
-gulp.task('javascript', function() {
+gulp.task('javascript', gulp.series([], function() {
     var uglify = $.if(isProduction, $.uglify()
         .on('error', function(e) {
             console.log(e);
@@ -318,7 +275,7 @@ gulp.task('javascript', function() {
         uglify,
         $.if(!isProduction, $.sourcemaps.write()),
         gulp.dest('dist/assets/js'));
-});
+}));
 
 // Copy images to the "dist" folder
 // In production, the images are compressed
@@ -341,23 +298,71 @@ gulp.task('images', function() {
         gulp.dest("dist"));
 });
 
+// Copy files out of the assets folder
+// This task skips over the "img", "js", and "scss" folders, which are parsed separately
+gulp.task('copy',gulp.series([], function() {
+    return pipeline(
+        gulp.src(PATHS.assets),
+        gulp.dest('dist/assets'));
+}));
+
+
+gulp.task("redirect", gulp.series([], function() {
+    return pipeline(
+        gulp.src("src/redirect/*.json"),
+        redirect(),
+        $.concat(".htaccess"),
+        gulp.dest("dist"));
+}));
+
+
 // Build the "dist" folder by running all of the named tasks
-gulp.task('build', ['pages', 'sass', 'javascript', 'images', 'copy', 'asis', 'redirect']);
+gulp.task('build', gulp.series(['pages', 'sass', 'javascript', 'images', 'copy', 'asis', 'redirect']));
+
+gulp.task("compress", gulp.series(["build"], function() {
+    return pipeline(
+        gulp.src("dist/**/*.{html,js,css}"),
+        $.gzip(),
+        gulp.dest("dist"));
+}));
+
+gulp.task("validate-examples", gulp.series(["cjsmod"], function() {
+    return pipeline(
+        gulp.src("CindyJS/examples/**/*.html"),
+        validator());
+}));
+
+gulp.task("relative", gulp.series(["build"], function() {
+    return pipeline(
+        gulp.src("dist/**"),
+        $.if(function(file) {
+                return file.path.endsWith(".html")
+            },
+            relativize()),
+        gulp.dest("relative"));
+}));
+
+// Delete the "dist" folder
+// This happens every time a build starts
+gulp.task('clean',gulp.series([], function(done) {
+    rimraf('dist', done);
+}));
+
 
 // Clean the "dist" folder before recreating its contents
-gulp.task('rebuild', function(done) {
+gulp.task('rebuild', gulp.series([],function(done) {
     sequence('clean', 'build', done);
-});
+}));
 
 // Make things ready for release
-gulp.task('distgoal', ['validate', 'compress']);
+gulp.task('distgoal', gulp.series(['validate', 'compress']));
 
-gulp.task('dist', function(done) {
+gulp.task('dist', gulp.series([],function(done) {
     sequence('clean', 'distgoal', done);
-});
+}));
 
 // Start a server with LiveReload to preview the site in
-gulp.task('server', ['rebuild'], function() {
+gulp.task('server', gulp.series(['rebuild'], function() {
     browser.init({
         server: 'dist',
         port: PORT,
@@ -368,10 +373,10 @@ gulp.task('server', ['rebuild'], function() {
             replace: "$1http://cindyjs.org$2"
         }],
     });
-});
+}));
 
 // Build the site, run the server, and watch for file changes
-gulp.task('default', ['rebuild', 'server'], function() {
+gulp.task('default', gulp.series(['rebuild', 'server'], function() {
     gulp.watch(PATHS.assets, ['copy', browser.reload]);
     gulp.watch(['src/pages/**/*.{html,md}'], ['pages', browser.reload]);
     gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages', browser.reload]);
@@ -381,4 +386,4 @@ gulp.task('default', ['rebuild', 'server'], function() {
     gulp.watch(['src/assets/img/**/*'], ['images', browser.reload]);
     gulp.watch(['src/asis/**/*'], ['asis', browser.reload]);
 
-});
+}));
