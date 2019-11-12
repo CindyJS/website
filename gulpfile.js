@@ -234,7 +234,7 @@ gulp.task("validate", gulp.series(["pages", "asis"], function() {
 
 // Compile Sass into CSS
 // In production, the CSS is compressed
-gulp.task('sass', gulp.series([],function() {
+gulp.task('sass', function() {
     var uncss = $.if(isProduction, $.uncss({
         html: ['src/**/*.html'],
         ignore: [
@@ -251,14 +251,14 @@ gulp.task('sass', gulp.series([],function() {
         $.sass({
             includePaths: PATHS.sass
         }).on('error', $.sass.logError),
-        $.autoprefixer({
-            browsers: COMPATIBILITY
-        }),
+        $.autoprefixer(
+        //    browsers: COMPATIBILITY
+        ),
         //.pipe(uncss),
         minifycss,
         $.if(!isProduction, $.sourcemaps.write()),
         gulp.dest('dist/assets/css'));
-}));
+});
 
 // Combine JavaScript into one file
 // In production, the file is minified

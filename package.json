@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "The CindyJS web site",
   "main": "gulpfile.js",
+  "browserslist": [
+    "last 2 version",
+    "> 2%",
+    "ie 11"
+  ],
   "scripts": {
     "start": "gulp",
     "build": "gulp dist --production"
@@ -25,7 +30,7 @@
     "gulp-gzip": "^1.4.2",
     "gulp-hbs": "^0.2.0",
     "gulp-if": "^3.0.0",
-    "gulp-imagemin": "^6.1.1",
+    "gulp-imagemin": "^6.2.0",
     "gulp-load-plugins": "^2.0.1",
     "gulp-markdown": "^5.0.1",
     "gulp-minify-css": "^1.2.4",
