@@ -8,7 +8,7 @@
     "build": "gulp dist --production"
   },
   "devDependencies": {
-    "browser-sync": "^2.26.7",
+    "browser-sync": "^2.26.3",
     "chalk": "^1.1.1",
     "download": "^7.1.0",
     "express": "^4.13.3",
@@ -36,12 +36,12 @@
     "gulp-uglify": "^1.2.0",
     "gulp-uncss": "^1.0.1",
     "gulp-util": "^3.0.7",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.0.5",
     "htmlparser2": "^3.9.0",
     "marked": ">=0.3.5 <=0.3.12",
     "merge-stream": "^1.0.0",
     "node-sass": "^4.9.4",
-    "open": "6.0.0",
+    "open": "0.0.5",
     "q": "^1.4.1",
     "q-io": "^1.13.6",
     "rimraf": "^2.4.4",
