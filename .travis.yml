@@ -6,6 +6,7 @@ install:
   - npm install
 script: npm run build
 sudo: false
+dist: bionic
 addons:
   apt:
     packages:
