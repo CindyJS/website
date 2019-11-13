@@ -1,5 +1,6 @@
 language: node_js
-node_js: node
+node_js:
+  - "10"
 install:
   - git submodule update --init .
   - npm install
