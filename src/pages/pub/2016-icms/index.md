@@ -11,9 +11,9 @@ The presentations and extended abstracts from this occasion are available here.
 ## Overview
 
 <ul class="inlinelist">
-<li>[**Presentation (HTML)**](overview/)</li>
-<li>[Extended Abstract (PDF)](/extras/2016-icms/ICMS_Extended_Abstract.pdf)</li>
-<li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_39)</li>
+<li><a href="overview/"><strong>Presentation (HTML)</strong></a></li>
+<li><a href="/extras/2016-icms/ICMS_Extended_Abstract.pdf">Extended Abstract (PDF)</a></li>
+<li><a href="http://link.springer.com/chapter/10.1007/978-3-319-42432-3_39">Springer Link</a></li>
 </ul>
 
 Martin von Gagern, Ulrich Kortenkamp, Jürgen Richter-Gebert and Michael Strobel
@@ -28,10 +28,11 @@ Martin von Gagern, Ulrich Kortenkamp, Jürgen Richter-Gebert and Michael Strobel
 ## Plugins
 
 <ul class="inlinelist">
-<li>[**Presentation (HTML)**](plugins/)</li>
-<li>[Extended Abstract (PDF)](/extras/2016-icms/ICMS_Plugins_Extended_Abstract.pdf)</li>
-<li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_40)</li>
+<li><a href="plugins/"><strong>Presentation (HTML)</strong></a></li>
+<li><a href="/extras/2016-icms/ICMS_Plugins_Extended_Abstract.pdf">Extended Abstract (PDF)</a></li>
+<li><a href="http://link.springer.com/chapter/10.1007/978-3-319-42432-3_40">Springer Link</a></li>
 </ul>
+
 
 Martin von Gagern and Jürgen Richter-Gebert
 
@@ -45,9 +46,9 @@ Martin von Gagern and Jürgen Richter-Gebert
 ## CindyGL
 
 <ul class="inlinelist">
-<li>[**Presentation (HTML)**](cindygl/)</li>
-<li>[Extended Abstract (PDF)](/extras/2016-icms/ICMS_CindyGL_Extended_Abstract.pdf)</li>
-<li>[Springer Link](http://link.springer.com/chapter/10.1007/978-3-319-42432-3_44)</li>
+<li><a href="cindygl/"><strong>Presentation (HTML)</strong></a></li>
+<li><a href="/extras/2016-icms/ICMS_CindyGL_Extended_Abstract.pdf">Extended Abstract (PDF)</a></li>
+<li><a href="http://link.springer.com/chapter/10.1007/978-3-319-42432-3_44">Springer Link</a></li>
 </ul>
 
 Aaron Montag and Jürgen Richter-Gebert
