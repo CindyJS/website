@@ -54,7 +54,7 @@ but also from various other fields.
 <option>(z^(-5)-1)</option>
 <option>(z-1)/(z+1)</option>
 <option>z^(1+i)</option>
-<option>z=2\*z+pi/2(sin(z-i)/sin(z+i))^(1+i)</option>
+<option>z=2&sdot;z+pi/2&sdot;(sin(z-i)/sin(z+i))^(1+i)</option>
 <option value="repeat(11, z = z - (z^3-1)/(3*z^2));">Newton</option>
 </select>
 </p>
