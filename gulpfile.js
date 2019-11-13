@@ -35,9 +35,6 @@ var isProduction = !!(argv.production);
 // Port to use for the development server.
 var PORT = 8163;
 
-// Browsers to target when prefixing CSS.
-var COMPATIBILITY = ['last 2 versions', 'ie >= 9'];
-
 // File paths to various assets are defined here.
 var PATHS = {
     assets: [
