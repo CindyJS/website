@@ -25,8 +25,7 @@ var toc = require("./lib/toc");
 var validator = require("./lib/validator-nu");
 var galleryindex = require("./lib/galleryindex");
 const sequence = require('gulp4-run-sequence');
-
-
+const markdown = require('gulp-markdown');
 
 
 // Check for --production flag
@@ -207,7 +206,7 @@ gulp.task("pages", gulp.series(["cjsdeps", "copyexampleimages", "copygallerydata
         $.if(function(file) {
                 return file.path.endsWith('.md')
             },
-            $.markdown()),
+            markdown()),
         toc(),
         hbs(gulp.src("src/layouts/**/*.html"), {
             dataSource: "data",
