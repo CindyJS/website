@@ -95,8 +95,8 @@ function github(repo, branch) {
 }
 
 handlebars.registerHelper("json", function(data) {
-    return new handlebars.safestring(
-        json.stringify(data, null, "  ")
+    return new handlebars.SafeString(
+        JSON.stringify(data, null, "  ")
         .replace(/-(?=-)/g, "\\x2d")
         .replace(/</g, "\\x3c")
     );
