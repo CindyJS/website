@@ -229,7 +229,7 @@ gulp.task("validate", gulp.series(["pages", "asis"], function() {
 
 // Compile Sass into CSS
 // In production, the CSS is compressed
-gulp.task('sass', function() {
+gulp.task('sass', gulp.series([], function() {
     var uncss = $.if(isProduction, $.uncss({
         html: ['src/**/*.html'],
         ignore: [
@@ -253,7 +253,7 @@ gulp.task('sass', function() {
         minifycss,
         $.if(!isProduction, $.sourcemaps.write()),
         gulp.dest('dist/assets/css'));
-});
+}));
 
 // Combine JavaScript into one file
 // In production, the file is minified
@@ -274,7 +274,7 @@ gulp.task('javascript', gulp.series([], function() {
 
 // Copy images to the "dist" folder
 // In production, the images are compressed
-gulp.task('images', function() {
+gulp.task('images', gulp.series([], function() {
     var imagemin = $.if(isProduction, $.imagemin({
         progressive: true
     }));
@@ -291,7 +291,7 @@ gulp.task('images', function() {
         ),
         imagemin,
         gulp.dest("dist"));
-});
+}));
 
 // Copy files out of the assets folder
 // This task skips over the "img", "js", and "scss" folders, which are parsed separately
