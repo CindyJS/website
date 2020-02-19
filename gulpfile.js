@@ -21,10 +21,10 @@ const redirect = require("./lib/redirect");
 const ref = require("./lib/ref");
 const relativize = require("./lib/relativize");
 const toc = require("./lib/toc");
-const validator = require("./lib/validator-nu");
 const galleryindex = require("./lib/galleryindex");
 const sequence = require('gulp4-run-sequence');
 const markdown = require('gulp-markdown');
+const htmlValidator = require('gulp-w3c-html-validator');
 
 
 // Check for --production flag
@@ -224,7 +224,9 @@ gulp.task("asis", gulp.series([], function() {
 gulp.task("validate", gulp.series(["pages", "asis"], function() {
     return pipeline(
         gulp.src("dist/**/*.html"),
-        validator());
+        htmlValidator(),
+        htmlValidator.reporter()
+      );
 }));
 
 // Compile Sass into CSS
@@ -324,7 +326,9 @@ gulp.task("compress", gulp.series(["build"], function() {
 gulp.task("validate-examples", gulp.series(["cjsmod"], function() {
     return pipeline(
         gulp.src("CindyJS/examples/**/*.html"),
-        validator());
+        htmlValidator(),
+        htmlValidator.reporter()
+    );
 }));
 
 gulp.task("relative", gulp.series(["build"], function() {
