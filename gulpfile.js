@@ -224,7 +224,7 @@ gulp.task("asis", gulp.series([], function() {
 gulp.task("validate", gulp.series(["pages", "asis"], function() {
     return pipeline(
         gulp.src("dist/**/*.html"),
-        htmlValidator(),
+        htmlValidator({skipWarnings: true}),
         htmlValidator.reporter()
       );
 }));
