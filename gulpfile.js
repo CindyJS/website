@@ -350,7 +350,7 @@ gulp.task('rebuild', gulp.series([],function(done) {
 }));
 
 // Make things ready for release
-gulp.task('distgoal', gulp.series(['validate', 'compress']));
+gulp.task('distgoal', gulp.series(['compress']));
 
 gulp.task('dist', gulp.series([],function(done) {
     sequence('clean', 'distgoal', done);
