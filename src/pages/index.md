@@ -49,14 +49,15 @@ but also from various other fields.
     <p>CindyJS provides the high-level mathematically oriented user with access to the shader language of the GPU without learning a shader language.</p>
     <p>Here you see an GPU rendered example of a complex phase portrait rendered in CindyJS. You can enter any arbitrary complex function or chose a predefined  function and view its complex phase portrait.</p>
 
-    <p>f(z) = <input type="text" id="inp" value="z^5-1"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { cdy.complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();'); }" style="font-size:18px"> <select id="sel" onchange="document.getElementById('inp').value = this.value; cdy.complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();');">
-      <option>(z^5-1)</option>
-      <option>(z^(-5)-1)</option>
-      <option>(z-1)/(z+1)</option>
-      <option>z^(1+i)</option>
-      <option>z=2\*z+pi/2;(sin(z-i)/sin(z+i))^(1+i)</option>
-      <option value="repeat(11, z = z - (z^3-1)/(3*z^2));">Newton</option>
-    </select></p>
+<p>f(z) = <input type="text" id="inp" value="z^5-1"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { cdy.complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();'); }" style="font-size:18px"> <select id="sel" onchange="document.getElementById('inp').value = this.value; cdy.complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();');">
+<option>(z^5-1)</option>
+<option>(z^(-5)-1)</option>
+<option>(z-1)/(z+1)</option>
+<option>z^(1+i)</option>
+<option>z=2&sdot;z+pi/2&sdot;(sin(z-i)/sin(z+i))^(1+i)</option>
+<option value="repeat(11, z = z - (z^3-1)/(3*z^2));">Newton</option>
+</select>
+</p>
   <p>For more WebGL-related content, visit our <a href="/gallery/cindygl/">CindyGL-Gallery</a>.</p>
   <p>If you want to learn how to program your CindyGL applications you can check out <a href="/docs/cindygltutorial/">our CindyGL-tutorial</a>.</p>
 </div></div>

@@ -50,7 +50,6 @@ window.onload = function() {
     use: ["CindyGL"],
     language: "en"
   });
-
   var btn = document.getElementById("fs");
   var div = document.getElementById("applet");
   btn.onclick = function() {
@@ -60,8 +59,6 @@ window.onload = function() {
      div.msRequestFullscreen ||
      function(){}).call(div);
   };
-  
-  
   var myCodeMirror = CodeMirror(document.getElementById("code"), {
     value: `drawimage((-1,0), (1,-1), "earth");`,
     autoCloseBrackets: true,
@@ -70,14 +67,12 @@ window.onload = function() {
     lineWrapping: true,
     theme: "zenburn"
   });
-
   myCodeMirror.on("change", function(cm, change) {
     console.log("something changed! (" + change.origin + ")");
     cdy.evokeCS(`drawcmd() := (
       ${cm.getValue()}
       )`);
   });
-
   var codes = document.getElementsByClassName("lang-cindyscript");
   for(i in codes) {
     codes[i].parentElement.onclick = function(e) {
