@@ -1,7 +1,7 @@
 {
   "name": "cindyjs-website",
   "version": "0.0.1",
-  "description": "The CindyJS web site",
+  "description": "The CindyJS web site. This website is great!",
   "main": "gulpfile.js",
   "browserslist": [
     "last 2 version",
