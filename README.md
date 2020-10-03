@@ -8,7 +8,8 @@ feel free to
 or formulate a pull request.
 Note that most pages will come with an edit link in the bottom right corner.
 
-## Testing/developing the website on your local machine
+## Testing/developing the website on your local machine 
+These steps are necessary for smooth accessing the website.
 
 In order to download the website clone the repository with
 `git clone git@github.com:CindyJS/website.git`
