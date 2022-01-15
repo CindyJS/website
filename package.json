@@ -38,7 +38,7 @@
     "gulp4-run-sequence": "^1.0.0",
     "handlebars": "^4.7.7",
     "htmlparser2": "^4.0.0",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "merge-stream": "^2.0.0",
     "open": "7.0.0",
     "q": "^1.5.1",
