@@ -4,7 +4,7 @@
 // Utility functions
 
 @function em-calc($px) {
-  @return $px / 16 * 1em;
+  @return calc($px / 16) * 1em;
 }
 
 //////////////////////////////////////////////////////////////////////
