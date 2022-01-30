@@ -3,7 +3,6 @@
 const $ = require("gulp-load-plugins")();
 const argv = require("yargs").argv;
 const browser = require("browser-sync");
-const gulp = require("gulp");
 const handlebars = require("handlebars");
 const hbs = require("gulp-hbs");
 const merge = require("merge-stream");
@@ -25,6 +24,9 @@ const validator = require("./lib/validator-nu");
 const galleryindex = require("./lib/galleryindex");
 const sequence = require('gulp4-run-sequence');
 const markdown = require('gulp-markdown');
+
+const gulp = require("gulp");
+const sass = require('gulp-sass')(require('sass'));
 
 
 // Check for --production flag
@@ -237,22 +239,15 @@ gulp.task('sass', gulp.series([], function() {
             new RegExp('^\.is-.*')
         ]
     }));
-
-    var minifycss = $.if(isProduction, $.minifyCss());
-
-    return pipeline(
-        gulp.src('src/assets/scss/app.scss'),
-        $.sourcemaps.init(),
-        $.sass({
-            includePaths: PATHS.sass
-        }).on('error', $.sass.logError),
-        $.autoprefixer(
-        //    browsers: COMPATIBILITY
-        ),
-        //.pipe(uncss),
-        minifycss,
-        $.if(!isProduction, $.sourcemaps.write()),
-        gulp.dest('dist/assets/css'));
+    
+    return gulp.src('src/assets/scss/app.scss')
+        .pipe($.sourcemaps.init())
+        .pipe(sass())
+        .pipe($.autoprefixer())
+        //.pipe(uncss)
+        .pipe($.if(isProduction, $.minifyCss()))
+        .pipe($.sourcemaps.write())
+        .pipe(gulp.dest('dist/assets/css')) 
 }));
 
 // Combine JavaScript into one file

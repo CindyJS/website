@@ -88,12 +88,11 @@ Be sure to check for known issues first, though.
 CindyJS is licensed under the
 [Apache 2 license](/license.html).
 
-<script type="text/javascript" src="/dist/v0.7/Cindy.js"></script>
-<script type="text/javascript" src="/dist/v0.7/CindyGL.js"></script>
+<script type="text/javascript" src="/dist/latest/Cindy.js"></script>
+<script type="text/javascript" src="/dist/latest/CindyGL.js"></script>
 
 <script type="text/javascript">
-var cdy = {
-  tree: CindyJS.newInstance({
+   var tree =  CindyJS({
     scripts: "tree*",
     geometry: [
       { name: "A", type: "Free", pos: [0, -1.75], color: [1, 0, 0], pinned: false, size: 6, alpha: .3 },
@@ -108,11 +107,10 @@ var cdy = {
       height: 300,
       transform: [{ visibleRect: [-3, -2.5, 3, 3.5] }]
     }]
-  }),
-  bouncer: CindyJS.newInstance({
+  });
+  var bouncer= CindyJS({
     defaultAppearance: { dimDependent: 0.7 },
-    movescript: "csmove",
-    initscript: "init",
+    scripts: "cs*",
     geometry: [
       { name: "A", type: "Free", pos: [-5, 5], color: [1, .5, .5] },
       { name: "B", type: "Free", pos: [-9, 7], color: [0, 0, 0], size: 3 },
@@ -134,15 +132,15 @@ var cdy = {
       { name: "c", behavior: { type: "Bouncer" } },
       { name: "d", behavior: { type: "Bouncer" } }
     ],
-    autoplay: true,
+    animation: { autoplay: true,  speed: 0.3 },
     ports: [{
       id: "Bouncer",
       width: 300,
       height: 300,
       transform: [{ visibleRect: [-10, -10, 10, 10] }]
     }]
-  }),
-  complexPlot: CindyJS.newInstance({
+  });
+  var complexPlot = CindyJS({
     ports: [{
       id: "ComplexPlot",
       width: 300,
@@ -153,11 +151,8 @@ var cdy = {
     geometry: [],
     animation: { autoplay: true },
     use: ["CindyGL"]
-  })
-};
-
-
-var doingsth = false;
+  });
+  var doingsth = false;
 
 document.addEventListener('DOMContentLoaded', function(event) {
   updateVisibility();
@@ -242,7 +237,7 @@ function updateVisibility() {
   drawimage(L, R, "out" + (1-m), alpha -> (1-f));
 </script>
 
-<script id='init' type='text/x-cindyscript'>
+<script id='csinit' type='text/x-cindyscript'>
 l=[];
 
 </script>
