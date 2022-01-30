@@ -17,7 +17,7 @@
     "chalk": "^3.0.0",
     "express": "^4.17.1",
     "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-collect": "^0.1.0",
     "gulp-concat": "^2.6.1",
     "gulp-data": "^1.3.1",
@@ -25,12 +25,12 @@
     "gulp-gzip": "^1.4.2",
     "gulp-hbs": "^0.2.0",
     "gulp-if": "^3.0.0",
-    "gulp-imagemin": "^6.2.0",
+    "gulp-imagemin": "^7.1.0",
     "gulp-load-plugins": "^2.0.1",
     "gulp-markdown": "^5.0.1",
     "gulp-minify-css": "^1.2.4",
     "gulp-replace": "^1.0.0",
-    "gulp-sass": "^4.0.2",
+    "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2",
     "gulp-uncss": "^1.0.6",
@@ -38,18 +38,19 @@
     "gulp4-run-sequence": "^1.0.0",
     "handlebars": "^4.7.7",
     "htmlparser2": "^4.0.0",
-    "marked": "^0.7.0",
+    "marked": "^4.0.12",
     "merge-stream": "^2.0.0",
     "open": "7.0.0",
     "q": "^1.5.1",
     "q-io": "^1.13.6",
     "rimraf": "^3.0.0",
+    "sass": "^1.49.0",
     "through2": "^3.0.1",
     "validator-nu": "2.2.*",
     "vinyl": "^2.2.0",
     "vnu-jar": "^19.9.4",
     "xtend": "^4.0.2",
-    "yargs": "^14.2.0"
+    "yargs": "^17.3.1"
   },
   "repository": {
     "type": "git",
@@ -61,5 +62,6 @@
     "url": "https://github.com/CindyJS/website/issues"
   },
   "homepage": "https://github.com/CindyJS/website#readme",
-  "private": true
+  "private": true,
+  "dependencies": {}
 }
