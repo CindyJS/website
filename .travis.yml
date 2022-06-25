@@ -8,7 +8,7 @@ install:
   - npm install
 script: npm run build
 sudo: false
-dist: xenial
+dist: osx
 addons:
   apt:
     packages:
