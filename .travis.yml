@@ -14,6 +14,8 @@ addons:
     packages:
      - default-jre-headless
      - python-pygments
+     - gcc-4.9
+     - libstdc++6
 deploy:
   - provider: script
     script: tools/travis-deploy.sh
