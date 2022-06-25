@@ -1,8 +1,6 @@
 language: node_js
 node_js:
-  - "18"
-before_install:
-  - npm i -g npm@8.13.1
+  - "16"
 install:
   - git submodule update --init .
   - npm install
@@ -14,8 +12,6 @@ addons:
     packages:
      - default-jre-headless
      - python-pygments
-     - gcc-4.9
-     - libstdc++6
 deploy:
   - provider: script
     script: tools/travis-deploy.sh
