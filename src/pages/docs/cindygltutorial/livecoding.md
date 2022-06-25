@@ -1,7 +1,7 @@
 ---
 title: CindyGL Tutorial - Live Coding
 ---
-<script src="https://codemirror.net/lib/codemirror.js"></script>
+<script src="https://codemirror.net/codemirror.js"></script>
 <script src="https://codemirror.net/mode/clike/clike.js"></script>
 <script src="https://codemirror.net/addon/edit/matchbrackets.js"></script>
 <script src="https://codemirror.net/addon/edit/closebrackets.js"></script>
