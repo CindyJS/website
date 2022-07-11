@@ -1,5 +1,5 @@
 ---
-title: CindyGL Tutorial - Live Coding
+title: Implicit Plots
 ---
 <script src="codemirror/lib/codemirror.js"></script>
 <script src="codemirror/mode/clike/clike.js"></script>
@@ -81,7 +81,7 @@ window.onload = function() {
 </script>
 
 
-## Implicit Plots
+## Three ways to do implicit plots
 
 
 This will check for small difference between f(x) and y.
