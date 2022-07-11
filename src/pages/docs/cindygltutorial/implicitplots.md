@@ -57,7 +57,7 @@ window.onload = function() {
      function(){}).call(div);
   };
   var myCodeMirror = CodeMirror(document.getElementById("code"), {
-    value: `colorplot( (0.7,0.3,0) );`,
+    value: `colorplot( sin(1/#.x) - #.y );`,
     autoCloseBrackets: true,
     matchBrackets: true,
     //lineNumbers: true,
@@ -86,7 +86,7 @@ window.onload = function() {
 
 This will check for small difference between f(x) and y.
 ```cindyscript
-pixel = 512; h = 4; step = h/pixel; f(x):= sin(1/x);
+f(x):= sin(1/x);
 colorplot( if(|(f(#.x)-#.y)|<.1,0,1) ); 
 ```
 
