@@ -70,7 +70,7 @@ window.onload = function() {
       ${cm.getValue()}
       )`);
   });
-  var codes = document.getElementsByClassName("lang-cindyscript");
+  var codes = document.getElementsByClassName("language-cindyscript");
   for(i in codes) {
     codes[i].parentElement.onclick = function(e) {
       console.log(this.innerText);
@@ -202,7 +202,7 @@ Now, let us try to visualize the color wheel, [we have seen above](#basic-contro
 
 So what do we need? First, we want to draw something within an annulus. Given a pixel coordinate `#`, we can check whether it lies within an annulus for example with `1<|#| & |#|<1.1`. By using some branching with `if` we can compute different colors when we are inside our outside the annulus.
 
-If we are inside the annulus, we want, given `#`, calculate its angle to the origin and color the pixel according to this angle. The angle can be obtained by using `arctan2(#)`. `arctan2` is a convenient function, that [is also available in various other computer languages](https://en.wikipedia.org/wiki/Atan2), and returns the angle of a vector; Using something like `arctan(#.y/#.x)` instead would omit an important information on `#` because the sign sometimes cancels in the division. For example, $\frac{-1}{-1}=\frac{1}{1}$ and therefore the vectors `(1,1)` and `(-1,-1)` would yield the same value for `arctan(#.y/#.x)`.
+If we are inside the annulus, we want, given `#`, calculate its angle to the origin and color the pixel according to this angle. The angle can be obtained by using `arctan2(#)`. `arctan2` is a convenience function, that [is also available in various other computer languages](https://en.wikipedia.org/wiki/Atan2), and returns the angle of a vector; Using something like `arctan(#.y/#.x)` instead would omit an important information on `#` because the sign sometimes cancels in the division. For example, $\frac{-1}{-1}=\frac{1}{1}$ and therefore the vectors `(1,1)` and `(-1,-1)` would yield the same value for `arctan(#.y/#.x)`.
 
 To feed the computed angle, which lies between $0$ and $2\cdot \pi$, to the `hue`-function, we have to rescale it to fit the whole color-domain by diving it by `2*pi`.
 
