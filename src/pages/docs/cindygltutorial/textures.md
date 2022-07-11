@@ -1,12 +1,12 @@
 ---
 title: CindyGL Tutorial - Textures (with Live Coding)
 ---
-<script src="https://codemirror.net/lib/codemirror.js"></script>
-<script src="https://codemirror.net/mode/clike/clike.js"></script>
-<script src="https://codemirror.net/addon/edit/matchbrackets.js"></script>
-<script src="https://codemirror.net/addon/edit/closebrackets.js"></script>
-<link rel="stylesheet" property="stylesheet" type="text/css" href="https://codemirror.net/lib/codemirror.css">
-<link rel="stylesheet" property="stylesheet" type="text/css" href="https://codemirror.net/theme/zenburn.css">
+<script src="codemirror/lib/codemirror.js"></script>
+<script src="codemirror/mode/clike/clike.js"></script>
+<script src="codemirror/addon/edit/matchbrackets.js"></script>
+<script src="codemirror/addon/edit/closebrackets.js"></script>
+<link rel="stylesheet" property="stylesheet" type="text/css" href="codemirror/lib/codemirror.css">
+<link rel="stylesheet" property="stylesheet" type="text/css" href="codemirror/theme/zenburn.css">
 <link rel="stylesheet" property="stylesheet" type="text/css" href="livecoding.css">
 <script type="text/javascript" async  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
@@ -73,7 +73,7 @@ window.onload = function() {
       ${cm.getValue()}
       )`);
   });
-  var codes = document.getElementsByClassName("lang-cindyscript");
+  var codes = document.getElementsByClassName("language-cindyscript");
   for(i in codes) {
     codes[i].parentElement.onclick = function(e) {
       console.log(this.innerText);
