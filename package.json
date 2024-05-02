@@ -15,7 +15,7 @@
   "devDependencies": {
     "browser-sync": "^2.27.10",
     "chalk": "^3.0.0",
-    "express": "^4.17.3",
+    "express": "^4.19.2",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
     "gulp-collect": "^0.1.0",
