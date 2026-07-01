@@ -49,7 +49,7 @@ but also from various other fields.
     <p>CindyJS provides the high-level mathematically oriented user with access to the shader language of the GPU without learning a shader language.</p>
     <p>Here you see an GPU rendered example of a complex phase portrait rendered in CindyJS. You can enter any arbitrary complex function or chose a predefined  function and view its complex phase portrait.</p>
 
-<p>f(z) = <input type="text" id="inp" value="z^5-1"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { cdy.complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();'); }" style="font-size:18px"> <select id="sel" onchange="document.getElementById('inp').value = this.value; cdy.complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();');">
+<p>f(z) = <input type="text" id="inp" value="z^5-1"  onkeypress="if((event.which ? event.which : event.keyCode)==13) { complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();'); }" style="font-size:18px"> <select id="sel" onchange="document.getElementById('inp').value = this.value; complexPlot.evokeCS('f(z) := (' + this.value + '); forcerecompile();');">
 <option>(z^5-1)</option>
 <option>(z^(-5)-1)</option>
 <option>(z-1)/(z+1)</option>
