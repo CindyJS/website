@@ -36,7 +36,7 @@
     "gulp-uncss": "^1.0.6",
     "gulp-util": "^3.0.8",
     "gulp4-run-sequence": "^1.0.0",
-    "handlebars": "^4.7.7",
+    "handlebars": "^4.7.9",
     "htmlparser2": "^4.0.0",
     "marked": "^4.0.12",
     "merge-stream": "^2.0.0",
